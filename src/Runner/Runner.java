@@ -30,9 +30,6 @@ public class Runner
         //Run Test Manager
         TestManager testManager = new TestManager(event);
 
-        //Test test = new Test(50, "http://ec2-54-210-75-155.compute-1.amazonaws.com:3452/");
-
-        //test.UITest();
     }
 
     public void terminateRun()

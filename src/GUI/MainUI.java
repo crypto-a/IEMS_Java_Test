@@ -10,6 +10,7 @@
 package GUI;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MainUI
 {
@@ -18,6 +19,9 @@ public class MainUI
     private JPanel contentPanel;
     private JButton newTestButton;
     private JButton historyButton;
+    private JProgressBar progressBar1;
+    private JTable statusTable;
+
 
     JFrame frame;
     public MainUI()
@@ -43,6 +47,10 @@ public class MainUI
 
     public void updateUI()
     {
+        // Create the panel to display the web browser
+        JPanel webPanel = new JPanel(new BorderLayout());
+
+
         this.frame.add(this.innerPanel);
 
     }

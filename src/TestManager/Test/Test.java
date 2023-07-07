@@ -13,7 +13,7 @@ package TestManager.Test;
 import GUI.Event.Event;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import TestManager.UserInterfaceScenarioTester.UserInterfaceScenarioTester;
+import TestManager.UserInterfaceReader.UserInterfaceReader;
 
 public class Test
 {
@@ -33,8 +33,9 @@ public class Test
     public void UITest()
     {
         /* Request data form the User Interface reader */
+        UserInterfaceReader userInterfaceReader = new UserInterfaceReader(this.url, this.event);
 
-
+        userInterfaceReader.readScenarioPage();
     }
 
     public void executeTest(String ExpectedValue, String actualValue)

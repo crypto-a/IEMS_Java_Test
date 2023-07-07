@@ -8,7 +8,7 @@ package TestManager.UserInterfaceScenarioTester;
  /*Outputs: None
  ******************************************/
 
-
+/************************************************
 //Imports
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -41,9 +41,11 @@ public class UserInterfaceScenarioTester
      /*Method Inputs: URL
      /*Method Outputs: None
      ******************************************/
+/***********
     public UserInterfaceScenarioTester(String url)
     {
         /* Connect to the URL */
+/**********
         try
         {
             //Setup Selenium
@@ -132,6 +134,7 @@ public class UserInterfaceScenarioTester
 
         /* Setup Feeder */
 
+/*
         // Perform the click on the feeder button
         this.driver.findElement(By.cssSelector("div[aria-label=\"Select a Feeder\"]")).click();
 
@@ -141,7 +144,7 @@ public class UserInterfaceScenarioTester
                 .click();
 
         /* Setup Date */
-
+/***
         //Select the date-button
         this.driver.findElement(By.cssSelector("div[aria-label=\"Select a Date\"]")).click();
 
@@ -149,7 +152,7 @@ public class UserInterfaceScenarioTester
         this.driver.findElements(By.cssSelector(".p-dropdown-item")).get(random.nextInt(this.driver.findElements(By.cssSelector(".p-dropdown-item")).size())).click();
 
         /* Setup Time */
-
+/****
         ///Select the time-button
         this.driver.findElement(By.cssSelector("div[aria-label=\"Select a Time\"]")).click();
 
@@ -157,7 +160,7 @@ public class UserInterfaceScenarioTester
         this.driver.findElements(By.cssSelector(".p-dropdown-item")).get(random.nextInt(this.driver.findElements(By.cssSelector(".p-dropdown-item")).size())).click();
 
         /* Setup EVSMode */
-
+/*****
         // Perform the click on the EVS button
         this.driver.findElement(By.cssSelector("div[aria-label=\"Select an EVSE Mode\"]")).click();
 
@@ -168,6 +171,7 @@ public class UserInterfaceScenarioTester
 
         /* Setup Objective Function */
         // Perform the click on the feeder button
+/*****
         this.driver.findElement(By.cssSelector("div[aria-label=\"Select an Objective Function\"]")).click();
 
         //Select the Objective Function
@@ -176,17 +180,20 @@ public class UserInterfaceScenarioTester
                 .click();
 
         /* Run Scenario */
+/*****
         this.driver.findElement(By.cssSelector("button[aria-label=\"Run Scenario\"]")).click();
 
         /* Test Scenario */
         // Wait for a brief moment to allow the information to appear
-
+/****
         // Wait until the run button changes its class to "p-button-success"
         WebDriverWait wait = new WebDriverWait(this.driver, Duration.ofSeconds(10));
         WebElement runButton = this.driver.findElement(By.cssSelector(".p-button"));
         wait.until(ExpectedConditions.attributeContains(runButton, "class", "p-button-success"));
 
     }
+    */
+/******
 
     private Object[] mapDataRetrieve()
     {
@@ -202,6 +209,7 @@ public class UserInterfaceScenarioTester
             reactor: 'reactor-element',
             load: 'load-element'
          */
+/****
         // Create an array to store all the objects
         Object[] elementsObjectsArray = new Object[9];
 
@@ -249,6 +257,8 @@ public class UserInterfaceScenarioTester
         // Retrieve the Json
         Object jsonFile = js.executeScript("return sessionStorage.resultScenario;");
 
-        System.out.println(jsonFile.toString());
+        //System.out.println(jsonFile.toString());
     }
 }
+
+*/

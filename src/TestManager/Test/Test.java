@@ -10,6 +10,7 @@
 package TestManager.Test;
 
 
+import GUI.Event.Event;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import TestManager.UserInterfaceScenarioTester.UserInterfaceScenarioTester;
@@ -18,18 +19,26 @@ public class Test
 {
     //Object properties
     private final String url;
+    private final Event event;
     Object testResults;
 
-    public Test(String url)
+    public Test(String url, Event event)
     {
         //Setup Properties
         this.url = url;
+        this.event = event;
 
     }
 
     public void UITest()
     {
-        /* Scenario Tab Test */
-        UserInterfaceScenarioTester scenarioTester = new UserInterfaceScenarioTester(this.url);
+        /* Request data form the User Interface reader */
+
+
+    }
+
+    public void executeTest(String ExpectedValue, String actualValue)
+    {
+
     }
 }

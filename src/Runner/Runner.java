@@ -33,12 +33,6 @@ public class Runner
         //Test test = new Test(50, "http://ec2-54-210-75-155.compute-1.amazonaws.com:3452/");
 
         //test.UITest();
-
-        //Loop while the script is running
-        while (isRunning == true)
-        {
-
-        }
     }
 
     public void terminateRun()

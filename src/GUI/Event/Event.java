@@ -10,7 +10,27 @@
 package GUI.Event;
 
 
+import org.openqa.selenium.WebDriver;
+
 public class Event
 {
+    //Object properties
+    private WebDriver driver;
+
+
+    public Event()
+    {
+
+    }
+
+    public void setDriver(WebDriver driver)
+    {
+        this.driver = driver;
+    }
+
+    public WebDriver readDriver()
+    {
+        return this.driver;
+    }
 
 }

@@ -20,5 +20,10 @@ public class GUI
         //SetUp object property
         this.event = event;
 
+        //Open the GUI
+        MainUI ui = new MainUI();
+        ui.updateUI();
+
+
     }
 }

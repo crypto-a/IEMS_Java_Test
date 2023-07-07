@@ -43,7 +43,7 @@ public class UserInterfaceScenarioTester
      ******************************************/
     public UserInterfaceScenarioTester(String url)
     {
-        /* Connect to teh URL */
+        /* Connect to the URL */
         try
         {
             //Setup Selenium

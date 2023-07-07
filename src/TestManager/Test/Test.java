@@ -16,13 +16,13 @@ import TestManager.UserInterfaceScenarioTester.UserInterfaceScenarioTester;
 
 public class Test
 {
-    private int testAccuracy;
-    private String url;
+    //Object properties
+    private final String url;
+    Object testResults;
 
-    public Test(int Accuracy, String url)
+    public Test(String url)
     {
         //Setup Properties
-        this.testAccuracy = Accuracy;
         this.url = url;
 
     }

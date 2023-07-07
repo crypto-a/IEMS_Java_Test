@@ -7,8 +7,9 @@
  * Outputs: None
  ******************************************/
 
-package TestManager.UserInterfaceTester;
+package TestManager.UserInterfaceReader;
 
-public class UserInterfaceTester
+public class UserInterfaceReader
 {
+
 }

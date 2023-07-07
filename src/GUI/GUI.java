@@ -9,8 +9,16 @@
 
 package GUI;
 
+import GUI.Event.Event;
+
 
 public class GUI
 {
+    private final Event event;
+    public GUI(Event event)
+    {
+        //SetUp object property
+        this.event = event;
 
+    }
 }

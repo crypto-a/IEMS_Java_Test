@@ -9,18 +9,42 @@
 
 package Runner;
 
-import TestManager.Test.Test;
+import TestManager.TestManager;
+import GUI.GUI;
+import GUI.Event.Event;
 
 public class Runner
 {
+    //Object Properties
+    private Boolean isRunning = true;
+
+
     public Runner()
     {
+        //Create the event Object
+        Event event = new Event();
+
         //Run GUI
+        GUI gui = new GUI(event);
 
         //Run Test Manager
-        Test test = new Test(50, "http://ec2-54-210-75-155.compute-1.amazonaws.com:3452/");
+        TestManager testManager = new TestManager(event);
 
-        test.UITest();
+        //Test test = new Test(50, "http://ec2-54-210-75-155.compute-1.amazonaws.com:3452/");
+
+        //test.UITest();
+
+        //Loop while the script is running
+        while (isRunning == true)
+        {
+
+        }
+    }
+
+    public void terminateRun()
+    {
+        //et isRunning to false to end code
+        this.isRunning = false;
     }
 
 }

@@ -7,10 +7,9 @@
  * Outputs: None
  ******************************************/
 
-package Database;
+package Converter;
 
-
-public class Database
+public class Converter
 {
 
 }

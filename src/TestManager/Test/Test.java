@@ -19,7 +19,6 @@ public class Test
 
     public void UITest()
     {
-
         /* Scenario Tab Test */
         UserInterfaceScenarioTester scenarioTester = new UserInterfaceScenarioTester(this.url);
     }

@@ -12,6 +12,7 @@ package TestManager.UserInterfaceReader;
 import GUI.Event.Event;
 import TestManager.ActualData.ActualData;
 import TestManager.CollectedData.CollectedData;
+import TestManager.Test.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -25,6 +26,7 @@ import org.json.*;
 import java.io.FileReader;
 import java.io.IOException;
 
+import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -41,12 +43,14 @@ public class UserInterfaceReader
     private ActualData actualData;
     private CollectedData collectedData;
 
-    public UserInterfaceReader(String url, Event event, ActualData actualData, CollectedData collectedData)
+    private final Test test;
+    public UserInterfaceReader(String url, Event event, ActualData actualData, CollectedData collectedData, Test test)
     {
         //Setup Object properties
         this.event = event;
         this.actualData = actualData;
         this.collectedData = collectedData;
+        this.test = test;
 
         /* Connect to the URL */
 
@@ -106,6 +110,9 @@ public class UserInterfaceReader
                 for (int c = 1; c <= scenarios[4]; c++)
                 {
                     int[] currentState = {a, 1, 1, b, c};
+
+                    System.out.println(Arrays.toString(currentState));
+
                     //build scenario
                     this.buildScenario(currentState);
 
@@ -116,6 +123,7 @@ public class UserInterfaceReader
                     this.normalizeScenarioJsonData(this.jsonDataRetrieve());
 
                     //Send data to the test function to test them
+                    this.test.executeTest();
 
 
                 }
@@ -276,6 +284,8 @@ public class UserInterfaceReader
             //Collect the index number
             String currentIndex = vmpuKeys.next();
 
+
+
             //Collect properties from each JsonObject
             String vmpuValue = vmpu.get(currentIndex).toString();
             String vaDegreeValue = vaDegree.get(currentIndex).toString();
@@ -313,6 +323,8 @@ public class UserInterfaceReader
             String[] propertiesFinal = Arrays.stream(properties)
                     .filter(s -> !s.isEmpty() && !s.equals("."))
                     .toArray(String[]::new);
+
+            propertiesFinal[0] = String.valueOf((Integer.parseInt(propertiesFinal[0]) + 1));
 
             //Add it to the collected data arraylist
             this.collectedData.bus_element.add(propertiesFinal);

@@ -11,6 +11,8 @@ package TestManager.Test;
 
 
 import GUI.Event.Event;
+import TestManager.ActualData.ActualData;
+import TestManager.CollectedData.CollectedData;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import TestManager.UserInterfaceReader.UserInterfaceReader;
@@ -20,6 +22,8 @@ public class Test
     //Object properties
     private final String url;
     private final Event event;
+    private ActualData actualData;
+    private CollectedData collectedData;
     Object testResults;
 
     public Test(String url, Event event)
@@ -28,17 +32,20 @@ public class Test
         this.url = url;
         this.event = event;
 
+        this.actualData = new ActualData();
+        this.collectedData = new CollectedData();
+
     }
 
     public void UITest()
     {
         /* Request data form the User Interface reader */
-        UserInterfaceReader userInterfaceReader = new UserInterfaceReader(this.url, this.event);
+        UserInterfaceReader userInterfaceReader = new UserInterfaceReader(this.url, this.event, this.actualData, this.collectedData);
 
         userInterfaceReader.readScenarioPage();
     }
 
-    public void executeTest(String ExpectedValue, String actualValue)
+    public void executeTest()
     {
 
     }

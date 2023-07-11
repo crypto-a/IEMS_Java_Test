@@ -1,41 +1,35 @@
-/*****************************************
- * Program Name: Main
- * Programmer Name: Ali Rahbar
- * Program Date: July 7, 2023
- * Program Description: This program runs the script
- * Inputs: None
- * Outputs: None
- ******************************************/
-
 package Runner;
 
-import TestManager.TestManager;
 import GUI.GUI;
 import GUI.Event.Event;
+import TestManager.TestManager;
 
 public class Runner
 {
-    //Object Properties
-    private Boolean isRunning = true;
+    //Initialize object properties
+    private final Event event;
+    private final TestManager testManager;
+    private final GUI gui;
+
+
 
 
     public Runner()
     {
-        //Create the event Object
-        Event event = new Event();
+        //Initialize the event Object
+        this.event = new Event();
 
-        //Run GUI
-        GUI gui = new GUI(event);
+        //Initialize the testManager Object
+        this.testManager = new TestManager(this.event);
 
-        //Run Test Manager
-        TestManager testManager = new TestManager(event, gui);
+        //Initialize the GUI object
+        this.gui = new GUI(event, testManager);
+
+        //Show the GUI to the User
+        this.gui.updateMainPage();
+
+        //ToDO: Create the code Loop Executor
+
 
     }
-
-    public void terminateRun()
-    {
-        //et isRunning to false to end code
-        this.isRunning = false;
-    }
-
 }

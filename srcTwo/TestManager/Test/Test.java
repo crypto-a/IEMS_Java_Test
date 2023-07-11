@@ -28,10 +28,9 @@ public class Test
     private final Event event;
     private ActualData actualData;
     private CollectedData collectedData;
-    private final GUI gui;
     Object testResults;
 
-    public Test(String url, Event event, GUI gui)
+    public Test(String url, Event event)
     {
         //Setup Properties
         this.url = url;
@@ -39,7 +38,6 @@ public class Test
 
         this.actualData = new ActualData();
         this.collectedData = new CollectedData();
-        this.gui = gui;
 
     }
 
@@ -106,11 +104,9 @@ public class Test
 
         }
 
+        //ToDo
         //Push to Event
         this.event.dataWrite(new String[]{currentState, message});
-
-        //Request UI update
-        this.gui.updateUI();
 
         //Delete the array Lists for the next test
         this.actualData.bus_element.clear();

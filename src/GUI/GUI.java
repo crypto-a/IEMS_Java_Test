@@ -15,15 +15,21 @@ import GUI.Event.Event;
 public class GUI
 {
     private final Event event;
+    private final MainUI ui;
     public GUI(Event event)
     {
         //SetUp object property
         this.event = event;
 
         //Open the GUI
-        MainUI ui = new MainUI();
-        ui.updateUI();
+        this.ui = new MainUI(this.event);
+        this.ui.updateUI();
 
 
+    }
+
+    public void updateUI()
+    {
+        this.ui.updateUI();
     }
 }

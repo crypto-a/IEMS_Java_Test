@@ -111,7 +111,7 @@ public class UserInterfaceReader
                 {
                     int[] currentState = {a, 1, 1, b, c};
 
-                    System.out.println(Arrays.toString(currentState));
+                    //System.out.println(Arrays.toString(currentState));
 
                     //build scenario
                     this.buildScenario(currentState);
@@ -123,7 +123,7 @@ public class UserInterfaceReader
                     this.normalizeScenarioJsonData(this.jsonDataRetrieve());
 
                     //Send data to the test function to test them
-                    this.test.executeTest();
+                    this.test.executeTest(Arrays.toString(currentState));
 
 
                 }

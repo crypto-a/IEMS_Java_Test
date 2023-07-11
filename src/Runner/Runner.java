@@ -28,7 +28,7 @@ public class Runner
         GUI gui = new GUI(event);
 
         //Run Test Manager
-        TestManager testManager = new TestManager(event);
+        TestManager testManager = new TestManager(event, gui);
 
     }
 

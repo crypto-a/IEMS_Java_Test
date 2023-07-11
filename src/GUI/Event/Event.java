@@ -10,17 +10,33 @@
 package GUI.Event;
 
 
+import graphql.org.antlr.v4.runtime.misc.ObjectEqualityComparator;
 import org.openqa.selenium.WebDriver;
+
+import java.util.Arrays;
 
 public class Event
 {
     //Object properties
     private WebDriver driver;
 
+    private Object[][] data = {};
 
     public Event()
     {
 
+    }
+
+    public Object[][] dataRead()
+    {
+        return this.data;
+    }
+
+    public void dataWrite (String[] newRow)
+    {
+        System.out.println(Arrays.toString(newRow));
+        this.data = Arrays.copyOf(this.data, data.length + 1);
+        this.data[data.length - 1] = newRow;
     }
 
     public void setDriver(WebDriver driver)

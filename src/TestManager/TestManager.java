@@ -10,28 +10,31 @@
 package TestManager;
 
 import GUI.Event.Event;
+import GUI.GUI;
 import TestManager.Test.Test;
 
 public class TestManager
 {
     //Object properties
     private final Event event;
+    private final GUI gui;
     Test[] testList;
 
-    public TestManager(Event event)
+    public TestManager(Event event, GUI gui)
     {
 
         //SetUp object Properties
         this.event = event;
+        this.gui = gui;
 
 
-        this.newTest("http://ec2-54-210-75-155.compute-1.amazonaws.com:3452/");
+        this.newTest("https://dlcdemo.iemssolution.com/");
     }
 
     public void newTest(String url)
     {
         //create the new test object
-        Test test = new Test(url, event);
+        Test test = new Test(url, event, this.gui);
         test.UITest();
     }
 

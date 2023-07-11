@@ -11,8 +11,10 @@ package TestManager.Test;
 
 
 import GUI.Event.Event;
+import GUI.GUI;
 import TestManager.ActualData.ActualData;
 import TestManager.CollectedData.CollectedData;
+import io.netty.handler.codec.socksx.v5.Socks5PasswordAuthStatus;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import TestManager.UserInterfaceReader.UserInterfaceReader;
@@ -26,9 +28,10 @@ public class Test
     private final Event event;
     private ActualData actualData;
     private CollectedData collectedData;
+    private final GUI gui;
     Object testResults;
 
-    public Test(String url, Event event)
+    public Test(String url, Event event, GUI gui)
     {
         //Setup Properties
         this.url = url;
@@ -36,6 +39,7 @@ public class Test
 
         this.actualData = new ActualData();
         this.collectedData = new CollectedData();
+        this.gui = gui;
 
     }
 
@@ -47,15 +51,17 @@ public class Test
         userInterfaceReader.readScenarioPage();
     }
 
-    public void executeTest()
+    public void executeTest(String currentState)
     {
         //Test Bus Elements
-        this.testBusElements();
+        this.testBusElements(currentState);
 
     }
 
-    private void testBusElements()
+    private void testBusElements(String currentState)
     {
+        String message = "Passed Successfully";
+
         //Loop though every element of the collected data
         for (String[] collectedArray : this.collectedData.bus_element)
         {
@@ -81,31 +87,30 @@ public class Test
                             }
                             else
                             {
-                                System.out.println("Bus " + collectedArray[0] + " - Failed");
-                                System.out.println(Arrays.toString(collectedArray));
-                                System.out.println(Arrays.toString(actualArray));
+                                message = "Bus " + collectedArray[0] + " - Failed";
                             }
                         }
                         else
                         {
-                            System.out.println("Bus " + collectedArray[0] + " - Failed");
-                            System.out.println(Arrays.toString(collectedArray));
-                            System.out.println(Arrays.toString(actualArray));
+                            message = "Bus " + collectedArray[0] + " - Failed";
                         }
                     }
                     else
                     {
-                        System.out.println("Bus " + collectedArray[0] + " - Failed");
-                        System.out.println(Arrays.toString(collectedArray));
-                        System.out.println(Arrays.toString(actualArray));
+                        message = "Bus " + collectedArray[0] + " - Failed";
                     }
                     //System.out.println(Arrays.toString(collectedArray) + " " + Arrays.toString(actualArray));
                 }
 
             }
+
         }
 
-        System.out.println("Passed");
+        //Push to Event
+        this.event.dataWrite(new String[]{currentState, message});
+
+        //Request UI update
+        this.gui.updateUI();
 
         //Delete the array Lists for the next test
         this.actualData.bus_element.clear();

@@ -17,10 +17,12 @@ public class Issue
     private String actualValue;
 
 
-    public Issue(Test testParent)
+    public Issue(Test testParent, String expectedValue, String actualValue)
     {
         //SetUp Object Properties
         this.testParent = testParent;
+        this.expectedValue = expectedValue;
+        this.actualValue = actualValue;
 
         //Record The time of Issue Opening
         this.localDateTimeOpened = LocalDateTime.now();

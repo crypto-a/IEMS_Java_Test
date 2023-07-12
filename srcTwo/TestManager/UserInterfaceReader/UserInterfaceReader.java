@@ -22,10 +22,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.json.*;
-
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.Arrays;

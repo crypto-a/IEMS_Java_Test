@@ -7,7 +7,7 @@
  * Outputs: None
  ******************************************/
 
-package TestManager.Test;
+package TestManager.subTest;
 
 
 import GUI.Event.Event;

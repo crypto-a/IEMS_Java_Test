@@ -1,10 +1,14 @@
 package TestManager;
 
 import GUI.Event.Event;
+import TestManager.DataProcessor.DataProcessor;
 import TestManager.Issue.Issue;
 import TestManager.Test.Test;
+import TestManager.subTest.subTest;
+import TestManager.UserInterfaceReader.UserInterfaceReader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TestManager
 {
@@ -12,7 +16,7 @@ public class TestManager
     private final Event event;
     private Test runningTest;
     private ArrayList<Issue> issuesList;
-    private ArrayList<Test> testsList;
+    private ArrayList<Test> testsList = new ArrayList<Test>();
 
 
     public TestManager(Event event)
@@ -23,43 +27,45 @@ public class TestManager
         //ToDo: Load Objects from db
     }
 
-    public void createTest(String testType)
+    public void createTest(Boolean[] testType, String webAppUrl)
     {
-        //Request Different Data Depending on the Test Type
-        switch (testType)
-        {
-            case "UITest":
-                //Request Data From the UI
 
+        //Add the ingoing test to the array
+        this.testsList.add(new Test(webAppUrl, testType));
 
-            default:
-                System.out.println("testType Command not Supported");
-        }
-        //Create the Test Object
     }
 
-    public void createIssue()
+    public ArrayList<Test> getTestArrayList()
+    {
+        //return the arrayList
+        return this.testsList;
+    }
+
+    public Test getTestObject(String testID)
+    {
+        //loop trough every element of the tests list
+        for (int i = 0; i <this.testsList.size(); i++)
+        {
+            if (this.testsList.get(i).getTestID().equals(testID))
+            {
+                return this.testsList.get(i);
+            }
+        }
+
+        return null;
+    }
+
+    public void createIssue()//ToDo
     {
         //ToDo
     }
 
-    private void UserInterfaceTesting()
-    {
-        /* Start with the Scenario section Testing */
-        String[] uiElementsList =
-                {
-                "line-element",
-                "bus-element",
-                "externalGrid-element",
-                "transformer-element",
-                "fuse-element",
-                "evse-element",
-                "pv-element",
-                "reactor-element",
-                "load-element"
-        };
 
 
 
-    }
+
+
+
+
+
 }

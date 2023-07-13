@@ -11,7 +11,7 @@ package TestManager;
 
 import GUI.Event.Event;
 import GUI.GUI;
-import TestManager.Test.Test;
+import TestManager.subTest.Test;
 
 public class TestManager
 {

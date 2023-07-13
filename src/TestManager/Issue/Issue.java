@@ -1,12 +1,12 @@
 package TestManager.Issue;
 
-import TestManager.Test.Test;
+import TestManager.subTest.subTest;
 
 import java.time.LocalDateTime;
 
 public class Issue
 {
-    private Test testParent;
+    private subTest testParent;
     private LocalDateTime localDateTimeOpened;
     private String issueStatus = "Open";
     private LocalDateTime localDateTimeClosed;
@@ -17,7 +17,7 @@ public class Issue
     private String actualValue;
 
 
-    public Issue(Test testParent, String expectedValue, String actualValue)
+    public Issue(subTest testParent, String expectedValue, String actualValue)
     {
         //SetUp Object Properties
         this.testParent = testParent;
@@ -28,7 +28,7 @@ public class Issue
         this.localDateTimeOpened = LocalDateTime.now();
     }
 
-    public Issue (Test testParent, LocalDateTime localDateTimeOpened)
+    public Issue (subTest testParent, LocalDateTime localDateTimeOpened)
     {
         //SetUp Object Properties
         this.testParent = testParent;
@@ -36,7 +36,7 @@ public class Issue
 
     }
 
-    public Issue(Test testParent, LocalDateTime localDateTimeOpened, LocalDateTime localDateTimeClosed, String issueCloser, String messageReport)
+    public Issue(subTest testParent, LocalDateTime localDateTimeOpened, LocalDateTime localDateTimeClosed, String issueCloser, String messageReport)
     {
 
     }

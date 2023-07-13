@@ -12,7 +12,7 @@ package TestManager.UserInterfaceReader;
 import GUI.Event.Event;
 import TestManager.ActualData.ActualData;
 import TestManager.CollectedData.CollectedData;
-import TestManager.Test.Test;
+import TestManager.subTest.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;

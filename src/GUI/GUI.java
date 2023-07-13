@@ -1,6 +1,10 @@
 package GUI;
 
 import GUI.Event.Event;
+import GUI.MainPage.MainPage;
+import GUI.MainPage.OldTestElement.OldTestElement;
+import GUI.NewTestPage.NewTestPage;
+import GUI.OldTestPage.OldTestPage;
 import TestManager.TestManager;
 
 import javax.swing.*;
@@ -36,14 +40,37 @@ public class GUI extends JFrame
 
     public void updateMainPage()
     {
-        //Create the new GUI Object
-        MainPage mainPage = new MainPage(this.testManager, this.event);
+
 
         //Clear the frame
         this.frame.getContentPane().removeAll();
 
-        //Add the GUI content to the page
-        this.frame.add(mainPage.requestPage());
+        switch (this.event.requestCurrentPage())
+        {
+            case "mainPage":
+                //Create the new GUI Object
+                MainPage mainPage = new MainPage(this.testManager, this.event);
+                //Add the GUI content to the page
+                this.frame.add(mainPage.requestPage());
+                break;
+
+            case "addTestPage":
+                //Create the new GUI Object
+                NewTestPage newTestPage = new NewTestPage(this.testManager, this.event);
+                //Add the GUI content to the page
+                this.frame.add(newTestPage.requestPage());
+                break;
+
+            case "oldTestDisplay":
+                //Create the new GUI Object
+                OldTestPage oldTestPage = new OldTestPage(this.event);
+                //Add the GUI content to the page
+                this.frame.add(oldTestPage.requestPage());
+                break;
+
+        }
+
+        System.out.println("UI Updated");
 
         //Set visibility to true
         this.frame.setVisible(true);

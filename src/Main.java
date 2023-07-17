@@ -1,4 +1,7 @@
 import Runner.Runner;
+import Database.Database;
+
+import java.io.IOException;
 
 /****
  * dbUsername: TestPrime
@@ -11,5 +14,6 @@ public class Main
     {
         //Runes the code and starts the Project
         new Runner();
+        //new Database();
     }
 }

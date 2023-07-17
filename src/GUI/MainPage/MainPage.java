@@ -2,17 +2,13 @@ package GUI.MainPage;
 
 import GUI.Event.Event;
 import GUI.MainPage.MainContent.MainContent;
-import GUI.MainPage.OldTestElement.OldTestElement;
 import GUI.MainPage.NewTestPage.NewTestPage;
-import TestManager.Test.Test;
 import TestManager.TestManager;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class MainPage
 {
@@ -26,7 +22,9 @@ public class MainPage
     private JButton button3;
     private JButton button4;
     private JPanel contentPanel;
-    private JButton button5;
+    private JButton logOutButton;
+    private JLabel userName;
+    private JPanel userContent;
     private JPanel historyPanel;
 
 

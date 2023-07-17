@@ -1,8 +1,20 @@
 package GUI.MainPage.MainContent;
 
-import javax.swing.*;
+import GUI.Event.Event;
+import GUI.MainPage.OldTestElement.OldTestElement;
+import TestManager.Test.Test;
+import TestManager.TestManager;
 
-public class MainContent {
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.util.ArrayList;
+
+public class MainContent
+{
+    private final TestManager testManager;
+    private final Event event;
+
     private JPanel MainPanel;
     private JTabbedPane tabbedPane1;
     private JProgressBar progressBar1;
@@ -14,8 +26,50 @@ public class MainContent {
     private JComboBox comboBox1;
     private JComboBox comboBox2;
 
+    public MainContent(TestManager testManager, Event event)
+    {
+        //SetUp object Properties
+        this.testManager = testManager;
+        this.event = event;
+    }
+
+    public JPanel requestContent()
+    {
+        return this.MainPanel;
+    }
+
     private void createUIComponents()
     {
-        // TODO: place custom component creation code here
+        this.historyPanel = new JPanel();
+        this.historyPanel.setLayout(new BoxLayout(this.historyPanel, BoxLayout.Y_AXIS));
+
+        ArrayList<Test> testsList = this.testManager.getTestArrayList();
+
+        /* Fill the History page with elements */
+        for (int i = 0; i < testsList.size(); i++) {
+            OldTestElement oldTestElement = new OldTestElement(testsList.get(i), this.event);
+            JPanel elementPanel = oldTestElement.getElementPanel();
+
+            // Create a container panel for each element
+            JPanel containerPanel = new JPanel();
+            containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+
+            // Add the element panel to the container panel
+            containerPanel.add(elementPanel);
+
+            // Set the maximum height for the container panel
+            containerPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+
+            // Add the container panel to the history panel
+            this.historyPanel.add(containerPanel);
+
+            // Add vertical spacing between elements
+            if (i < testsList.size() - 1) {
+                this.historyPanel.add(Box.createVerticalStrut(5));
+            }
+        }
+
+        // Add margin to the historyPanel
+        historyPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
     }
 }

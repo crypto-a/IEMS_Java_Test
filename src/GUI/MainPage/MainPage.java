@@ -1,7 +1,9 @@
 package GUI.MainPage;
 
 import GUI.Event.Event;
+import GUI.MainPage.MainContent.MainContent;
 import GUI.MainPage.OldTestElement.OldTestElement;
+import GUI.MainPage.NewTestPage.NewTestPage;
 import TestManager.Test.Test;
 import TestManager.TestManager;
 
@@ -24,10 +26,7 @@ public class MainPage
     private JButton button3;
     private JButton button4;
     private JPanel contentPanel;
-    private JTabbedPane tabbedPane1;
-    private JProgressBar progressBar1;
     private JButton button5;
-    private JPanel testHistoryPanel;
     private JPanel historyPanel;
 
 
@@ -67,36 +66,29 @@ public class MainPage
 
     private void createUIComponents()
     {
-        this.historyPanel = new JPanel();
-        this.historyPanel.setLayout(new BoxLayout(this.historyPanel, BoxLayout.Y_AXIS));
+        // Create the JPanel with BorderLayout
+        this.contentPanel = new JPanel(new BorderLayout());
 
-        ArrayList<Test> testsList = this.testManager.getTestArrayList();
+        // Check what content is being displayed
+        switch (this.event.requestCurrentPage()) {
+            case "mainPage":
+                // Create the class of the content page
+                MainContent mainContent = new MainContent(this.testManager, this.event);
 
-        /* Fill the History page with elements */
-        for (int i = 0; i < testsList.size(); i++) {
-            OldTestElement oldTestElement = new OldTestElement(testsList.get(i), this.event);
-            JPanel elementPanel = oldTestElement.getElementPanel();
+                // Add it to the contentPanel, and specify the region to fill (CENTER in this case)
+                this.contentPanel.add(mainContent.requestContent(), BorderLayout.CENTER);
+                break;
 
-            // Create a container panel for each element
-            JPanel containerPanel = new JPanel();
-            containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+            case "addTestPage":
+                //Create the newTest Object
+                NewTestPage newTestPage = new NewTestPage(this.testManager, this.event);
 
-            // Add the element panel to the container panel
-            containerPanel.add(elementPanel);
-
-            // Set the maximum height for the container panel
-            containerPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-
-            // Add the container panel to the history panel
-            this.historyPanel.add(containerPanel);
-
-            // Add vertical spacing between elements
-            if (i < testsList.size() - 1) {
-                this.historyPanel.add(Box.createVerticalStrut(5));
-            }
+                // Add it to the contentPanel, and specify the region to fill (CENTER in this case)
+                this.contentPanel.add(newTestPage.requestContent(), BorderLayout.CENTER);
+                break;
+            case "oldTestDisplay":
+                break;
         }
 
-        // Add margin to the historyPanel
-        historyPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
     }
 }

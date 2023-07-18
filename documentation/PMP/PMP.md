@@ -10,7 +10,7 @@ ___
 
 ## Project Description
 ___
-> The project aims to automate the process of testing the User Interface of a website. we want to ensure the quality of the website before deployed on AWS for clients. The data will be collected as a CSV file alongside with the URL of the website that is being tested. Then the different values shown on the website will be tested and compared to the Given values in the CSV file. The project will involve designing, implementing the code and testing it on the current website witch will be provided by the company! Then a report will be generated showing the passed and failed tests! The tests will also be recorded and saved on a database for future access!
+> The project aims to automate the process of testing the user interface of four web applications for the software company IEMS. We want ot ensure the quality of the build before deploying in on AWS for clients! The data that is shown on the UI will bo compared with the data sent by the json object from the backend. These values will be tested to make sure they are right. The project will involve designing, developing, and testing this new application for the company! Then a report will be generated from the results of the testing to help the developers fix the issues with each platform! Test results and issues will be recorded and saved on a cloud database for future access! This project will be coded in java using the selenium webdriver library!
 
 ## Project Schedule
 
@@ -19,30 +19,43 @@ ___
 > **Week One:**
 >  - [ ] Finish the Automation course (20 hours)
 >  - [ ] Create a Data Flow Diagram for the App
->  - [ ] Create a Gant Chart for the project
 >  - [ ] Design the UI of the app
->  - [ ] Complete the project schedule for the rest of the weeks and the budget
+>  - [ ] Created a sample project for selenium to understand what has to be done
 
 > **Week Two:**
-> - [ ] TBD
+> - [ ] Create the basics of the UI
+> - [ ] Create a test NVM
+> - [ ] Present to team
 
 > **Week Three:**
-> - [ ] TBD
+> - [ ] Complete the history object
+> - [ ] Complete the Issues object
+> - [ ] Make a list of features to add
+> - [ ] Create the gantt chart for the project
+> - [ ] Connect the application to a database cloud
+> - [ ] Create the local database
+> - [ ] Create the database sync module
+> - [ ] Add User authentication to the software
 
 > **Week Four:**
-> - [ ] TBD
+> - [ ] Create the Test history panel
+> - [ ] Create the search feature for the history panel
+> - [ ] Create the sort feature for the history panel
+> - [ ] Create the Issues panel
+> - [ ] Create the search feature for the Issues panel
+> - [ ] Create the sort feature for the Issues panel
 
 > **Week Five:**
-> - [ ] TBD
+> - [ ] Develop the test for DLC demo software
 
 > **Week Six:**
-> - [ ] TBD
+> - [ ] Develop the Test for DERMS Software
 
 > **Week Seven:**
-> - [ ] TBD
+> - [ ] Develop the Test for the PA SaaS Software
 
 > **Week Eight:**
-> - [ ] TBD
+> - [ ] Develop the Test for the CALFUSE Software
 
 
 ## Project Budget
@@ -107,7 +120,7 @@ ___
 ## Project resources
 ***
 > ### Human resources:
-> - Python Developer with knowledge of HTML, CSS and JavaScript
+> - Java Developer with knowledge of HTML, CSS and JavaScript
 > ***
 > ### Equipment and material:
 >   - Test Website URL: The project will require a test version of the current software developed by the IEMS Solutions team
@@ -141,7 +154,7 @@ ___
 
 ## Quality Management Plan:
 > When testing the software the functionality is key and is prioritized. After the functionality, the tester will focus on the optimization of the code. Furthermore, All codes must have proper documentation including comments, pseudocode and IPO charts.
->
+
 ## Procurement Plan:
 > ### Requirements:
 >   - One person with knowledge of python, Html, Css and JS

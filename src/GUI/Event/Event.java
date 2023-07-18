@@ -12,6 +12,8 @@ public class Event
 
     private String[] userInput;
 
+    private Test[] testHistoryDisplay;
+
     public Event ()
     {
         //SetUp properties
@@ -186,6 +188,16 @@ public class Event
     public Test getSelectedTestObject()
     {
         return this.selectedTestObject;
+    }
+
+    public void setTestHistoryDisplay(Test[] testHistory)
+    {
+        this.testHistoryDisplay = testHistory;
+    }
+
+    public Test[] getTestHistoryDisplay()
+    {
+        return this.testHistoryDisplay;
     }
 }
 

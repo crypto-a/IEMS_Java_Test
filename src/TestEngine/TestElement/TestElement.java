@@ -6,8 +6,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-public class TestElement
-{
+public class TestElement {
     private final int testID;
     public final String[][] actualValues;
     private final String[][] expectedValues;
@@ -16,11 +15,13 @@ public class TestElement
     private String[][] testResults;
 
     private TestObject parentTestObject;
-    private Boolean status;
+    private String status;
     private String testLog;
     private LocalDateTime testStartTime;
     private LocalDateTime testEndTime;
     private Duration processDuration;
+
+    private int numberOfErrors;
 
     /*****************************************
      /*Method Name: TestElement
@@ -30,8 +31,7 @@ public class TestElement
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public TestElement(TestObject parentTestObject, String testElementIdentification, String scenario, String[][] actualValue, String[][] expectedValue)
-    {
+    public TestElement(TestObject parentTestObject, String testElementIdentification, String scenario, String[][] actualValue, String[][] expectedValue) {
         //SetUp object Properties
         this.parentTestObject = parentTestObject;
         this.testID = parentTestObject.testID;
@@ -43,6 +43,9 @@ public class TestElement
 
         //Record the time of starting the test
         this.testStartTime = LocalDateTime.now();
+
+        //setup number of errors to zero
+        this.numberOfErrors = 0;
 
 
     }
@@ -59,72 +62,78 @@ public class TestElement
 //    {
 //
 //    }
-
-    public void compareValues()
+    private void checkValues()
     {
         /* {id, value} */
 
-        //Loop through the elements of the actualValues
-        for (String[] actualValue : actualValues)
+        //Loop through every element of the actualValues
+        for (String[] actualValue : this.actualValues)
         {
             //Loop through the elements of the expectedValues
-            for (String[] expectedValue : expectedValues)
+            for (String[] expectedValue : this.expectedValues)
             {
                 //Check to match with the same value
                 if (actualValue[0].equals(expectedValue[0]))
                 {
-                    //Create the results array to record the results
-                    String[] results = new String[actualValue.length];
+                    //create tje result array
+                    String[] result = new String[actualValue.length];
+                    result[0] = actualValue[0];
+                    //Collect the property of it
 
-                    //Set the ID in the first value of results
-                    results[0] = actualValue[0];
-
-                    //Loop through every other element
-                    for (int i = 1; i < actualValue.length; i++)
+                    //check if the two arrays are the same
+                    if (!(Arrays.equals(actualValue, expectedValue)))
                     {
-                        if (actualValue[i].equals(expectedValue[i]))
+                        /* If the two arrays are not the same*/
+                        //Construct a message
+                        String errormessage = this.testElementIdentification + " " + actualValue[0] + ": value Arrays are not equal";
+
+                        //Create an issue object
+                        this.parentTestObject.createIssue(this.scenario, Arrays.toString(expectedValue), Arrays.toString(actualValue), errormessage);
+
+                        //Incriment issue counter
+                        this.numberOfErrors++;
+
+                        //Loop through every other element to find the issue
+                        for (int i = 1; i < actualValue.length; i++)
                         {
-                            results[i] = "True";
+                            if (actualValue[i].equals(expectedValue[i]))
+                            {
+                                result[i] = "True";
+                            } else
+                            {
+                                result[i] = "False";
+                            }
                         }
-                        else
+
+                    } else
+                    {
+                        for (int i = 1; i < actualValue.length; i++)
                         {
-                            results[i] = "False";
+                            result[i] = "True";
                         }
                     }
 
-                    //Add results to the testResults array
+                    //Add result to the testResults array
                     this.testResults = Arrays.copyOf(this.testResults, this.testResults.length + 1);
-                    this.testResults[this.testResults.length - 1] = results;
+                    this.testResults[this.testResults.length - 1] = result;
                 }
             }
+        }
 
+        //check how many errors there was
+        if (this.numberOfErrors == 0)
+        {
+            //set test status to pass
+            this.status = "Passed";
+
+            //create a testLog
+            this.testLog = this.testID + " - " + this.scenario + " ------- " + this.status;
+        } else
+        {
+            this.status = "Failed";
+            //create a testLog
+            this.testLog = this.testID + " - " + this.scenario + " ------- " + this.status + " - " + this.numberOfErrors + "errors detected";
         }
     }
 
-    public void generateResults() {
-        //Loop through all the results
-        for (String[] result : this.testResults) {
-            System.out.println(Arrays.toString(result));
-            boolean allTrue = true;
-            //Check if all the properties are true
-            for (int i = 1; i < result.length; i++) {
-                //If a value is not True
-                if (!(result[i].equals("True"))) {
-
-                    //Report False
-                    allTrue = false;
-                }
-
-            }
-
-            if (allTrue == false) {
-                //Create the Issue
-                System.out.println(result[0] + " - Failed");
-
-            } else {
-                System.out.println(result[0] + " - Passed");
-            }
-
-        }
-    }
 }

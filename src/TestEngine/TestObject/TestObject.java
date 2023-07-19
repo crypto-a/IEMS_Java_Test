@@ -122,14 +122,14 @@ public class TestObject
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    private void testScenario(String testElementIdentification, String scenario, String[][] actualValue, String[][] expectedValue)
+    public void testScenario(String testElementIdentification, String scenario, String[][] actualValue, String[][] expectedValue)
     {
         //Create the new Test Element Object and Add it to the arrayList
         this.testElements.add(new TestElement(this, testElementIdentification, scenario, actualValue, expectedValue));
 
     }
 
-    private void createIssue(String scenario, String expectedValue, String actualValue, String errorMessage)
+    public void createIssue(String scenario, String expectedValue, String actualValue, String errorMessage)
     {
         this.issueElements.add(new IssueElement(this.testID, scenario, expectedValue, actualValue, errorMessage));
     }

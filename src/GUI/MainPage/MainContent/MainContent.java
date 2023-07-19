@@ -2,8 +2,8 @@ package GUI.MainPage.MainContent;
 
 import GUI.Event.Event;
 import GUI.MainPage.OldTestElement.OldTestElement;
-import TestManager.Test.Test;
-import TestManager.TestManager;
+import TestEngine.Test.Test;
+import TestEngine.TestEngine;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class MainContent
 {
-    private final TestManager testManager;
+    private final TestEngine testEngine;
     private final Event event;
 
     private JPanel MainPanel;
@@ -26,10 +26,10 @@ public class MainContent
     private JComboBox comboBox1;
     private JComboBox comboBox2;
 
-    public MainContent(TestManager testManager, Event event)
+    public MainContent(TestEngine testEngine, Event event)
     {
         //SetUp object Properties
-        this.testManager = testManager;
+        this.testEngine = testEngine;
         this.event = event;
     }
 
@@ -43,7 +43,7 @@ public class MainContent
         this.historyPanel = new JPanel();
         this.historyPanel.setLayout(new BoxLayout(this.historyPanel, BoxLayout.Y_AXIS));
 
-        ArrayList<Test> testsList = this.testManager.getTestArrayList();
+        ArrayList<Test> testsList = this.testEngine.getTestArrayList();
 
         /* Fill the History page with elements */
         for (int i = 0; i < testsList.size(); i++) {

@@ -1,4 +1,4 @@
-package TestManager.IssueElement;
+package TestEngine.IssueElement;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +25,7 @@ public class IssueElement
      ******************************************/
     public IssueElement(int testID, String scenario, String expectedValue, String actualValue, String errorMessage)
     {
-        //SetUp object Porperties
+        //SetUp object Properties
         this.testID = testID;
         this.scenario = scenario;
         this.expectedValue = expectedValue;

@@ -1,7 +1,7 @@
 package GUI.MainPage.NewTestPage;
 
 import GUI.Event.Event;
-import TestManager.TestManager;
+import TestEngine.TestEngine;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +11,7 @@ import java.awt.event.KeyListener;
 
 public class NewTestPage
 {
-    private final TestManager testManager;
+    private final TestEngine testEngine;
     private final Event event;
     private JButton backButton;
     private JButton startTestButton;
@@ -19,10 +19,10 @@ public class NewTestPage
     private JCheckBox UITestCheckBox;
     private JPanel mainPanel;
 
-    public NewTestPage(TestManager testManager, Event event)
+    public NewTestPage(TestEngine testEngine, Event event)
     {
         //SetUp object Properties
-        this.testManager = testManager;
+        this.testEngine = testEngine;
         this.event = event;
         //Set Up the action Listiners
         //form submit button

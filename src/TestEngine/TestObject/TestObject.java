@@ -1,7 +1,7 @@
-package TestManager.TestObject;
+package TestEngine.TestObject;
 
-import TestManager.IssueElement.IssueElement;
-import TestManager.TestElement.TestElement;
+import TestEngine.IssueElement.IssueElement;
+import TestEngine.TestElement.TestElement;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class TestObject
 {
-    private int testID;
+    public int testID;
     private LocalDateTime testStartTime;
     private LocalDateTime testEndTime;
     private Duration testDuration;
@@ -112,5 +112,25 @@ public class TestObject
     private synchronized void runTestDLCDemo()
     {
         //ToDo
+    }
+
+    /*****************************************
+     /*Method Name: testScenario
+     /*Programmer Name: Ali Rahbar
+     /*Method Date: July 19, 2023
+     /*Method Description: This method is in charge of testing a scenario with standardized data;
+     /*Method Inputs: None
+     /*Method Outputs: None
+     ******************************************/
+    private void testScenario(String testElementIdentification, String scenario, String[][] actualValue, String[][] expectedValue)
+    {
+        //Create the new Test Element Object and Add it to the arrayList
+        this.testElements.add(new TestElement(this, testElementIdentification, scenario, actualValue, expectedValue));
+
+    }
+
+    private void createIssue(String scenario, String expectedValue, String actualValue, String errorMessage)
+    {
+        this.issueElements.add(new IssueElement(this.testID, scenario, expectedValue, actualValue, errorMessage));
     }
 }

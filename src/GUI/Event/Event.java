@@ -1,6 +1,6 @@
 package GUI.Event;
 
-import TestManager.Test.Test;
+import TestEngine.Test.Test;
 
 public class Event
 {

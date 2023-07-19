@@ -1,16 +1,12 @@
-package TestManager;
+package TestEngine;
 
 import GUI.Event.Event;
-import TestManager.DataProcessor.DataProcessor;
-import TestManager.Issue.Issue;
-import TestManager.Test.Test;
-import TestManager.subTest.subTest;
-import TestManager.UserInterfaceReader.UserInterfaceReader;
+import TestEngine.Issue.Issue;
+import TestEngine.Test.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class TestManager
+public class TestEngine
 {
     //Object Properties
     private final Event event;
@@ -19,7 +15,7 @@ public class TestManager
     private ArrayList<Test> testsList = new ArrayList<Test>();
 
 
-    public TestManager(Event event)
+    public TestEngine(Event event)
     {
         //SetUp Object Properties
         this.event = event;

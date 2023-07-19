@@ -3,7 +3,7 @@ package GUI.MainPage;
 import GUI.Event.Event;
 import GUI.MainPage.MainContent.MainContent;
 import GUI.MainPage.NewTestPage.NewTestPage;
-import TestManager.TestManager;
+import TestEngine.TestEngine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +14,7 @@ public class MainPage
 {
     /* Object Properties */
     private final Event event;
-    private final TestManager testManager;
+    private final TestEngine testEngine;
     private JPanel mainPanel;
     private JButton newTestButton;
     private JButton button1;
@@ -28,10 +28,10 @@ public class MainPage
     private JPanel historyPanel;
 
 
-    public MainPage(TestManager testManager, Event event)
+    public MainPage(TestEngine testEngine, Event event)
     {
         //SetUp object Properties
-        this.testManager = testManager;
+        this.testEngine = testEngine;
         this.event = event;
 
 
@@ -71,7 +71,7 @@ public class MainPage
         switch (this.event.requestCurrentPage()) {
             case "mainPage":
                 // Create the class of the content page
-                MainContent mainContent = new MainContent(this.testManager, this.event);
+                MainContent mainContent = new MainContent(this.testEngine, this.event);
 
                 // Add it to the contentPanel, and specify the region to fill (CENTER in this case)
                 this.contentPanel.add(mainContent.requestContent(), BorderLayout.CENTER);
@@ -79,7 +79,7 @@ public class MainPage
 
             case "addTestPage":
                 //Create the newTest Object
-                NewTestPage newTestPage = new NewTestPage(this.testManager, this.event);
+                NewTestPage newTestPage = new NewTestPage(this.testEngine, this.event);
 
                 // Add it to the contentPanel, and specify the region to fill (CENTER in this case)
                 this.contentPanel.add(newTestPage.requestContent(), BorderLayout.CENTER);

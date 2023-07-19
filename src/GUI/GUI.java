@@ -2,9 +2,7 @@ package GUI;
 
 import GUI.Event.Event;
 import GUI.MainPage.MainPage;
-import GUI.MainPage.OldTestElement.OldTestElement;
-import GUI.OldTestPage.OldTestPage;
-import TestManager.TestManager;
+import TestEngine.TestEngine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,16 +11,16 @@ public class GUI extends JFrame
 {
     /* Object Properties */
     private final Event event;
-    private final TestManager testManager;
+    private final TestEngine testEngine;
     private final JFrame frame;
     private final String tittle = "IEMS TEST SOFTWARE";
     private final int[] frameSize = {800, 600};
 
-    public GUI(Event event, TestManager testManager)
+    public GUI(Event event, TestEngine testEngine)
     {
         //SetUp Object Properties
         this.event = event;
-        this.testManager = testManager;
+        this.testEngine = testEngine;
 
         //SetUp main Frame
         this.frame = new JFrame(this.tittle);
@@ -45,7 +43,7 @@ public class GUI extends JFrame
         this.frame.getContentPane().removeAll();
 
         //Create the new GUI Object
-        MainPage mainPage = new MainPage(this.testManager, this.event);
+        MainPage mainPage = new MainPage(this.testEngine, this.event);
         //Add the GUI content to the page
         this.frame.add(mainPage.requestPage());
 

@@ -1,7 +1,7 @@
 package GUI.OldTestPage;
 
 import GUI.Event.Event;
-import TestManager.Test.Test;
+import TestEngine.Test.Test;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

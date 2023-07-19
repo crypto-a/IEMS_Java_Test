@@ -2,13 +2,13 @@ package Runner;
 
 import GUI.GUI;
 import GUI.Event.Event;
-import TestManager.TestManager;
+import TestEngine.TestEngine;
 
 public class Runner
 {
     //Initialize object properties
     private final Event event;
-    private final TestManager testManager;
+    private final TestEngine testEngine;
     private final GUI gui;
 
 
@@ -19,10 +19,10 @@ public class Runner
         this.event = new Event();
 
         //Initialize the testManager Object
-        this.testManager = new TestManager(this.event);
+        this.testEngine = new TestEngine(this.event);
 
         //Initialize the GUI object
-        this.gui = new GUI(event, testManager);
+        this.gui = new GUI(event, testEngine);
 
         //Show the GUI to the User
         this.gui.updateMainPage();
@@ -131,7 +131,7 @@ public class Runner
                 this.gui.updateMainPage();
 
                 //Start Test
-                this.testManager.createTest(new Boolean[]{true, false, false}, this.event.getInputValues()[0]);//ToDo
+                this.testEngine.createTest(new Boolean[]{true, false, false}, this.event.getInputValues()[0]);//ToDo
 
                 //Reset Inputs
                 this.event.resetInput();

@@ -13,21 +13,21 @@ public class Test
     private final int testID;
     private final LocalDateTime testStartDateTime;
     private final String webAppUrl;
-    private final Boolean[] requestedTests;
+    private final Boolean[] requestedTest;
     private ArrayList<subTest> subTests = new ArrayList<subTest>();
 
-    public Test(String webAppUrl, Boolean[] requestedTests)
+    public Test(String webAppUrl, Boolean[] requestedTest)
     {
         this.testID = 119384302;
         this.testStartDateTime = LocalDateTime.now();
         this.webAppUrl = webAppUrl;
-        this.requestedTests = requestedTests;
+        this.requestedTest = requestedTest;
 
         /* Start Doing Tests */
-        for (int i = 0; i < this.requestedTests.length; i++)
+        for (int i = 0; i < this.requestedTest.length; i++)
         {
             //If test is requested
-            if (this.requestedTests[i])
+            if (this.requestedTest[i])
             {
                 switch(i)
                 {
@@ -45,12 +45,12 @@ public class Test
 
     }
 
-    public Test(int testID, LocalDateTime testStartDateTime, String webAppUrl, Boolean[] requestedTests)
+    public Test(int testID, LocalDateTime testStartDateTime, String webAppUrl, Boolean[] requestedTest)
     {
         this.testID = testID;
         this.testStartDateTime = testStartDateTime;
         this.webAppUrl = webAppUrl;
-        this.requestedTests = requestedTests;
+        this.requestedTest = requestedTest;
     }
 
     private void UserInterfaceTesting(String url)

@@ -3,6 +3,10 @@ package GUI.MainPage;
 import GUI.Event.Event;
 import GUI.MainPage.MainContent.MainContent;
 import GUI.MainPage.NewTestPage.NewTestPage;
+import GUI.MainPage.OldTestPage.OldTestPage;
+import GUI.MainPage.OldTestPage.TestComponentElement.TestComponentElement;
+import GUI.MainPage.TestComponentPage.TestComponentPage;
+import User.User;
 import TestEngine.TestEngine;
 
 import javax.swing.*;
@@ -15,6 +19,7 @@ public class MainPage
     /* Object Properties */
     private final Event event;
     private final TestEngine testEngine;
+    private final User user;
     private JPanel mainPanel;
     private JButton newTestButton;
     private JButton button1;
@@ -28,14 +33,15 @@ public class MainPage
     private JPanel historyPanel;
 
 
-    public MainPage(TestEngine testEngine, Event event)
+    public MainPage(TestEngine testEngine, Event event, User user)
     {
         //SetUp object Properties
         this.testEngine = testEngine;
         this.event = event;
+        this.user = user;
 
-
-
+        //set up persons name
+        this.userName.setText(this.user.getName());
 
         this.newTestButton.addActionListener(new ActionListener()
         {
@@ -85,6 +91,19 @@ public class MainPage
                 this.contentPanel.add(newTestPage.requestContent(), BorderLayout.CENTER);
                 break;
             case "oldTestDisplay":
+                //create the test Object
+                OldTestPage oldTestPage = new OldTestPage(this.testEngine, this.event);
+
+                //Add it to the content panel in the UI
+                this.contentPanel.add(oldTestPage.requestContent(), BorderLayout.CENTER);
+                break;
+
+            case "oldTestUnitDisplay":
+                 //Create the Page Object
+                TestComponentPage testComponentPage = new TestComponentPage(this.testEngine, this.event);
+
+                //collect empanelling form, the UI
+                this.contentPanel.add(testComponentPage.requestContent());
                 break;
         }
 

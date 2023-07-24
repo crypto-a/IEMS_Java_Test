@@ -13,8 +13,6 @@
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <minimum-size width="740" height="-1"/>
-            <preferred-size width="740" height="-1"/>
-            <maximum-size width="740" height="-1"/>
           </grid>
         </constraints>
         <properties/>
@@ -31,7 +29,7 @@
             <properties>
               <background color="-7881798"/>
               <focusPainted value="true"/>
-              <font name="Goudy Old Style" size="24" style="1"/>
+              <font name="Comic Sans MS" size="22" style="1"/>
               <text value="New Test"/>
             </properties>
             <clientProperties>
@@ -129,8 +127,7 @@
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="2" indent="0" use-parent-layout="false">
                 <minimum-size width="570" height="-1"/>
-                <preferred-size width="570" height="-1"/>
-                <maximum-size width="570" height="-1"/>
+                <preferred-size width="1000" height="-1"/>
               </grid>
             </constraints>
             <properties/>

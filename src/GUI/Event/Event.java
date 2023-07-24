@@ -1,6 +1,8 @@
 package GUI.Event;
 
 import TestEngine.Test.Test;
+import TestEngine.TestElement.TestElement;
+import TestEngine.TestObject.TestObject;
 
 public class Event
 {
@@ -8,21 +10,23 @@ public class Event
     private Boolean[] controlPanelButtons;
     private Boolean[] formButtons;
     private Boolean isEventHappening;
-    private Test selectedTestObject;
+    private TestObject selectedTestObject;
 
     private String[] userInput;
 
     private Test[] testHistoryDisplay;
 
+    private TestElement selectedTestElement;
+
     public Event ()
     {
         //SetUp properties
-        this.currentPage = "mainPage";
+        this.currentPage = "SignInPage";
         this.isEventHappening = false;
-        this.userInput = new String[] {"", "", "", ""};
+        this.userInput = new String[] {"", "", "", "", "", ""};
 
         //Set Up the button Panel [0]: newTest, [1]: testHistoryDetails button
-        this.controlPanelButtons = new Boolean[] {false, false};
+        this.controlPanelButtons = new Boolean[] {false, false, false};
 
         //Set Up the for buttons [0]: Submit, [1] : Back
         this.formButtons = new Boolean[] {false, false};
@@ -180,13 +184,14 @@ public class Event
         //Set the inputValues property back to defuel value
         this.userInput = new String[] {"", "", "", ""};
     }
-    public void setSelectedTestObject(Test selectedTestObject)
+    public void setSelectedTestObject(TestObject selectedTestObject)
     {
         this.selectedTestObject = selectedTestObject;
     }
 
-    public Test getSelectedTestObject()
+    public TestObject getSelectedTestObject()
     {
+        //return selected test object
         return this.selectedTestObject;
     }
 
@@ -198,6 +203,18 @@ public class Event
     public Test[] getTestHistoryDisplay()
     {
         return this.testHistoryDisplay;
+    }
+
+    public void setSelectedTestElement(TestElement testElement)
+    {
+        //set the value to the given test element
+        this.selectedTestElement = testElement;
+    }
+
+    public TestElement getSelectedTestElement()
+    {
+        //return the selected Test Element
+        return this.selectedTestElement;
     }
 }
 

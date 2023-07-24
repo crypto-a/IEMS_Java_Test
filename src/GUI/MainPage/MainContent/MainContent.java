@@ -1,9 +1,9 @@
 package GUI.MainPage.MainContent;
 
 import GUI.Event.Event;
-import GUI.MainPage.OldTestElement.OldTestElement;
-import TestEngine.Test.Test;
+import GUI.MainPage.MainContent.OldTestElement.OldTestElement;
 import TestEngine.TestEngine;
+import TestEngine.TestObject.TestObject;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -43,10 +43,11 @@ public class MainContent
         this.historyPanel = new JPanel();
         this.historyPanel.setLayout(new BoxLayout(this.historyPanel, BoxLayout.Y_AXIS));
 
-        ArrayList<Test> testsList = this.testEngine.getTestArrayList();
+        ArrayList<TestObject> testsList = this.testEngine.getTestArrayList();
 
         /* Fill the History page with elements */
-        for (int i = 0; i < testsList.size(); i++) {
+        for (int i = 0; i < testsList.size(); i++)
+        {
             OldTestElement oldTestElement = new OldTestElement(testsList.get(i), this.event);
             JPanel elementPanel = oldTestElement.getElementPanel();
 

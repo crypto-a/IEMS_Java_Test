@@ -18,6 +18,10 @@ public class NewTestPage
     private JTextField urlField;
     private JCheckBox UITestCheckBox;
     private JPanel mainPanel;
+    private JTextField textField1;
+    private JPasswordField passwordField1;
+    private JComboBox comboBox1;
+    private JPanel newTestForm;
 
     public NewTestPage(TestEngine testEngine, Event event)
     {

@@ -9,13 +9,13 @@ import java.util.ArrayList;
 
 public class TestObject
 {
-    public int testID;
+    public Object testID;
     private LocalDateTime testStartTime;
     private LocalDateTime testEndTime;
-    private Duration testDuration;
-    private String issuer;
-    private String targetedWebPage;
-    private String webPageURL;
+    private final Duration testDuration;
+    private final Object issuer;
+    private final String targetedWebPage;
+    private final String webPageURL;
     private ArrayList<TestElement> testElements = new ArrayList<TestElement>();
     private ArrayList<IssueElement> issueElements = new ArrayList<IssueElement>();
     private ArrayList<String> testLogs = new ArrayList<String>();
@@ -35,7 +35,7 @@ public class TestObject
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public TestObject(String issuer, String targetedWebPage, String webPageURL, String[] webPageLoginInfo )
+    public TestObject(Object issuer, String targetedWebPage, String webPageURL, String[] webPageLoginInfo )
     {
         //SetUp object Properties
         this.issuer = issuer;
@@ -72,19 +72,21 @@ public class TestObject
         this.testEndTime = LocalDateTime.now();
 
         //Calculate the duration of the test
-        testDuration = Duration.between(testStartTime, testEndTime);
+        this.testDuration = Duration.between(testStartTime, testEndTime);
 
-        // Calculate the total duration for server responseTime
-        Duration totalDuration = Duration.ZERO;
-        for (Duration duration : backEndResponseTimes) {
-            totalDuration = totalDuration.plus(duration);
+        if (backEndResponseTimes.size() != 0)
+        {
+            // Calculate the total duration for server responseTime
+            Duration totalDuration = Duration.ZERO;
+            for (Duration duration : backEndResponseTimes)
+            {
+                totalDuration = totalDuration.plus(duration);
+            }
+
+            // calculate the average duration and Save value to the server
+            this.averageBackEndResponseTime = totalDuration.dividedBy(backEndResponseTimes.size());
         }
 
-        // Calculate the average duration
-        long numDurations = backEndResponseTimes.size();
-
-        //Save value to the server
-        this.averageBackEndResponseTime = totalDuration.dividedBy(numDurations);
 
     }
 
@@ -96,10 +98,26 @@ public class TestObject
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public TestObject()
+    public TestObject(Object testID, LocalDateTime testStartTime, LocalDateTime testEndTime, Object issuer, String targetedWebPage, String webPageURL, ArrayList<TestElement> testElements, ArrayList<IssueElement> issueElements, ArrayList<String> testLogs, int numberOfTests)
     {
+        //SetUp Object properties
+        this.testID = testID;
+        this.testStartTime = testStartTime;
+        this.testEndTime = testEndTime;
+        this.issuer = issuer;
+        this.targetedWebPage = targetedWebPage;
+        this.webPageURL = webPageURL;
+        this.testElements = testElements;
+        this.issueElements = issueElements;
+        this.testLogs = testLogs;
+        this.numberOfTests = numberOfTests;
+
+        //Calculate Duration
+        this.testDuration = Duration.between(this.testStartTime, this.testEndTime);
+
 
     }
+
 
     /*****************************************
      /*Method Name: runTestDLCDemo
@@ -131,6 +149,72 @@ public class TestObject
 
     public void createIssue(String scenario, String expectedValue, String actualValue, String errorMessage)
     {
-        this.issueElements.add(new IssueElement(this.testID, scenario, expectedValue, actualValue, errorMessage));
+        this.issueElements.add(new IssueElement(scenario, expectedValue, actualValue, errorMessage));
+    }
+
+    public String getTestID()
+    {
+        //Return test ID
+        return String.valueOf(this.testID);
+    }
+
+    public String getTestDate()
+    {
+        //Return the Date
+        return this.testStartTime.toString().split("T")[0];
+    }
+
+    public String getTestTime()
+    {
+        //Return the time
+        return this.testStartTime.toString().split("T")[1].split("\\.")[0];
+    }
+
+    public Object getIssuerID()
+    {
+        //Return the ID of the Issuer
+        return this.issuer;
+    }
+
+    public String getTargetedWebPage()
+    {
+        //return the targetedWebPage value
+        return this.targetedWebPage;
+    }
+
+    public String getWebPageURL()
+    {
+        //return the webPageURL value
+        return this.webPageURL;
+    }
+
+    public String getDuration()
+    {
+        if (this.testDuration != null)
+        {
+            //Collect the time values
+            long hours = this.testDuration.toHours();
+            long minutes = this.testDuration.minusHours(hours).toMinutes();
+            long seconds = this.testDuration.minusHours(hours).minusMinutes(minutes).getSeconds();
+
+            //Return the duration in a text format
+            return hours + " hours, " + minutes + " minutes and " + seconds + " seconds";
+        }
+        else
+        {
+            return "Test is currently Running";
+        }
+    }
+
+    public String getIssueNum()
+    {
+        //return the size of the issue arraylist
+        return String.valueOf(this.issueElements.size());
+    }
+
+    public ArrayList<TestElement> getTestElements()
+    {
+        //return the test element Array List
+        return this.testElements;
     }
 }

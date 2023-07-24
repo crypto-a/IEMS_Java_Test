@@ -2,6 +2,8 @@ package GUI;
 
 import GUI.Event.Event;
 import GUI.MainPage.MainPage;
+import GUI.UserAuthenticationPage.UserAuthenticationPage;
+import User.User;
 import TestEngine.TestEngine;
 
 import javax.swing.*;
@@ -14,11 +16,14 @@ public class GUI extends JFrame
     private final TestEngine testEngine;
     private final JFrame frame;
     private final String tittle = "IEMS TEST SOFTWARE";
-    private final int[] frameSize = {800, 600};
+    private final int[] frameSize = {1200, 800};
 
-    public GUI(Event event, TestEngine testEngine)
+    private final User user;
+
+    public GUI(Event event, TestEngine testEngine, User user)
     {
         //SetUp Object Properties
+        this.user = user;
         this.event = event;
         this.testEngine = testEngine;
 
@@ -38,18 +43,39 @@ public class GUI extends JFrame
     public void updateMainPage()
     {
 
+        //Cech to see witch page we are on
+        switch (this.event.requestCurrentPage())
+        {
+            case "SignInPage":
+                //Clear the frame
+                this.frame.getContentPane().removeAll();
 
-        //Clear the frame
-        this.frame.getContentPane().removeAll();
+                //Create the GUI object
+                UserAuthenticationPage userAuthenticationPage = new UserAuthenticationPage(this, this.event, this.user);
 
-        //Create the new GUI Object
-        MainPage mainPage = new MainPage(this.testEngine, this.event);
-        //Add the GUI content to the page
-        this.frame.add(mainPage.requestPage());
+                //Add the GUI content to the page
+                this.frame.add(userAuthenticationPage.requestPage());
 
-        System.out.println("UI Updated");
+                System.out.println("UI Updated");
 
-        //Set visibility to true
-        this.frame.setVisible(true);
+                //Set visibility to true
+                this.frame.setVisible(true);
+
+                break;
+            default:
+                //Clear the frame
+                this.frame.getContentPane().removeAll();
+
+                //Create the new GUI Object
+                MainPage mainPage = new MainPage(this.testEngine, this.event, this.user);
+                //Add the GUI content to the page
+                this.frame.add(mainPage.requestPage());
+
+                System.out.println("UI Updated");
+
+                //Set visibility to true
+                this.frame.setVisible(true);
+        }
+
     }
 }

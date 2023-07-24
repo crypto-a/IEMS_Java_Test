@@ -4,40 +4,77 @@ import Database.Database;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class User
 {
-    private int UserID;
     private boolean isUserAuthenticated;
+    private String userID;
+    private String firstName;
+    private String lastName;
+    private String username;
+    private String passwordHash;
+    private String email;
+    private LocalDate dateOfBirth;
+    private LocalDateTime registrationDate;
+    private LocalDateTime lastLoginDate;
 
-    private Database database;
+    private final Database database;
 
-    public User()
+    public User(Database database)
     {
+        this.database = database;
+
         this.isUserAuthenticated = false;
     }
 
-    public boolean UserAuthenticated(String username, String password) throws NoSuchAlgorithmException
+    public boolean userAuthenticate(String username, String password)
     {
         try
         {
             //Request data from the database
-            String[] userData = this.database.requestUserData(username);
+            String[] userData = this.database.requestUserDataAuthentication(username);//
 
-            //Hash password
-            String sha256Hash = this.getHash(password + userData[5], "SHA-256");
-
-            //check if user password is correct
-            if (sha256Hash.equals(userData[4]))
+            if (userData != null)
             {
-                this.isUserAuthenticated = true;
+                //Hash password
+                String sha256Hash = this.getHash(password + userData[2], "SHA-256");
+
+                //check if user password is correct
+                if (sha256Hash.equals(userData[1]))
+                {
+                    this.isUserAuthenticated = true;
+
+                    //SetUp last login
+                    this.lastLoginDate = LocalDateTime.now();
+
+                    System.out.println("userAuthenticated");
+
+                    String[] userPrivateData = this.database.getFullUserData(userData[0]);
+
+                    //Set properties of object to the values
+                    this.username = userData[0];
+                    this.userID = userPrivateData[0];
+                    this.firstName = userPrivateData[1];
+                    this.lastName = userPrivateData[2];
+                    this.email = userPrivateData[3];
+                    this.passwordHash = sha256Hash;
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
                 return false;
             }
+
         }
-        catch(Exception e)
+        catch(NoSuchAlgorithmException e)
         {
             System.out.println(e.getMessage());
         }
@@ -59,5 +96,14 @@ public class User
         return sb.toString();
     }
 
+    public String getName()
+    {
+        //Return full name
+        return this.firstName+ " " + this.lastName;
+    }
 
+    public Boolean isUserAuthenticated()
+    {
+        return isUserAuthenticated;
+    }
 }

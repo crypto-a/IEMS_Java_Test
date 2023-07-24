@@ -1,17 +1,18 @@
 package TestEngine.IssueElement;
 
 import java.time.LocalDateTime;
+import org.bson.types.ObjectId;
 
 public class IssueElement
 {
-    private int testID;
+    private Object issueID;
     private LocalDateTime occurringTime;
     private String errorMessage;
     private String scenario;
     private String expectedValue;
     private String actualValue;
     private String issueStatus;
-    private String issueCloser;
+    private Object issueCloser;
     private String developerMessage;
     private LocalDateTime closedTime;
 
@@ -23,14 +24,16 @@ public class IssueElement
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public IssueElement(int testID, String scenario, String expectedValue, String actualValue, String errorMessage)
+    public IssueElement(String scenario, String expectedValue, String actualValue, String errorMessage)
     {
-        //SetUp object Properties
-        this.testID = testID;
+        //SetUp ObjectID
         this.scenario = scenario;
         this.expectedValue = expectedValue;
         this.actualValue = actualValue;
         this.errorMessage = errorMessage;
+
+        //Add issueID
+        this.issueID = new ObjectId();
 
         //record the time it happens
         this.occurringTime = LocalDateTime.now();
@@ -49,10 +52,10 @@ public class IssueElement
      /*Method Outputs: None
      ******************************************/
 
-    public IssueElement(int testID, String scenario, String expectedValue, String actualValue, String errorMessage, LocalDateTime occurringTime, String issueStatus, String issueCloser, String developerMessage, LocalDateTime closedTime)
+    public IssueElement(Object issueID, String scenario, String expectedValue, String actualValue, String errorMessage, LocalDateTime occurringTime, String issueStatus, Object issueCloser, String developerMessage, LocalDateTime closedTime)
     {
         //SetUp Issue Properties
-        this.testID = testID;
+        this.issueID = issueID;
         this.occurringTime = occurringTime;
         this.errorMessage = errorMessage;
         this.scenario = scenario;
@@ -72,7 +75,7 @@ public class IssueElement
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public void closeIssue(String issueCloser, String developerMessage)
+    public void closeIssue(Object issueCloser, String developerMessage)
     {
         //record the info of the closer
         this.issueCloser = issueCloser;

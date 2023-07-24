@@ -6,15 +6,15 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-public class TestElement {
-    private final int testID;
-    public final String[][] actualValues;
-    private final String[][] expectedValues;
-    private final String testElementIdentification;
-    private final String scenario;
+public class TestElement
+{
+    private Object testID;
+    public String[][] actualValues;
+    private String[][] expectedValues;
+    private String testElementIdentification;
+    private String scenario;
     private String[][] testResults;
 
-    private TestObject parentTestObject;
     private String status;
     private String testLog;
     private LocalDateTime testStartTime;
@@ -31,10 +31,10 @@ public class TestElement {
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public TestElement(TestObject parentTestObject, String testElementIdentification, String scenario, String[][] actualValue, String[][] expectedValue) {
+    public TestElement(Object testID, String testElementIdentification, String scenario, String[][] actualValue, String[][] expectedValue)
+    {
         //SetUp object Properties
-        this.parentTestObject = parentTestObject;
-        this.testID = parentTestObject.testID;
+        this.testID = testID;
         this.testElementIdentification = testElementIdentification;
         this.scenario = scenario;
         this.actualValues = actualValue;
@@ -47,6 +47,14 @@ public class TestElement {
         //setup number of errors to zero
         this.numberOfErrors = 0;
 
+        //run the tests
+        this.checkValues();
+
+        //record endtime
+        this.testEndTime = LocalDateTime.now();
+
+        //Calculate Duration
+        this.processDuration = Duration.between(this.testStartTime, this.testEndTime);
 
     }
 
@@ -58,10 +66,24 @@ public class TestElement {
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-//    public TestElement()
-//    {
-//
-//    }
+    public TestElement(Object testID, String status, String testElementIdentification, String scenario, String[][] actualValues, String[][] expectedValues, String[][] testResults, String testLog, LocalDateTime testStartTime, LocalDateTime testEndTime, int numberOfErrors)
+    {
+        this.testID = testID;
+        this.status = status;
+        this.testElementIdentification = testElementIdentification;
+        this.scenario = scenario;
+        this.actualValues = actualValues;
+        this.expectedValues = expectedValues;
+        this.testResults = testResults;
+        this.testLog = testLog;
+        this.testStartTime = testStartTime;
+        this.testEndTime = testEndTime;
+        this.numberOfErrors = numberOfErrors;
+        //Calculate Duration
+        this.processDuration = Duration.between(this.testStartTime, this.testEndTime);
+
+
+    }
     private void checkValues()
     {
         /* {id, value} */
@@ -88,7 +110,7 @@ public class TestElement {
                         String errormessage = this.testElementIdentification + " " + actualValue[0] + ": value Arrays are not equal";
 
                         //Create an issue object
-                        this.parentTestObject.createIssue(this.scenario, Arrays.toString(expectedValue), Arrays.toString(actualValue), errormessage);
+                        this.createIssue(this.scenario, Arrays.toString(expectedValue), Arrays.toString(actualValue), errormessage);
 
                         //Incriment issue counter
                         this.numberOfErrors++;
@@ -134,6 +156,36 @@ public class TestElement {
             //create a testLog
             this.testLog = this.testID + " - " + this.scenario + " ------- " + this.status + " - " + this.numberOfErrors + "errors detected";
         }
+    }
+
+    private void createIssue(String scenario, String expectedValue, String actualValue, String errorMessage)
+    {
+        //ToDo
+    }
+
+    public String getTestID()
+    {
+        //return test ID
+        return this.testID.toString();
+    }
+
+    public String getStatus()
+    {
+        //return test status
+        return this.status;
+    }
+
+    public String getErrorsNum()
+    {
+        //return the number of errors
+        return String.valueOf(this.numberOfErrors);
+    }
+
+    public String getScenario()
+    {
+        System.out.println(this.scenario);
+        //return scenario
+        return this.scenario;
     }
 
 }

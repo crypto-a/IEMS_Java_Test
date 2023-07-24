@@ -1,83 +1,197 @@
 package Database;
 
-import org.json.JSONObject;
-import org.openqa.selenium.json.JsonOutput;
-import org.postgresql.ds.PGSimpleDataSource;
+import com.mongodb.MongoException;
+import com.mongodb.client.*;
+import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.Sorts;
+import org.bson.conversions.Bson;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.sql.*;
+import static com.mongodb.client.model.Filters.eq;
+
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+
+import org.bson.Document;
+import org.bson.types.ObjectId;
+import com.mongodb.client.result.InsertOneResult;
 
 
 public class Database
 {
+    private MongoDatabase database;
+    private MongoCollection<org.bson.Document> accountCollection;
+    private MongoCollection<org.bson.Document> testsCollection;
 
-    private final PGSimpleDataSource ds;
+
     public Database()
     {
-        //Get the database info from the db Object(Not included in github)
+
+        //Create the password class
         DatabaseConnectionInfo databaseConnectionInfo = new DatabaseConnectionInfo();
 
-        //Set up the database
-        this.ds = new PGSimpleDataSource();
-
-        //Connect to the url
-        this.ds.setURL(databaseConnectionInfo.connectionURL);
-
-        //Connect to cluster
-        this.ds.setUser(databaseConnectionInfo.databaseUsername);
-        this.ds.setPassword(databaseConnectionInfo.databasePassword);
-
-        //Request data from the database
-        try (Connection connection = ds.getConnection())
+        //Try connecting to the database
+        try
         {
-            //Create a statement
-            Statement stmt = connection.createStatement();
+            // Connect to the cluster
+            MongoClient mongoClient = MongoClients.create(databaseConnectionInfo.connectionURL);
 
-            //Execute query
-            ResultSet rs = stmt.executeQuery("CREATE TABLE defultdb.accounts(first_name STRING, last_name STRING, email STRING, username STRING, password STRING, salt STRING);");
-
-            //Close result set
-            rs.close();
-
-
-        } catch (SQLException e)
+            // Connect to the Database
+            this.database = mongoClient.getDatabase("IEMS-Test-Software");
+        }
+        catch (MongoException e)
         {
-            System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n",
-                    e.getSQLState(), e.getCause(), e.getMessage());
+            System.out.println(e.getMessage());
         }
 
-        
+        //this.addUser();
+
     }
 
-    public String[] requestUserData(String userName)
+    // Method to add a new user to the "account" collection
+    public void addUser()
     {
-        //Request data from the database
-        try (Connection connection = ds.getConnection())
+        MongoCollection<org.bson.Document> accountCollection = this.database.getCollection("accounts");
+
+        InsertOneResult result = accountCollection.insertOne(new Document()
+                .append("_id", new ObjectId())
+                .append("firstName", "Ali")
+                .append("lastName", "Rahbar")
+                .append("email", "alirahabr2005@gmail.com")
+                .append("passwordHash", "67c814faaf5fa15535f1ee0922ad01f023cdca4809f76ec74574addd0bc4ea1e")
+                .append("salt", "chipsVaMastMosir")
+                .append("registrationDate", LocalDateTime.now().toString())
+                .append("lastLogin", LocalDateTime.now().toString()));
+
+
+        System.out.println("Success! Inserted document id: " + result.getInsertedId());
+    }
+
+    public  String generateSalt() {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        return Base64.getEncoder().encodeToString(salt);
+    }
+
+    public String[] requestUserDataAuthentication(String username)
+    {
+        //Create the connection to the accountants collection
+        accountCollection = this.database.getCollection("accounts");
+
+        //Get the data for the user with the given username form the database
+        Bson projectionFields = Projections.fields(
+                Projections.include("username", "passwordHash", "salt"),
+                Projections.excludeId());
+
+        Document userAuthDoc;
+        userAuthDoc = accountCollection.find(eq("username", username))
+                .projection(projectionFields)
+                .first();
+
+        if (userAuthDoc != null)
         {
-            //Create a statement
-            Statement stmt = connection.createStatement();
+            String passwordHash = userAuthDoc.getString("passwordHash");
+            String salt = userAuthDoc.getString("salt");
 
-            //Execute query
-            ResultSet rs = stmt.executeQuery("SELECT * FROM accounts WHERE username = " + userName);
-
-            String[] userData = new String[6];
-            for (int i = 0; i < 6; i++)
-            {
-                userData [i] = rs.getString(i);
-            }
-
-            //Close result set
-            rs.close();
-
-            return userData;
-
-        } catch (SQLException e)
-        {
-            System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n",
-                    e.getSQLState(), e.getCause(), e.getMessage());
+            return new String[]{username, passwordHash, salt};
         }
-        return new String[0];
+        else
+        {
+            return null;
+        }
+
+    }
+
+    public String[] getFullUserData(String username)
+    {
+        //Create the connection to the accountants collection
+        this.accountCollection = this.database.getCollection("accounts");
+
+        //Get the data for the user with the given username form the database
+        Bson projectionFields = Projections.fields(
+                Projections.include( "firstName", "lastName", "email"),
+                Projections.excludeId());
+
+        Document userAuthDoc;
+        userAuthDoc = this.accountCollection.find(eq("username", username))
+                .projection(projectionFields)
+                .first();
+
+        String userID = userAuthDoc.getString("_id");
+        String firstName = userAuthDoc.getString("firstName");
+        String lastName = userAuthDoc.getString("lastName");
+        String email = userAuthDoc.getString("email");
+
+        return new String[]{userID, firstName, lastName, email};
+    }
+
+    public FindIterable<Document> requestTestHistory()
+    {
+        //Connect to the history collection
+        this.testsCollection = this.database.getCollection("tests");
+
+        FindIterable<Document> result = this.testsCollection.find()
+                .sort(Sorts.descending("startTestTime"))
+                .limit(20);
+
+        return result;
+//        //Convert the result to an ArrayList of Documents
+//        List<Document> documentsList = new ArrayList<>();
+//        for (Document document : result)
+//        {
+//            documentsList.add(document);
+//        }
+//
+//        //Convert the ArrayList to an array of Documents
+//        Document[] documentsArray = documentsList.toArray(new Document[0]);
+//
+//        //Return Document Array
+//        return documentsArray;
+    }
+
+    public Document getTestElement(Object testID)
+    {
+        //Connect to the history collection
+        this.testsCollection = this.database.getCollection("testUnits");
+
+        for (Document testElement: this.testsCollection.find(eq("_id", testID)))
+        {
+            return testElement;
+        }
+        return null;
+    }
+
+    public Document getIssueElement(Object issueID)
+    {
+        //Connect to the history collection
+        this.testsCollection = this.database.getCollection("issueUnits");
+
+        for (Document testElement: this.testsCollection.find(eq("_id", issueID)))
+        {
+            return testElement;
+        }
+        return null;
+    }
+
+    public String getUserFullName(Object userID)
+    {
+        //Create the connection to the accountants collection
+        accountCollection = this.database.getCollection("accounts");
+
+        //Get the data for the user with the given username form the database
+        Bson projectionFields = Projections.fields(
+                Projections.include("firstName", "lastName"),
+                Projections.excludeId());
+
+        Document userNameDoc;
+        userNameDoc = accountCollection.find(eq("_id", userID))
+                .projection(projectionFields)
+                .first();
+
+        return userNameDoc.getString("firstName") + " " + userNameDoc.getString("lastName");
     }
 }

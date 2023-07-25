@@ -1,10 +1,22 @@
 package Database;
 
+import TestEngine.IssueElement.IssueElement;
+import TestEngine.TestObject.TestObject;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Sorts;
 import org.bson.conversions.Bson;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+import com.mongodb.MongoException;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -106,27 +118,27 @@ public class Database
 
     }
 
-    public String[] getFullUserData(String username)
+    public Object[] getFullUserData(String username)
     {
         //Create the connection to the accountants collection
         this.accountCollection = this.database.getCollection("accounts");
 
         //Get the data for the user with the given username form the database
         Bson projectionFields = Projections.fields(
-                Projections.include( "firstName", "lastName", "email"),
-                Projections.excludeId());
+                Projections.include( "_id", "firstName", "lastName", "email"),
+                Projections.include("_id"));
 
         Document userAuthDoc;
         userAuthDoc = this.accountCollection.find(eq("username", username))
                 .projection(projectionFields)
                 .first();
 
-        String userID = userAuthDoc.getString("_id");
+        Object userID = userAuthDoc.get("_id");
         String firstName = userAuthDoc.getString("firstName");
         String lastName = userAuthDoc.getString("lastName");
         String email = userAuthDoc.getString("email");
 
-        return new String[]{userID, firstName, lastName, email};
+        return new Object[]{userID, firstName, lastName, email};
     }
 
     public FindIterable<Document> requestTestHistory()
@@ -139,18 +151,6 @@ public class Database
                 .limit(20);
 
         return result;
-//        //Convert the result to an ArrayList of Documents
-//        List<Document> documentsList = new ArrayList<>();
-//        for (Document document : result)
-//        {
-//            documentsList.add(document);
-//        }
-//
-//        //Convert the ArrayList to an array of Documents
-//        Document[] documentsArray = documentsList.toArray(new Document[0]);
-//
-//        //Return Document Array
-//        return documentsArray;
     }
 
     public Document getTestElement(Object testID)
@@ -192,6 +192,46 @@ public class Database
                 .projection(projectionFields)
                 .first();
 
+
         return userNameDoc.getString("firstName") + " " + userNameDoc.getString("lastName");
+    }
+
+    public FindIterable<Document> requestOpenIssues()
+    {
+        //Connect to the issueUnits collection
+        MongoCollection<org.bson.Document> issuesCollection = this.database.getCollection("issueUnits");
+
+        //Pull out all that can a status of open!
+        FindIterable<Document> result = this.testsCollection.find(eq("issueStatus", "Open"));
+
+        return result;
+    }
+
+    public void pushNewTestObject(TestObject testObject)
+    {
+        MongoCollection<org.bson.Document> objectsCollection = this.database.getCollection("objects");
+
+
+
+    }
+
+    public void updateIssueStatus(IssueElement issueElement)
+    {
+        //Connect to the issueDatabase
+        MongoCollection<org.bson.Document> issuesCollection = this.database.getCollection("issueUnits");
+
+        Document query = new Document().append("_id",  issueElement.getIssueID());
+
+        Bson updates = Updates.combine(
+                Updates.set("issueStatus", "Closed"),
+                Updates.set("closedTime", issueElement.getClosedDateTime()),
+                Updates.set("issueCloser", issueElement.getIssueCloser()),
+                Updates.set("developerMessage", issueElement.getDeveloperMessage())
+        );
+
+        UpdateOptions options = new UpdateOptions().upsert(true);
+
+        //Update values
+        issuesCollection.updateOne(query, updates, options);
     }
 }

@@ -1,7 +1,9 @@
 package TestEngine.TestObject;
 
+import TestAutomations.DLCDemoTest.DLCDemoTest;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
+import org.bson.types.ObjectId;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -46,13 +48,21 @@ public class TestObject
         //Record the time of starting a test
         this.testStartTime = LocalDateTime.now();
 
+        //Set up objetc ID
+        this.testID = new ObjectId();
+
         /* Run Tests */
 
         //Check to see witch test was requested
         switch (this.targetedWebPage)
         {
             case "DLC Demo":
-                //ToDO
+                //SetUp the Thread
+                Thread thread = new Thread((Runnable) new DLCDemoTest(this, this.webPageURL, webPageLoginInfo));
+
+                //Start the thread
+                thread.start();
+
                 break;
 
             case "DERMS":
@@ -149,7 +159,7 @@ public class TestObject
 
     public void createIssue(String scenario, String expectedValue, String actualValue, String errorMessage)
     {
-        this.issueElements.add(new IssueElement(scenario, expectedValue, actualValue, errorMessage));
+        //this.issueElements.add(new IssueElement(scenario, expectedValue, actualValue, errorMessage));
     }
 
     public String getTestID()
@@ -216,5 +226,10 @@ public class TestObject
     {
         //return the test element Array List
         return this.testElements;
+    }
+
+    public ArrayList<IssueElement> getIssueElements()
+    {
+        return this.issueElements;
     }
 }

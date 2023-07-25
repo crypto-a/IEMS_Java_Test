@@ -188,4 +188,16 @@ public class TestElement
         return this.scenario;
     }
 
+    public String getTestElementIdentification()
+    {
+        //Return the test ID
+        return this.testElementIdentification;
+    }
+
+    public String[][][] getTestData()
+    {
+        //return the test data
+        return new String[][][]{this.expectedValues, this.actualValues, this.testResults};
+    }
+
 }

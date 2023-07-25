@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class User
 {
     private boolean isUserAuthenticated;
-    private String userID;
+    private Object userID;
     private String firstName;
     private String lastName;
     private String username;
@@ -51,14 +51,15 @@ public class User
 
                     System.out.println("userAuthenticated");
 
-                    String[] userPrivateData = this.database.getFullUserData(userData[0]);
+                    Object[] userPrivateData = this.database.getFullUserData(userData[0]);
 
                     //Set properties of object to the values
                     this.username = userData[0];
                     this.userID = userPrivateData[0];
-                    this.firstName = userPrivateData[1];
-                    this.lastName = userPrivateData[2];
-                    this.email = userPrivateData[3];
+                    System.out.println(this.userID);
+                    this.firstName = userPrivateData[1].toString();
+                    this.lastName = userPrivateData[2].toString();
+                    this.email = userPrivateData[3].toString();
                     this.passwordHash = sha256Hash;
 
                     return true;
@@ -105,5 +106,10 @@ public class User
     public Boolean isUserAuthenticated()
     {
         return isUserAuthenticated;
+    }
+
+    public Object getUserID()
+    {
+        return userID;
     }
 }

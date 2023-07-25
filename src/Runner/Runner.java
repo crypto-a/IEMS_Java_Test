@@ -3,10 +3,9 @@ package Runner;
 import Database.Database;
 import GUI.GUI;
 import GUI.Event.Event;
+import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestEngine;
 import User.User;
-
-import java.util.Scanner;
 
 public class Runner
 {
@@ -125,9 +124,13 @@ public class Runner
 
             case 2:
                 /* If the use requests to see the details of the TextUnitElement */
-
-                System.out.println("action detected");
                 this.showOldTestUnit();
+
+                break;
+
+            case 3:
+                /* If they request to see the details of an Issue from the main page */
+                this.displayIssueComponent();
 
                 break;
 
@@ -188,7 +191,7 @@ public class Runner
                 this.gui.updateMainPage();
 
                 //Start Test
-                this.testEngine.createTest(this.event.getInputValues()[0], this.event.getInputValues()[1], new String[] {this.event.getInputValues()[2], this.event.getInputValues()[3]});//ToDo
+                this.testEngine.createTest("DLC Demo", this.event.getInputValues()[1], new String[] {this.event.getInputValues()[2], this.event.getInputValues()[3]});//ToDo
 
                 //Reset Inputs
                 this.event.resetInput();
@@ -253,6 +256,11 @@ public class Runner
 
         switch (eventCode)
         {
+            case 0:
+                //Reset Inputs
+                this.event.resetInput();
+                break;
+
             case 1:
                 /* If the form is canceled */
                 //change the active page
@@ -304,6 +312,12 @@ public class Runner
 
         switch (eventCode)
         {
+            case 0:
+                //Reset Inputs
+                this.event.resetInput();
+
+                break;
+
             case 1:
                 /* If the form is canceled */
                 //change the active page
@@ -312,16 +326,131 @@ public class Runner
                 //Reset Inputs
                 this.event.resetInput();
 
-                break;
+                //Execute an action
+                this.event.setControlPanelButtonPressed(1);
 
-            case 2:
-                //Reset Inputs
-                this.event.resetInput();
                 break;
 
             default:
                 break;
         }
+    }
+
+    private void displayIssueComponent()
+    {
+        //Change the event Page
+        this.event.changeCurrentPage("IssueComponentDisplay");
+
+        //Update UI
+        this.gui.updateMainPage();
+
+        //Collect the current operation
+        int eventCode = this.event.getFromEvent();
+
+        //Wait till an action happens
+        while (eventCode == -1)
+        {
+            /* Java Engine Timeout */
+
+            try
+            {
+                //Sleep
+                Thread.sleep(30);
+            }
+            catch (InterruptedException e)
+            {
+                //Print error
+                e.printStackTrace();
+            }
+
+            //Update event Code
+            eventCode = this.event.getFromEvent();
+        }
+
+        switch (eventCode)
+        {
+            case 0:
+                /* If they submit the form */
+
+
+                IssueElement issueElement = this.event.getSelectedIssueElement();
+
+                //Close the Issue
+                issueElement.closeIssue(this.user.getUserID(), this.event.getInputValues()[0]);
+
+                //reset the input
+                this.event.resetInput();
+
+                //update the issue value in the database
+                this.database.updateIssueStatus(issueElement);
+
+                //Reset the openIssues list
+                this.testEngine.resetIssues();
+
+                //Update page
+                this.gui.updateMainPage();
+
+                //Reset Inputs
+                this.event.resetInput();
+                break;
+            case 1:
+                /* if they cancel the form */
+                //change the active page
+                this.event.changeCurrentPage("mainPage");
+
+
+                //Reset Inputs
+                this.event.resetInput();
+
+                break;
+
+        }
+
+
+        //Collect the current operation
+        eventCode = this.event.getFromEvent();
+
+        //Wait till an action happens
+        while (eventCode == -1)
+        {
+            /* Java Engine Timeout */
+
+            try
+            {
+                //Sleep
+                Thread.sleep(30);
+            }
+            catch (InterruptedException e)
+            {
+                //Print error
+                e.printStackTrace();
+            }
+
+            //Update event Code
+            eventCode = this.event.getFromEvent();
+        }
+
+        switch (eventCode)
+        {
+            case 0:
+                break;
+            case 1:
+                /* if they cancel the form */
+                //change the active page
+                this.event.changeCurrentPage("mainPage");
+
+
+                //Reset Inputs
+                this.event.resetInput();
+
+                this.gui.updateMainPage();
+                break;
+        }
+    }
+
+    private void issueDetailsPage()
+    {
+
     }
 
     private void sortByName()

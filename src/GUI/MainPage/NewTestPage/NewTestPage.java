@@ -76,6 +76,7 @@ public class NewTestPage
 
     private void formButtonClicked(int index)
     {
+        //Update Event
         this.event.setFormButtonPressed(index);
     }
 

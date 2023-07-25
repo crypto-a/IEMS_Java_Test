@@ -1,5 +1,6 @@
 package GUI.Event;
 
+import TestEngine.IssueElement.IssueElement;
 import TestEngine.Test.Test;
 import TestEngine.TestElement.TestElement;
 import TestEngine.TestObject.TestObject;
@@ -11,6 +12,7 @@ public class Event
     private Boolean[] formButtons;
     private Boolean isEventHappening;
     private TestObject selectedTestObject;
+    private IssueElement selectedIssueElement;
 
     private String[] userInput;
 
@@ -26,7 +28,7 @@ public class Event
         this.userInput = new String[] {"", "", "", "", "", ""};
 
         //Set Up the button Panel [0]: newTest, [1]: testHistoryDetails button
-        this.controlPanelButtons = new Boolean[] {false, false, false};
+        this.controlPanelButtons = new Boolean[] {false, false, false, false, false};
 
         //Set Up the for buttons [0]: Submit, [1] : Back
         this.formButtons = new Boolean[] {false, false};
@@ -215,6 +217,16 @@ public class Event
     {
         //return the selected Test Element
         return this.selectedTestElement;
+    }
+
+    public IssueElement getSelectedIssueElement()
+    {
+        return this.selectedIssueElement;
+    }
+
+    public void setSelectedIssueElement(IssueElement issueElement)
+    {
+        this.selectedIssueElement = issueElement;
     }
 }
 

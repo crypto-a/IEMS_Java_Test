@@ -1,7 +1,9 @@
 package GUI.MainPage.OldTestPage;
 
 import GUI.Event.Event;
+import GUI.MainPage.OldTestPage.IssuesComponentElement.IssuesComponentElement;
 import GUI.MainPage.OldTestPage.TestComponentElement.TestComponentElement;
+import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
 import TestEngine.TestEngine;
 import TestEngine.TestObject.TestObject;
@@ -9,17 +11,15 @@ import TestEngine.TestObject.TestObject;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class OldTestPage
 {
-    private JButton backButton;
-    private JTabbedPane tabbedPane1;
+    private JButton returnButton;
     private JPanel mainPanel;
     private JList list1;
-    private JComboBox comboBox1;
-    private JTextField textField1;
-    private JButton searchButton;
     private JLabel testID;
     private JLabel testIssuer;
     private JLabel targetedWebPage;
@@ -28,23 +28,25 @@ public class OldTestPage
     private JLabel testDuration;
     private JLabel issuesFound;
     private JLabel testDate;
+    private JTabbedPane tabbedPane1;
+    private JComboBox comboBox1;
     private JPanel testComponentPanel;
-    private JTextField textField2;
-    private JButton sendButton;
+    private JComboBox comboBox2;
+    private JPanel issuesPanel;
+    private JButton emailMeTheResultsButton;
+    private JButton exportPDFButton;
     private final Event event;
     private final TestEngine testEngine;
     private final TestObject testObject;
 
-    public OldTestPage(TestEngine testEngine, Event event)
+    public OldTestPage(TestEngine testEngine, Event event, TestObject testObject)
     {
         //SetUp Object Properties
         this.testEngine = testEngine;
         this.event = event;
+        this.testObject = testObject;
 
-        //Collect the test Object
-        this.testObject = this.event.getSelectedTestObject();
-
-        System.out.println(this.testObject.toString());
+        //System.out.println(this.testObject.toString());
 
         //ToDo: Set the values the Page should Show
         this.testID.setText(this.testObject.getTestID());
@@ -56,12 +58,17 @@ public class OldTestPage
         this.testDuration.setText(this.testObject.getDuration());
         this.issuesFound.setText(this.testObject.getIssueNum() + " Issues found");
 
-        //Set Up the page lists
-        this.setUpLists();
-
 
         //ToDo: Set Up the action listeners for the page
-
+        this.returnButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                //Update the event property
+                formButtonClicked(1);
+            }
+        });
 
     }
 
@@ -79,11 +86,9 @@ public class OldTestPage
         // Set Up the Border Properties
         this.testComponentPanel.setLayout(new BoxLayout(this.testComponentPanel, BoxLayout.Y_AXIS));
 
+        this.issuesPanel = new JPanel();
+        this.issuesPanel.setLayout(new BoxLayout(this.testComponentPanel, BoxLayout.Y_AXIS));
 
-    }
-
-    private void setUpLists()
-    {
         //Collect the array List of TestElements form the test Object
         ArrayList<TestElement> testElements = this.testObject.getTestElements();
 
@@ -113,9 +118,52 @@ public class OldTestPage
             if (i < testElements.size() - 1) {
                 this.testComponentPanel.add(Box.createVerticalStrut(5));
             }
+
         }
 
-        // Add margin to the historyPanel
-        this.testComponentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        /* Add the Issue Elements */
+        //Collect the array List of TestElements form the test Object
+        ArrayList<IssueElement> issueElements = this.testObject.getIssueElements();
+
+        //Loop though all the elements
+        for (int i = 0; i < issueElements.size(); i++)
+        {
+            //Create the elements
+            IssuesComponentElement issuesComponentElement = new IssuesComponentElement(issueElements.get(i), this.event);
+
+            //Collect the JPanel element
+            JPanel elementPanel = issuesComponentElement.requestElement();
+
+            // Create a container panel for each element
+            JPanel containerPanel = new JPanel();
+            containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+
+            // Add the element panel to the container panel
+            containerPanel.add(elementPanel);
+
+            // Set the maximum height for the container panel
+            containerPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+
+            // Add the container panel to the history panel
+            this.issuesPanel.add(containerPanel);
+
+            // Add vertical spacing between elements
+            if (i < testElements.size() - 1)
+            {
+                this.issuesPanel.add(Box.createVerticalStrut(5));
+            }
+
+        }
+
+        //setUp a margin for elements
+        this.testComponentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        //this.issuesPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+    }
+
+    private void formButtonClicked(int index)
+    {
+        //Update Event
+        this.event.setFormButtonPressed(index);
     }
 }

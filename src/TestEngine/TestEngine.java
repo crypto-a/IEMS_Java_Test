@@ -25,7 +25,7 @@ public class TestEngine
 
     private final Database database;
     private Test runningTest;
-    private ArrayList<Issue> issuesList;
+    private ArrayList<IssueElement> openIssuesList = new ArrayList<IssueElement>();
     private ArrayList<TestObject> testsList = new ArrayList<TestObject>();
 
 
@@ -40,8 +40,13 @@ public class TestEngine
     public void createTest(String targetedWebPage, String webAppUrl, String[] webPageLoginInfo)
     {
 
+        TestObject testObject = new TestObject(this.user.getUserID(), targetedWebPage, webAppUrl, webPageLoginInfo);
+
         //Add the ingoing test to the array
-        this.testsList.add(new TestObject(this.user.getName(), targetedWebPage, webAppUrl, webPageLoginInfo));
+        this.testsList.add(testObject);
+
+        //Push it to the database
+        this.database.pushNewTestObject(testObject);
 
     }
 
@@ -49,6 +54,11 @@ public class TestEngine
     {
         //return the arrayList
         return this.testsList;
+    }
+
+    public ArrayList<IssueElement> getIssueArrayList()
+    {
+        return this.openIssuesList;
     }
 
     public TestObject getTestObject(String testID)
@@ -68,11 +78,10 @@ public class TestEngine
 
     public void loadData()
     {
+        /* Load the 20 most recent Tests */
         FindIterable<Document> testObjects = this.database.requestTestHistory();
 
-
-
-
+        //Loop through all the objects
         for (Document testObject : testObjects)
         {
             //Create the array list for the tests
@@ -151,6 +160,25 @@ public class TestEngine
 
 
         }
+
+        /* Load the open Issues in the issue tab */
+        FindIterable<Document> openIssueObjects = this.database.requestOpenIssues();
+
+        //Loop through all the objects
+        for (Document issueObject : openIssueObjects)
+        {
+            //Create the object and add it to the openIssuesList
+            this.openIssuesList.add(new IssueElement(
+                    issueObject.get("_id"),
+                    issueObject.getString("targetedWebPage"),
+                    issueObject.getString("scenario"),
+                    issueObject.getString("expectedValue"),
+                    issueObject.getString("actualValue"),
+                    issueObject.getString("errorMessage"),
+                    LocalDateTime.parse(issueObject.getString("occouringTime"))
+            ));
+        }
+
     }
 
     private String[][] arrayListToTwoDArrayString(ArrayList<ArrayList<String>> arrayList)
@@ -179,6 +207,31 @@ public class TestEngine
     {
         //Collect iot from the database and return it
         return this.database.getUserFullName(userID);
+    }
+
+    public void resetIssues()
+    {
+        //Clear it form the database
+        this.openIssuesList.clear();
+
+        //Add the new ones to the array List
+        /* Load the open Issues in the issue tab */
+        FindIterable<Document> openIssueObjects = this.database.requestOpenIssues();
+
+        //Loop through all the objects
+        for (Document issueObject : openIssueObjects)
+        {
+            //Create the object and add it to the openIssuesList
+            this.openIssuesList.add(new IssueElement(
+                    issueObject.get("_id"),
+                    issueObject.getString("targetedWebPage"),
+                    issueObject.getString("scenario"),
+                    issueObject.getString("expectedValue"),
+                    issueObject.getString("actualValue"),
+                    issueObject.getString("errorMessage"),
+                    LocalDateTime.parse(issueObject.getString("occouringTime"))
+            ));
+        }
     }
 
 }

@@ -8,6 +8,8 @@ import TestEngine.TestEngine;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class GUI extends JFrame
 {
@@ -38,6 +40,22 @@ public class GUI extends JFrame
 
         // Makes the background of the frame grey
         this.frame.setLayout(new BorderLayout());
+
+        //set window listiner
+        // Add a WindowAdapter with a lambda expression to the JFrame
+        addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                // Perform cleanup or termination actions here
+                // For example, close database connections, save data, etc.
+
+                //ToDo
+                // Terminate the application gracefully
+                System.exit(0);
+            }
+        });
     }
 
     public void updateMainPage()

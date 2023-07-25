@@ -4,6 +4,7 @@ import GUI.Event.Event;
 import TestEngine.TestElement.TestElement;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -25,6 +26,19 @@ public class TestComponentElement
         //Collect the selected test element
         this.testElement = testElement;
 
+        //Set Up the data
+        this.testID.setText(this.testElement.getTestID());
+        String testStatus = this.testElement.getStatus();
+        this.statusField.setText(testStatus);
+        if (testStatus.equals("Passed"))
+        {
+            statusField.setForeground(Color.GREEN);
+        }
+        else
+        {
+            statusField.setForeground(Color.RED);
+        }
+
         //Set Up action Listener
         this.detailsButton.addActionListener(new ActionListener() {
 
@@ -45,8 +59,9 @@ public class TestComponentElement
 
     private void detailsButtonClicked()
     {
+        //Save action to the event so the page changes
+        this.event.setFormButtonPressed(0);
         this.event.setControlPanelButtonPressed(2);
-        this.event.setFormButtonPressed(1);
         this.event.setSelectedTestElement(this.testElement);
     }
 }

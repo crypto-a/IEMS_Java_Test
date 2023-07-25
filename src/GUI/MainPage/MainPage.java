@@ -1,10 +1,11 @@
 package GUI.MainPage;
 
 import GUI.Event.Event;
+import GUI.MainPage.ClosedIssueComponentPage.ClosedIssueComponentPage;
 import GUI.MainPage.MainContent.MainContent;
 import GUI.MainPage.NewTestPage.NewTestPage;
 import GUI.MainPage.OldTestPage.OldTestPage;
-import GUI.MainPage.OldTestPage.TestComponentElement.TestComponentElement;
+import GUI.MainPage.OpenIssueComponentPage.OpenIssueComponentPage;
 import GUI.MainPage.TestComponentPage.TestComponentPage;
 import User.User;
 import TestEngine.TestEngine;
@@ -92,7 +93,7 @@ public class MainPage
                 break;
             case "oldTestDisplay":
                 //create the test Object
-                OldTestPage oldTestPage = new OldTestPage(this.testEngine, this.event);
+                OldTestPage oldTestPage = new OldTestPage(this.testEngine, this.event, this.event.getSelectedTestObject());
 
                 //Add it to the content panel in the UI
                 this.contentPanel.add(oldTestPage.requestContent(), BorderLayout.CENTER);
@@ -104,6 +105,27 @@ public class MainPage
 
                 //collect empanelling form, the UI
                 this.contentPanel.add(testComponentPage.requestContent());
+                break;
+
+            case "IssueComponentDisplay":
+                if (this.event.getSelectedIssueElement().getIssueStatus().equals("Open"))
+                {
+                    //Create the open page request
+                    OpenIssueComponentPage openIssueComponentPage = new OpenIssueComponentPage(this.event);
+
+                    //Collect and implement it in the UI
+                    this.contentPanel.add(openIssueComponentPage.requestContent());
+
+                }
+                else
+                {
+                    //Create the closed request Page
+                    ClosedIssueComponentPage closedIssueComponentPage = new ClosedIssueComponentPage(this.event, this.testEngine);
+                    //Collect and implement it in the UI
+                    this.contentPanel.add(closedIssueComponentPage.requestContent());
+                }
+
+
                 break;
         }
 

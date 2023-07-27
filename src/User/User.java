@@ -1,6 +1,9 @@
 package User;
 
 import Database.Database;
+import GUI.Event.Event;
+import User.PasswordManager.PasswordManager;
+import org.bson.Document;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -21,28 +24,69 @@ public class User
     private LocalDateTime lastLoginDate;
 
     private final Database database;
+    private final PasswordManager passwordManager;
 
-    public User(Database database)
+    public User(Database database, Event event)
     {
         this.database = database;
 
-        this.isUserAuthenticated = false;
+        //Create the password manager
+        this.passwordManager = new PasswordManager();
+
+        try
+        {
+            //Check if the User info is saved
+            if (this.passwordManager.isUserIDSaved())
+            {
+                //Call it form the database and save it
+                this.loadUserInfo(this.database.getUserInfo(this.passwordManager.getSavedUserID()));
+
+                //Change state
+                event.setCodeState(1);
+
+                //Set is user authenticated to true
+                this.isUserAuthenticated = true;
+            }
+            else
+            {
+                //Set is user authenticated to false
+                this.isUserAuthenticated = false;
+            }
+        } catch(Exception e)
+        {
+            //Set is user authenticated to false
+            this.isUserAuthenticated = false;
+        }
+
+
     }
 
-    public boolean userAuthenticate(String username, String password)
+    private void loadUserInfo(Document userAuthenticationDocument)
+    {
+        //Load different properties th the user object
+        this.firstName = userAuthenticationDocument.getString("firstName");
+        this.lastName = userAuthenticationDocument.getString("lastName");
+        this.userID = userAuthenticationDocument.get("_id");
+        this.email = userAuthenticationDocument.getString("email");
+        this.lastName = userAuthenticationDocument.getString("lastName");
+
+        System.out.println("Hi " + this.firstName);
+    }
+
+    public boolean userAuthenticate(String username, String password, Boolean isSavePasswordClicked)
     {
         try
         {
             //Request data from the database
-            String[] userData = this.database.requestUserDataAuthentication(username);//
+            Document userAuthDoc = this.database.requestUserDataAuthentication(username);//
 
-            if (userData != null)
+            if (userAuthDoc != null)
             {
                 //Hash password
-                String sha256Hash = this.getHash(password + userData[2], "SHA-256");
+                String sha256Hash = this.getHash(password + userAuthDoc.getString("salt"), "SHA-256");
 
                 //check if user password is correct
-                if (sha256Hash.equals(userData[1]))
+                if (sha256Hash.equals(userAuthDoc.getString("passwordHash")))
                 {
                     this.isUserAuthenticated = true;
 
@@ -51,16 +95,13 @@ public class User
 
                     System.out.println("userAuthenticated");
 
-                    Object[] userPrivateData = this.database.getFullUserData(userData[0]);
+                    this.loadUserInfo(this.database.getUserInfo(userAuthDoc.get("_id").toString()));
 
-                    //Set properties of object to the values
-                    this.username = userData[0];
-                    this.userID = userPrivateData[0];
-                    System.out.println(this.userID);
-                    this.firstName = userPrivateData[1].toString();
-                    this.lastName = userPrivateData[2].toString();
-                    this.email = userPrivateData[3].toString();
-                    this.passwordHash = sha256Hash;
+                    if (isSavePasswordClicked)
+                    {
+                        System.out.println(1);
+                        this.passwordManager.saveUserID(userAuthDoc.get("_id"));
+                    }
 
                     return true;
                 }
@@ -105,11 +146,13 @@ public class User
 
     public Boolean isUserAuthenticated()
     {
+        //Return isUserAuthenticated
         return isUserAuthenticated;
     }
 
     public Object getUserID()
     {
+        //Return user id
         return userID;
     }
 }

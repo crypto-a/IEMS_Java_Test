@@ -12,22 +12,27 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import javax.swing.*;
 
 public class UserAuthenticationPage
 {
     private JPanel mainPanel;
     private JTextField textField1;
-    private JCheckBox rememberMeCheckBox;
+    private JPasswordField passwordField1;
     private JButton loginButton;
     private JLabel errorMessage;
-    private JPasswordField passwordField1;
-    private final Event event;
+    private JCheckBox rememberMeCheckBox;
     private final User user;
+    private final Event event;
+    private final GUI gui;
 
-    public UserAuthenticationPage(Event event, User user)
+    private static final String ALGORITHM = "AES";
+    private static final int KEY_SIZE = 256;
+
+
+    public UserAuthenticationPage(GUI gui, Event event, User user)
     {
-        //Set up the object properties
+        //SetUp object properties
+        this.gui = gui;
         this.event = event;
         this.user = user;
 
@@ -44,22 +49,25 @@ public class UserAuthenticationPage
                 submitPage();
             }
         });
-
     }
 
-    public JPanel getMainPanel()
+    public JPanel requestPage()
     {
         //return the main panel
-        return mainPanel;
+        return this.mainPanel;
     }
 
     private void submitPage()
     {
-        if (!this.user.userAuthenticate(this.textField1.getText(), this.passwordField1.getText(), this.rememberMeCheckBox.isSelected()))
+        if (!this.user.userAuthenticate(this.textField1.getText(), this.passwordField1.getText()))
         {
             this.errorMessage.setText("- Username or Password is incorrect!");
             this.textField1.setText("");
             this.passwordField1.setText("");
+        } else if (this.rememberMeCheckBox.isSelected())
+        {
+            //If the remember me is selected save data to the file
+
         }
     }
 }

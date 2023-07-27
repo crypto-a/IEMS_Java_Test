@@ -43,7 +43,7 @@ public class GUI extends JFrame
 
         //set window listiner
         // Add a WindowAdapter with a lambda expression to the JFrame
-        addWindowListener(new WindowAdapter()
+        this.frame.addWindowListener(new WindowAdapter()
         {
             @Override
             public void windowClosing(WindowEvent e)

@@ -10,6 +10,7 @@ import TestEngine.TestObject.TestObject;
 import User.User;
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
+import org.openqa.selenium.WebDriver;
 
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
@@ -24,9 +25,11 @@ public class TestEngine
     private final User user;
 
     private final Database database;
-    private Test runningTest;
+    private TestObject runningTest;
     private ArrayList<IssueElement> openIssuesList = new ArrayList<IssueElement>();
     private ArrayList<TestObject> testsList = new ArrayList<TestObject>();
+
+    private WebDriver driver;
 
 
     public TestEngine(Event event, User user, Database database)
@@ -44,6 +47,8 @@ public class TestEngine
 
         //Add the ingoing test to the array
         this.testsList.add(testObject);
+
+        this.runningTest = testObject;
 
         //Push it to the database
         this.database.pushNewTestObject(testObject);
@@ -78,6 +83,25 @@ public class TestEngine
 
     public void loadData()
     {
+        /* Load the open Issues in the issue tab */
+        FindIterable<Document> openIssueObjects = this.database.requestOpenIssues();
+
+        //Loop through all the objects
+        for (Document issueObject : openIssueObjects)
+        {
+            //Create the object and add it to the openIssuesList
+            this.openIssuesList.add(new IssueElement(
+                    issueObject.get("_id"),
+                    issueObject.getString("targetedWebPage"),
+                    issueObject.getString("scenario"),
+                    issueObject.getString("expectedValue"),
+                    issueObject.getString("actualValue"),
+                    issueObject.getString("errorMessage"),
+                    LocalDateTime.parse(issueObject.getString("occurringTime"))
+            ));
+        }
+
+
         /* Load the 20 most recent Tests */
         FindIterable<Document> testObjects = this.database.requestTestHistory();
 
@@ -129,19 +153,38 @@ public class TestEngine
                     break;
                 }
 
-                //Create the issue object and add it to the arraylist
-                issueElementsList.add(new IssueElement(
-                        issueElementID,
-                        issueElement.getString("scenario"),
-                        issueElement.getString("expectedValue"),
-                        issueElement.getString("actualValue"),
-                        issueElement.getString("errorMessage"),
-                        LocalDateTime.parse(issueElement.getString("occurringTime")),
-                        issueElement.getString("issueStatus"),
-                        issueElement.get("issueCloser"),
-                        issueElement.getString("developerMessage"),
-                        LocalDateTime.parse(issueElement.getString("closedTime"))
-                        ));
+                if (issueElement.getString("issueStatus").equals("Open"))
+                {
+                    for (IssueElement issueElementOpen: this.openIssuesList)
+                    {
+                        if (issueElementOpen.getIssueID().toString().equals(issueElement.get("_id").toString()))
+                        {
+                            //Add that Object to the array list instead
+                            issueElementsList.add(issueElementOpen);
+
+                            //Break out of loop
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    //Create the issue object and add it to the arraylist
+                    issueElementsList.add(new IssueElement(
+                            issueElementID,
+                            issueElement.getString("targetedWebPage"),
+                            issueElement.getString("scenario"),
+                            issueElement.getString("expectedValue"),
+                            issueElement.getString("actualValue"),
+                            issueElement.getString("errorMessage"),
+                            LocalDateTime.parse(issueElement.getString("occurringTime")),
+                            issueElement.getString("issueStatus"),
+                            issueElement.get("issueCloser"),
+                            issueElement.getString("developerMessage"),
+                            LocalDateTime.parse(issueElement.getString("closedTime"))
+                    ));
+                }
+
             }
 
             //Create the TestObject and Add it to the list
@@ -161,23 +204,7 @@ public class TestEngine
 
         }
 
-        /* Load the open Issues in the issue tab */
-        FindIterable<Document> openIssueObjects = this.database.requestOpenIssues();
 
-        //Loop through all the objects
-        for (Document issueObject : openIssueObjects)
-        {
-            //Create the object and add it to the openIssuesList
-            this.openIssuesList.add(new IssueElement(
-                    issueObject.get("_id"),
-                    issueObject.getString("targetedWebPage"),
-                    issueObject.getString("scenario"),
-                    issueObject.getString("expectedValue"),
-                    issueObject.getString("actualValue"),
-                    issueObject.getString("errorMessage"),
-                    LocalDateTime.parse(issueObject.getString("occouringTime"))
-            ));
-        }
 
     }
 
@@ -233,5 +260,11 @@ public class TestEngine
             ));
         }
     }
+
+    public WebDriver getWebDriver()
+    {
+        return this.runningTest.getDriver();
+    }
+
 
 }

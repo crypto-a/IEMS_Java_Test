@@ -7,6 +7,11 @@ import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
 import TestEngine.TestEngine;
 import TestEngine.TestObject.TestObject;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -29,6 +34,7 @@ public class MainContent
     private JComboBox comboBox1;
     private JComboBox comboBox2;
     private JPanel issuesPanel;
+    private JPanel testDisplayPanel;
 
     public MainContent(TestEngine testEngine, Event event)
     {
@@ -114,6 +120,29 @@ public class MainContent
 
         // Add margin to the issuesPanel
         this.issuesPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+        //Create the testDisplay panel
+        this.testDisplayPanel = new JPanel();
+        this.testDisplayPanel.setLayout(new BorderLayout());
+
+        //Create teh JFX Panel
+        JFXPanel fxPanel = new JFXPanel();
+
+        this.testDisplayPanel.add(fxPanel, BorderLayout.CENTER);
+
+        if (this.event.getDriver()!= null)
+        {
+            Platform.runLater(() -> {
+                WebView webView = new WebView();
+                WebEngine webEngine = webView.getEngine();
+
+                // Retrieve the URL from the WebDriver and load it into the WebView
+                webEngine.load(this.event.getDriver().getCurrentUrl());
+
+                Scene scene = new Scene(webView);
+                fxPanel.setScene(scene);
+            });
+        }
 
     }
 }

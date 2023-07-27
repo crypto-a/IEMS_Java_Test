@@ -202,7 +202,7 @@ public class Database
         MongoCollection<org.bson.Document> issuesCollection = this.database.getCollection("issueUnits");
 
         //Pull out all that can a status of open!
-        FindIterable<Document> result = this.testsCollection.find(eq("issueStatus", "Open"));
+        FindIterable<Document> result = issuesCollection.find(eq("issueStatus", "Open"));
 
         return result;
     }

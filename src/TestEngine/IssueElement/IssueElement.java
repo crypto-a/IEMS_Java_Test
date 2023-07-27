@@ -67,7 +67,7 @@ public class IssueElement
         this.targetedWebPage = targetedWebPage;
     }
 
-    public IssueElement(Object issueID, String scenario, String expectedValue, String actualValue, String errorMessage, LocalDateTime occurringTime, String issueStatus, Object issueCloser, String developerMessage, LocalDateTime closedTime)
+    public IssueElement(Object issueID, String targetedWebPage, String scenario, String expectedValue, String actualValue, String errorMessage, LocalDateTime occurringTime, String issueStatus, Object issueCloser, String developerMessage, LocalDateTime closedTime)
     {
         //SetUp Issue Properties
         this.issueID = issueID;
@@ -80,6 +80,7 @@ public class IssueElement
         this.issueCloser = issueCloser;
         this.developerMessage = developerMessage;
         this.closedTime = closedTime;
+        this.targetedWebPage = targetedWebPage;
     }
 
     /*****************************************

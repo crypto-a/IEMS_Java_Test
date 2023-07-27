@@ -4,6 +4,7 @@ import TestAutomations.DLCDemoTest.DLCDemoTest;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
 import org.bson.types.ObjectId;
+import org.openqa.selenium.WebDriver;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -27,6 +28,8 @@ public class TestObject
     private int estimatedTime;
     private Duration averageBackEndResponseTime;
     private String[] webPageLoginInfo;
+
+    private WebDriver driver;
 
 
     /*****************************************
@@ -231,5 +234,15 @@ public class TestObject
     public ArrayList<IssueElement> getIssueElements()
     {
         return this.issueElements;
+    }
+
+    public void setDriver(WebDriver driver)
+    {
+        this.driver = driver;
+    }
+
+    public WebDriver getDriver()
+    {
+        return this.driver;
     }
 }

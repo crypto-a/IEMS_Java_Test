@@ -215,7 +215,7 @@
             <properties/>
             <border type="none" title="Components"/>
             <children>
-              <tabbedpane id="671e7" binding="tabbedPane1" default-binding="true">
+              <tabbedpane id="e6ecf" binding="tabbedPane1" default-binding="true">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
                     <preferred-size width="200" height="200"/>
@@ -224,15 +224,15 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <grid id="53353" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="10" left="10" bottom="10" right="10"/>
+                  <grid id="dbb49" binding="testComponentPanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="5" left="5" bottom="5" right="5"/>
                     <constraints>
                       <tabbedpane title="Test Components"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="b9104" class="javax.swing.JLabel">
+                      <component id="fde3b" class="javax.swing.JLabel">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -240,31 +240,29 @@
                           <text value="Show: "/>
                         </properties>
                       </component>
-                      <component id="d1ad0" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+                      <component id="f638" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
                         <constraints>
                           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <model>
-                            <item value="&lt; Select an Option &gt;"/>
-                            <item value="Passed Only"/>
-                            <item value="Failed Only"/>
-                            <item value="Newest To Oldest"/>
+                            <item value=" &lt; Select An Option &gt; "/>
                           </model>
                         </properties>
                       </component>
-                      <scrollpane id="4998e">
+                      <scrollpane id="c9793">
                         <constraints>
                           <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
                             <minimum-size width="400" height="-1"/>
+                            <preferred-size width="400" height="-1"/>
                           </grid>
                         </constraints>
                         <properties>
                           <horizontalScrollBarPolicy value="31"/>
                         </properties>
-                        <border type="none"/>
+                        <border type="line"/>
                         <children>
-                          <grid id="628b0" binding="testComponentPanel" custom-create="true" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                          <grid id="5f9d2" binding="testComponentElementsPanel" custom-create="true" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                             <margin top="0" left="0" bottom="0" right="0"/>
                             <constraints/>
                             <properties/>
@@ -275,15 +273,25 @@
                       </scrollpane>
                     </children>
                   </grid>
-                  <grid id="616c0" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="10" left="10" bottom="10" right="10"/>
+                  <grid id="e5c37" binding="issuesPanel" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="5" left="5" bottom="5" right="5"/>
                     <constraints>
                       <tabbedpane title="Issues"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="1c669" class="javax.swing.JLabel">
+                      <component id="61884" class="javax.swing.JComboBox" binding="comboBox2" default-binding="true">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <model>
+                            <item value=" &lt; Select An Option &gt;"/>
+                          </model>
+                        </properties>
+                      </component>
+                      <component id="bdc49" class="javax.swing.JLabel">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -291,24 +299,18 @@
                           <text value="Show: "/>
                         </properties>
                       </component>
-                      <component id="e3002" class="javax.swing.JComboBox" binding="comboBox2" default-binding="true">
+                      <scrollpane id="cc8f0">
                         <constraints>
-                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                            <preferred-size width="400" height="-1"/>
+                          </grid>
                         </constraints>
                         <properties>
-                          <model>
-                            <item value="&lt; Select an Option &gt;"/>
-                          </model>
+                          <horizontalScrollBarPolicy value="31"/>
                         </properties>
-                      </component>
-                      <scrollpane id="9c55">
-                        <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties/>
-                        <border type="none"/>
+                        <border type="line"/>
                         <children>
-                          <grid id="b98e1" binding="issuesPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                          <grid id="6c5b2" binding="issuesElementPanel" custom-create="true" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                             <margin top="0" left="0" bottom="0" right="0"/>
                             <constraints/>
                             <properties/>

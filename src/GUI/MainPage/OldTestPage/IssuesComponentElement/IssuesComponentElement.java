@@ -36,14 +36,6 @@ public class IssuesComponentElement
             }
         });
 
-        this.closeButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                closeButtonClick();
-            }
-        });
     }
 
     public JPanel requestElement()
@@ -54,11 +46,13 @@ public class IssuesComponentElement
 
     private void detailsButtonClicked()
     {
+        //Set the code to switch to the issue details page
+        this.event.setControlPanelButtonPressed(3);
 
-    }
+        //Push the selected issue to the event
+        this.event.setSelectedIssueElement(this.issueElement);
 
-    private void closeButtonClick()
-    {
-
+        //Set the code to break wait loop
+        this.event.setFormButtonPressed(0);
     }
 }

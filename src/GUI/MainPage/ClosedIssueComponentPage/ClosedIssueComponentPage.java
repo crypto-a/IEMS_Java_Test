@@ -5,6 +5,8 @@ import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestEngine;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ClosedIssueComponentPage
 {
@@ -47,11 +49,27 @@ public class ClosedIssueComponentPage
         this.closedStatment.setText("This Issue was Closed By " + testEngine.getUserName(this.issueElement.getIssueCloser()) + " on " + this.issueElement.getClosedDate()+ " at " + this.issueElement.getClosedTime());
         this.developerMessage.setText(this.issueElement.getDeveloperMessage());
 
+        //Set AUp action Listener
+        this.returnButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                backButtonClicked();
+            }
+        });
+
     }
 
     public JPanel requestContent()
     {
         //return the main panel
         return this.mainPanel;
+    }
+
+    private void backButtonClicked()
+    {
+        //Submit the form
+        this.event.setFormButtonPressed(1);
     }
 }

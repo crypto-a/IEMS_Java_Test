@@ -1,23 +1,21 @@
 package TestAutomations.DLCDemoTest;
 
+import TestAutomations.Test.Test;
 import TestEngine.TestObject.TestObject;
 
-public class DLCDemoTest implements Runnable
+public class DLCDemoTest extends Test
 {
-    private String webPageURL;
-    private String[] loginInfo;
-    private TestObject testObject;
 
     public DLCDemoTest(TestObject testObject, String webPageURL, String[] loginInfo)
     {
-        this.webPageURL = webPageURL;
-        this.loginInfo = loginInfo;
-        this.testObject = testObject;
+        //Set the properties for the parent Object
+        super(testObject, webPageURL, loginInfo);
     }
 
     @Override
-    public void run()
-    {
-        System.out.println("hello world");
+    protected void test() {
+
     }
+
+
 }

@@ -4,6 +4,7 @@ import TestEngine.IssueElement.IssueElement;
 import TestEngine.Test.Test;
 import TestEngine.TestElement.TestElement;
 import TestEngine.TestObject.TestObject;
+import org.openqa.selenium.WebDriver;
 
 public class Event
 {
@@ -20,6 +21,7 @@ public class Event
 
     private TestElement selectedTestElement;
 
+    private WebDriver driver;
     public Event ()
     {
         //SetUp properties
@@ -227,6 +229,16 @@ public class Event
     public void setSelectedIssueElement(IssueElement issueElement)
     {
         this.selectedIssueElement = issueElement;
+    }
+
+    public WebDriver getDriver()
+    {
+        return driver;
+    }
+
+    public void setDriver(WebDriver driver)
+    {
+        this.driver = driver;
     }
 }
 

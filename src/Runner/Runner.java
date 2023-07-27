@@ -6,6 +6,9 @@ import GUI.Event.Event;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestEngine;
 import User.User;
+import org.openqa.selenium.WebDriver;
+
+import java.util.Arrays;
 
 public class Runner
 {
@@ -15,6 +18,8 @@ public class Runner
     private final GUI gui;
     private final Database database;
     private final User user;
+
+    private String previousPage;
 
 
 
@@ -149,6 +154,9 @@ public class Runner
 
     private void addNewTest()
     {
+        //Set Up prevoius page
+        this.previousPage = this.event.requestCurrentPage();
+
         //Change the event Page
         this.event.changeCurrentPage("addTestPage");
 
@@ -185,16 +193,24 @@ public class Runner
             case 0:
                 /* If the form is submitted */
                 //change the active page
-                this.event.changeCurrentPage("mainPage");
+                this.event.changeCurrentPage(this.previousPage);
 
                 //Update UI
                 this.gui.updateMainPage();
 
+                System.out.println(Arrays.toString(this.event.getInputValues()));
+
                 //Start Test
-                this.testEngine.createTest("DLC Demo", this.event.getInputValues()[1], new String[] {this.event.getInputValues()[2], this.event.getInputValues()[3]});//ToDo
+                this.testEngine.createTest("DLC Demo", this.event.getInputValues()[0], new String[] {this.event.getInputValues()[1], this.event.getInputValues()[2]});//ToDo
 
                 //Reset Inputs
                 this.event.resetInput();
+
+                //Collec the webdriver and pass it to the event
+                this.event.setDriver(this.testEngine.getWebDriver());
+
+                //Update UI
+                this.gui.updateMainPage();
 
                 break;
 
@@ -223,6 +239,9 @@ public class Runner
 
     private void showOldTest()
     {
+        //Set Up the previous page
+        this.previousPage = "mainPage";
+
         //Change the event Page
         this.event.changeCurrentPage("oldTestDisplay");
 
@@ -259,13 +278,13 @@ public class Runner
             case 0:
                 //Reset Inputs
                 this.event.resetInput();
+
                 break;
 
             case 1:
                 /* If the form is canceled */
                 //change the active page
-                this.event.changeCurrentPage("mainPage");
-
+                this.event.changeCurrentPage(this.previousPage);
 
                 //Reset Inputs
                 this.event.resetInput();
@@ -279,6 +298,7 @@ public class Runner
 
     private void showOldTestUnit()
     {
+        this.previousPage = this.event.requestCurrentPage();
         //Change the event Page
         this.event.changeCurrentPage("oldTestUnitDisplay");
 
@@ -321,7 +341,7 @@ public class Runner
             case 1:
                 /* If the form is canceled */
                 //change the active page
-                this.event.changeCurrentPage("oldTestDisplay");
+                this.event.changeCurrentPage(this.previousPage);
 
                 //Reset Inputs
                 this.event.resetInput();
@@ -338,6 +358,8 @@ public class Runner
 
     private void displayIssueComponent()
     {
+        this.previousPage = this.event.requestCurrentPage();
+
         //Change the event Page
         this.event.changeCurrentPage("IssueComponentDisplay");
 
@@ -392,60 +414,73 @@ public class Runner
 
                 //Reset Inputs
                 this.event.resetInput();
+
+                //Collect the current operation
+                eventCode = this.event.getFromEvent();
+
+                //Wait till an action happens
+                while (eventCode == -1)
+                {
+                    /* Java Engine Timeout */
+
+                    try
+                    {
+                        //Sleep
+                        Thread.sleep(30);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        //Print error
+                        e.printStackTrace();
+                    }
+
+                    //Update event Code
+                    eventCode = this.event.getFromEvent();
+                }
+
+                switch (eventCode)
+                {
+                    case 0:
+
+                        //Reset Inputs
+                        this.event.resetInput();
+
+                        break;
+                    case 1:
+                        /* if they cancel the form */
+                        //change the active page
+                        this.event.changeCurrentPage(this.previousPage);
+
+                        //Reset Inputs
+                        this.event.resetInput();
+
+                        this.gui.updateMainPage();
+                        break;
+                }
+
                 break;
             case 1:
                 /* if they cancel the form */
                 //change the active page
-                this.event.changeCurrentPage("mainPage");
+                this.event.changeCurrentPage(this.previousPage);
 
 
                 //Reset Inputs
                 this.event.resetInput();
 
-                break;
-
-        }
-
-
-        //Collect the current operation
-        eventCode = this.event.getFromEvent();
-
-        //Wait till an action happens
-        while (eventCode == -1)
-        {
-            /* Java Engine Timeout */
-
-            try
-            {
-                //Sleep
-                Thread.sleep(30);
-            }
-            catch (InterruptedException e)
-            {
-                //Print error
-                e.printStackTrace();
-            }
-
-            //Update event Code
-            eventCode = this.event.getFromEvent();
-        }
-
-        switch (eventCode)
-        {
-            case 0:
-                break;
-            case 1:
-                /* if they cancel the form */
-                //change the active page
-                this.event.changeCurrentPage("mainPage");
-
-
-                //Reset Inputs
-                this.event.resetInput();
-
+                //Update page
                 this.gui.updateMainPage();
+
                 break;
         }
+
+        //Set Up Moving to the previous
+        if (this.previousPage.equals("oldTestDisplay"))
+        {
+            this.event.setControlPanelButtonPressed(1);
+        }
+
+
     }
 
     private void issueDetailsPage()

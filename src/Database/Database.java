@@ -1,33 +1,18 @@
 package Database;
 
 import Database.DatabaseConnectionInfo.DatabaseConnectionInfo;
-import TestEngine.IssueElement.IssueElement;
-import TestEngine.TestObject.TestObject;
 import com.mongodb.MongoException;
-import com.mongodb.client.*;
 import com.mongodb.client.model.Projections;
-import com.mongodb.client.model.Sorts;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
 
 import static com.mongodb.client.model.Filters.eq;
 
-import java.security.SecureRandom;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-
 import org.bson.types.ObjectId;
-import com.mongodb.client.result.InsertOneResult;
 
 public class Database
 {
@@ -94,5 +79,4 @@ public class Database
             return null;
         }
     }
-
 }

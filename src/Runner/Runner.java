@@ -22,6 +22,7 @@ public class Runner
         this.testEngine = new TestEngine();
 
         //Create the Database
+
         this.database = new Database();
 
         //Create the Event Object
@@ -63,7 +64,11 @@ public class Runner
                     break;
 
                 case 1:
-                    System.out.println("mainPage");
+                    /* If we are in the main page */
+
+                    //Run the main page method
+                    this.mainPage();
+
                     break;
 
 
@@ -73,6 +78,13 @@ public class Runner
 
     private void userAuthenticationPage()
     {
+        //If user is authenticated
+        if (this.user.isUserAuthenticated())
+        {
+            //clear User info
+            this.user.clearUserInfo();
+        }
+
         //Update the ui
         this.gui.updateMainPage();
 
@@ -84,11 +96,19 @@ public class Runner
 
         //Change the user state
         this.event.setCodeState(1);
-
-        //Update the ui
-        this.gui.updateMainPage();
     }
 
+    private void mainPage()
+    {
+        //Update the ui
+        this.gui.updateMainPage();
+
+        while(this.event.getCodeState() == 1)
+        {
+            //Sleep
+            this.sleep(30);
+        }
+    }
     private void sleep(int milliseconds)
     {
         /* Java Engine Timeout */

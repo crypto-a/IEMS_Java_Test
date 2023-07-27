@@ -11,7 +11,6 @@ import java.awt.event.KeyListener;
 
 public class NewTestPage
 {
-    private final TestEngine testEngine;
     private final Event event;
     private JButton backButton;
     private JButton startTestButton;
@@ -23,10 +22,9 @@ public class NewTestPage
     private JComboBox comboBox1;
     private JPanel newTestForm;
 
-    public NewTestPage(TestEngine testEngine, Event event)
+    public NewTestPage(Event event)
     {
         //SetUp object Properties
-        this.testEngine = testEngine;
         this.event = event;
         //Set Up the action Listiners
         //form submit button
@@ -62,7 +60,7 @@ public class NewTestPage
 
             public void keyReleased(KeyEvent e)
             {
-                pushText(0);
+                //pushText(0);
             }
         });
 
@@ -77,11 +75,11 @@ public class NewTestPage
     private void formButtonClicked(int index)
     {
         //Update Event
-        this.event.setFormButtonPressed(index);
+//        this.event.setFormButtonPressed(index);
     }
 
-    private void pushText(int index)
-    {
-        this.event.setInputValues(0, this.urlField.getText());
-    }
+//    private void pushText(int index)
+//    {
+//        this.event.setInputValues(0, this.urlField.getText());
+//    }
 }

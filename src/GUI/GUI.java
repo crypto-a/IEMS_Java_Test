@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import GUI.MainPage.MainPage;
 import GUI.UserAuthenticationPage.UserAuthenticationPage;
 import TestEngine.TestEngine;
 import User.User;
@@ -80,20 +81,19 @@ public class GUI extends JFrame
 
                 break;
             default:
-//                //Clear the frame
-//                this.frame.getContentPane().removeAll();
-//
-//                //Create the new GUI Object
-//                MainPage mainPage = new MainPage(this.testEngine, this.event, this.user);
-//                //Add the GUI content to the page
-//                this.frame.add(mainPage.requestPage());
-//
-//                System.out.println("UI Updated");
-//
-//                //Set visibility to true
-//                this.frame.setVisible(true);
+                //Clear the frame
+                this.frame.getContentPane().removeAll();
 
-                System.out.println("User is authenticated!");
+                //Create the new GUI Object
+                MainPage mainPage = new MainPage(this.event, this.user);
+                //Add the GUI content to the page
+                this.frame.add(mainPage.getMainPanel());
+
+                System.out.println("UI Updated");
+
+                //Set visibility to true
+                this.frame.setVisible(true);
+
                 break;
         }
 

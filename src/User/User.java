@@ -155,4 +155,13 @@ public class User
         //Return user id
         return userID;
     }
+
+    public void clearUserInfo()
+    {
+        //Delete all the recorded data
+        this.isUserAuthenticated = false;
+
+        //clear the password saver
+        this.passwordManager.clearSavedUserID();
+    }
 }

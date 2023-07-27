@@ -25,8 +25,8 @@ public class OpenIssueElement
         this.event = event;
 
         //set text values
-        this.issueID.setText(this.issueElement.getIssueID().toString());
-        this.issueDate.setText(this.issueElement.getOccurringDate());
+        this.issueID.setText("this.issueElement.getIssueID().toString()");
+        this.issueDate.setText("this.issueElement.getOccurringDate()");
 
         //setUp action Listeners for buttons
         this.detailsButton.addActionListener(new ActionListener() {
@@ -47,10 +47,10 @@ public class OpenIssueElement
     private void detailsButtonClicked()
     {
         //Push the element to the event object
-        this.event.setSelectedIssueElement(this.issueElement);
-
-        //Set the click command
-        this.event.setControlPanelButtonPressed(3);
+//        this.event.setSelectedIssueElement(this.issueElement);
+//
+//        //Set the click command
+//        this.event.setControlPanelButtonPressed(3);
     }
 
 }

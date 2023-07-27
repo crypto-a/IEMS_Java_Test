@@ -1,11 +1,22 @@
 package GUI.Event;
 
+import TestEngine.IssueElement.IssueElement;
+import TestEngine.TestElement.TestElement;
+import TestEngine.TestObject.TestObject;
+
+import java.util.ArrayList;
+
 public class Event
 {
     private int codeState;
 
     private Object[] userAuthFields;
     private final Boolean[] formButtonsClicked;
+
+    private ArrayList<TestObject> testObjectDisplayArrayList;
+    private ArrayList<TestElement> testElementDisplayArrayList;
+    private ArrayList<IssueElement> issueElementDisplayArrayList;
+
 
     public Event()
     {
@@ -59,5 +70,35 @@ public class Event
     {
         //Set the values
         this.userAuthFields = userAuthFields;
+    }
+
+    public ArrayList<TestObject> getTestObjectDisplayArrayList()
+    {
+        return testObjectDisplayArrayList;
+    }
+
+    public void setTestObjectDisplayArrayList(ArrayList<TestObject> testObjectDisplayArrayList)
+    {
+        this.testObjectDisplayArrayList = testObjectDisplayArrayList;
+    }
+
+    public ArrayList<TestElement> getTestElementDisplayArrayList()
+    {
+        return testElementDisplayArrayList;
+    }
+
+    public void setTestElementDisplayArrayList(ArrayList<TestElement> testElementDisplayArrayList)
+    {
+        this.testElementDisplayArrayList = testElementDisplayArrayList;
+    }
+
+    public ArrayList<IssueElement> getIssueElementDisplayArrayList()
+    {
+        return issueElementDisplayArrayList;
+    }
+
+    public void setIssueElementDisplayArrayList(ArrayList<IssueElement> issueElementDisplayArrayList)
+    {
+        this.issueElementDisplayArrayList = issueElementDisplayArrayList;
     }
 }

@@ -34,6 +34,9 @@ public class Runner
         //Create the GUI Object
         this.gui = new GUI(this.event, this.testEngine, this.user);
 
+        //create the change stream
+        this.database.startChangeStreamSync();
+
         //Start the Code Process
         this.run();
     }

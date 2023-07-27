@@ -1,6 +1,8 @@
 package Database;
 
+import Database.ChangeStreamUpdater.ChangeStreamUpdater;
 import Database.DatabaseConnectionInfo.DatabaseConnectionInfo;
+import TestEngine.TestEngine;
 import com.mongodb.MongoException;
 import com.mongodb.client.model.Projections;
 import org.bson.Document;
@@ -14,9 +16,12 @@ import static com.mongodb.client.model.Filters.eq;
 
 import org.bson.types.ObjectId;
 
+import javax.print.Doc;
+
 public class Database
 {
     private MongoDatabase database;
+    private TestEngine testEngine;
 
     public Database()
     {
@@ -79,4 +84,35 @@ public class Database
             return null;
         }
     }
+
+//    public Iterable<Document> getTestObjects()
+//    {
+//
+//    }
+//    public Iterable<Document> getOpenIssues()
+//    {
+//
+//    }
+//
+//    public Document getIssueElement()
+//    {
+//
+//    }
+//
+//    public Document getTestElement()
+//    {
+//
+//    }
+
+    public void startChangeStreamSync()
+    {
+        ChangeStreamUpdater changeStreamUpdater = new ChangeStreamUpdater(this.database, this.testEngine);
+
+        Thread thread = new Thread(changeStreamUpdater);
+
+        thread.start();
+    }
+
+
+
 }

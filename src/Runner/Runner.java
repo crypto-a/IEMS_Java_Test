@@ -77,7 +77,41 @@ public class Runner
 
                     break;
 
+                case 2:
+                    /* If we are in the new Test Page */
 
+                    //Run the new Test method
+                    this.newTestPage();
+
+                    break;
+                case 3:
+                    /* If we are in the Test Object Display Page */
+
+                    //Run the testObject page method
+                    this.testObjectPage();
+
+                    break;
+                case 4:
+                    /* If we are in the test element display page */
+
+                    //Run the test Element Page method
+                    this.testElementPage();
+
+                    break;
+                case 5:
+                    /* If we are in the issue element Display page */
+
+                    //Run the Issue element Page method
+                    this.issueElementPage();
+
+                    break;
+                case 6:
+                    /* If we are in the Settings page */
+
+                    //Run the settings page method
+                    this.settingPage();
+
+                    break;
             }
         }
     }
@@ -161,5 +195,30 @@ public class Runner
         }
 
 
+    }
+
+    private void newTestPage()
+    {
+        //ToDo
+    }
+
+    private void testObjectPage ()
+    {
+        //ToDo
+    }
+
+    private void testElementPage()
+    {
+        //ToDo
+    }
+
+    private void issueElementPage()
+    {
+        //ToDo
+    }
+
+    private void settingPage()
+    {
+        //ToDo
     }
 }

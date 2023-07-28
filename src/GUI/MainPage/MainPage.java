@@ -1,6 +1,7 @@
 package GUI.MainPage;
 
 import GUI.Event.Event;
+import GUI.GUI;
 import GUI.MainPage.MainContent.MainContent;
 import GUI.MainPage.NewTestPage.NewTestPage;
 import User.User;
@@ -24,10 +25,12 @@ public class MainPage
 
     private final User user;
     private final Event event;
+    private final GUI gui;
 
-    public MainPage(Event event, User user)
+    public MainPage(GUI gui, Event event, User user)
     {
         //Set Up object properties
+        this.gui = gui;
         this.event = event;
         this.user = user;
 
@@ -47,6 +50,15 @@ public class MainPage
             public void actionPerformed(ActionEvent e)
             {
                 logOutButtonClicked();
+            }
+        });
+
+        this.refreshUIButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                refreshButtonCLicked();
             }
         });
     }
@@ -91,5 +103,10 @@ public class MainPage
     private void logOutButtonClicked()
     {
         this.event.setCodeState(0);
+    }
+
+    private void refreshButtonCLicked()
+    {
+        this.gui.updateMainPage();
     }
 }

@@ -85,7 +85,7 @@ public class GUI extends JFrame
                 this.frame.getContentPane().removeAll();
 
                 //Create the new GUI Object
-                MainPage mainPage = new MainPage(this.event, this.user);
+                MainPage mainPage = new MainPage(this, this.event, this.user);
                 //Add the GUI content to the page
                 this.frame.add(mainPage.getMainPanel());
 

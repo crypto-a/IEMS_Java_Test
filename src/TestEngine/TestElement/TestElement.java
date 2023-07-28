@@ -6,6 +6,7 @@ import org.bson.Document;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 
 public class TestElement
 {
@@ -67,24 +68,46 @@ public class TestElement
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public TestElement(Document testDoc)
+    public TestElement(Document testElementDoc)
     {
-        this.testID = testDoc.get("_id");
-        this.didPass = testDoc.getBoolean("didPass");
-        this.testElementIdentification = testDoc.getString("testElementIdentification");
+        //SetUp object Properties
+        this.testID = testElementDoc.get("_id");
+        this.didPass = testElementDoc.getBoolean("didPass");
+        this.testElementIdentification = testElementDoc.getString("testElementIdentification");
         this.scenario = scenario;
-        this.actualValues = (String[][]) testDoc.get("actualValue");
-        this.expectedValues = (String[][]) testDoc.get("expectedValue");
-        this.testResults = (String[][]) testDoc.get("testResults");
-        this.testLog = testDoc.getString("testLog");
-        this.testStartTime = LocalDateTime.parse(testDoc.getString("startTime"));
-        this.testEndTime = LocalDateTime.parse(testDoc.getString("endTime"));
-        this.numberOfErrors = testDoc.getInteger("numberOfErrors");
+        this.actualValues = this.convertListListToStringArray((List<List<String>>) testElementDoc.get("actualValue"));
+        this.expectedValues = this.convertListListToStringArray((List<List<String>>) testElementDoc.get("expectedValue"));
+        this.testResults = this.convertListListToStringArray((List<List<String>>) testElementDoc.get("testResults"));
+        this.testLog = testElementDoc.getString("testLog");
+        this.testStartTime = LocalDateTime.parse(testElementDoc.getString("startTime"));
+        this.testEndTime = LocalDateTime.parse(testElementDoc.getString("endTime"));
+        this.numberOfErrors = testElementDoc.getInteger("numberOfErrors");
+
         //Calculate Duration
         this.processDuration = Duration.between(this.testStartTime, this.testEndTime);
 
-
     }
+
+    public void updateObject(Document newTestElementDoc)
+    {
+        //SetUp object Properties
+        this.testID = newTestElementDoc.get("_id");
+        this.didPass = newTestElementDoc.getBoolean("didPass");
+        this.testElementIdentification = newTestElementDoc.getString("testElementIdentification");
+        this.scenario = scenario;
+        this.actualValues = (String[][]) newTestElementDoc.get("actualValue");
+        this.expectedValues = (String[][]) newTestElementDoc.get("expectedValue");
+        this.testResults = (String[][]) newTestElementDoc.get("testResults");
+        this.testLog = newTestElementDoc.getString("testLog");
+        this.testStartTime = LocalDateTime.parse(newTestElementDoc.getString("startTime"));
+        this.testEndTime = LocalDateTime.parse(newTestElementDoc.getString("endTime"));
+        this.numberOfErrors = newTestElementDoc.getInteger("numberOfErrors");
+
+        //Calculate Duration
+        this.processDuration = Duration.between(this.testStartTime, this.testEndTime);
+    }
+
+
     private void checkValues()
     {
         /* {id, value} */
@@ -217,6 +240,22 @@ public class TestElement
         testDoc.put("numberOfErrors", this.numberOfErrors);
 
         return testDoc;
+    }
+
+    private String[][] convertListListToStringArray(List<List<String>> listOfLists) {
+        int rows = listOfLists.size();
+        int cols = listOfLists.get(0).size();
+
+        String[][] stringArray = new String[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            List<String> list = listOfLists.get(i);
+            for (int j = 0; j < cols; j++) {
+                stringArray[i][j] = list.get(j);
+            }
+        }
+
+        return stringArray;
     }
 
 

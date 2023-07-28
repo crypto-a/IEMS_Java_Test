@@ -2,6 +2,7 @@ package TestEngine.TestObject;
 
 import TestAutomations.DLCDemo.DLCDemo;
 import TestEngine.TestElement.TestElement;
+import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.time.Duration;
@@ -13,10 +14,10 @@ public class TestObject
     public Object testID;
     private LocalDateTime testStartTime;
     private LocalDateTime testEndTime;
-    private final Duration testDuration;
-    private final Object issuer;
-    private final String targetedWebPage;
-    private final String webPageURL;
+    private Duration testDuration;
+    private Object issuer;
+    private String targetedWebPage;
+    private String webPageURL;
     private ArrayList<Object> testElements = new ArrayList<Object>();
     private ArrayList<Object> issueElements = new ArrayList<Object>();
     private ArrayList<String> testLogs = new ArrayList<String>();
@@ -102,24 +103,40 @@ public class TestObject
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public TestObject(Object testID, LocalDateTime testStartTime, LocalDateTime testEndTime, Object issuer, String targetedWebPage, String webPageURL, ArrayList<Object> testElements, ArrayList<Object> issueElements, ArrayList<String> testLogs, int numberOfTests)
+    public TestObject(Document testObjectDoc)
     {
         //SetUp Object properties
-        this.testID = testID;
-        this.testStartTime = testStartTime;
-        this.testEndTime = testEndTime;
-        this.issuer = issuer;
-        this.targetedWebPage = targetedWebPage;
-        this.webPageURL = webPageURL;
-        this.testElements = testElements;
-        this.issueElements = issueElements;
-        this.testLogs = testLogs;
-        this.numberOfTests = numberOfTests;
+        this.testID = testObjectDoc.get("_id");
+        this.testStartTime = LocalDateTime.parse(testObjectDoc.getString("startTestTime"));
+        this.testEndTime = LocalDateTime.parse(testObjectDoc.getString("endTestTime"));
+        this.issuer = testObjectDoc.get("testIssuer");
+        this.targetedWebPage = testObjectDoc.getString("targetedWebPage");
+        this.webPageURL = testObjectDoc.getString("targetedWebPage");
+        this.testElements = (ArrayList<Object>) testObjectDoc.get("testElements");
+        this.issueElements = (ArrayList<Object>) testObjectDoc.get("issueElements");
+        this.testLogs = (ArrayList<String>) testObjectDoc.get("testLogs");
+        this.numberOfTests = testObjectDoc.getInteger("numberOfTests");
 
         //Calculate Duration
         this.testDuration = Duration.between(this.testStartTime, this.testEndTime);
+    }
 
+    public void updateObject(Document newTestObjectDoc)
+    {
+        //SetUp Object properties
+        this.testID = newTestObjectDoc.get("_id");
+        this.testStartTime = LocalDateTime.parse(newTestObjectDoc.getString("startTestTime"));
+        this.testEndTime = LocalDateTime.parse(newTestObjectDoc.getString("endTestTime"));
+        this.issuer = newTestObjectDoc.get("testIssuer");
+        this.targetedWebPage = newTestObjectDoc.getString("targetedWebPage");
+        this.webPageURL = newTestObjectDoc.getString("targetedWebPage");
+        this.testElements = (ArrayList<Object>) newTestObjectDoc.get("testElements");
+        this.issueElements = (ArrayList<Object>) newTestObjectDoc.get("issueElements");
+        this.testLogs = (ArrayList<String>) newTestObjectDoc.get("testLogs");
+        this.numberOfTests = newTestObjectDoc.getInteger("numberOfTests");
 
+        //Calculate Duration
+        this.testDuration = Duration.between(this.testStartTime, this.testEndTime);
     }
 
 
@@ -226,5 +243,6 @@ public class TestObject
     {
         return this.issueElements;
     }
+
 
 }

@@ -17,6 +17,18 @@ public class Event
     private ArrayList<TestElement> testElementDisplayArrayList;
     private ArrayList<IssueElement> issueElementDisplayArrayList;
 
+    public int getTestObjectOperationState()
+    {
+        return testObjectOperationState;
+    }
+
+    public void setTestObjectOperationState(int testObjectOperationState)
+    {
+        this.testObjectOperationState = testObjectOperationState;
+    }
+
+    private int testObjectOperationState;
+
 
     public Event()
     {

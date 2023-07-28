@@ -4,13 +4,11 @@ import Database.ChangeStreamUpdater.ChangeStreamUpdater;
 import Database.DatabaseConnectionInfo.DatabaseConnectionInfo;
 import TestEngine.TestEngine;
 import com.mongodb.MongoException;
+import com.mongodb.client.*;
 import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.Sorts;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -23,8 +21,10 @@ public class Database
     private MongoDatabase database;
     private TestEngine testEngine;
 
-    public Database()
+    public Database(TestEngine testEngine)
     {
+        //Set Up object properties
+        this.testEngine = testEngine;
 
         //Create the password class
         DatabaseConnectionInfo databaseConnectionInfo = new DatabaseConnectionInfo();
@@ -85,34 +85,72 @@ public class Database
         }
     }
 
-//    public Iterable<Document> getTestObjects()
-//    {
-//
-//    }
-//    public Iterable<Document> getOpenIssues()
-//    {
-//
-//    }
-//
-//    public Document getIssueElement()
-//    {
-//
-//    }
-//
-//    public Document getTestElement()
-//    {
-//
-//    }
+    public Document getTestObject(String objectIDString)
+    {
+        //Connect to the collection
+        MongoCollection<org.bson.Document> issuesCollection = this.database.getCollection("tests");
+
+        //Createw the object id
+        ObjectId objectID = new ObjectId(objectIDString);
+
+        //Find the related object
+        Document testObject = (Document) issuesCollection.find(eq("_id", objectID)).first();
+
+        return testObject;
+    }
+
+    public Document getIssueElement(String objectIDString)
+    {
+        //Connect to the collection
+        MongoCollection<org.bson.Document> issuesCollection = this.database.getCollection("issueUnits");
+
+        //Createw the object id
+        ObjectId objectID = new ObjectId(objectIDString);
+
+        //Find the related object
+        Document issueElement = (Document) issuesCollection.find(eq("_id", objectID)).first();
+
+        return issueElement;
+    }
+
+    public Document getTestElement(String objectIDString)
+    {
+        //Connect to the collection
+        MongoCollection<org.bson.Document> testCollection = this.database.getCollection("testUnits");
+
+        //Createw the object id
+        ObjectId objectID = new ObjectId(objectIDString);
+
+        //Find the related object
+        Document testElement = (Document) testCollection.find(eq("_id", objectID)).first();
+
+        return testElement;
+    }
 
     public void startChangeStreamSync()
     {
-        ChangeStreamUpdater changeStreamUpdater = new ChangeStreamUpdater(this.database, this.testEngine);
+        ChangeStreamUpdater changeStreamUpdater = new ChangeStreamUpdater(this, this.database, this.testEngine);
 
         Thread thread = new Thread(changeStreamUpdater);
 
         thread.start();
     }
+    public void loadTestHistoryArray(int limit)
+    {
+        //Connect to the collection
+        MongoCollection<org.bson.Document> testObjectCollection = this.database.getCollection("tests");
 
+        FindIterable<Document> testObjectDocs = testObjectCollection.find()
+                .sort(Sorts.descending("startTestTime"))
+                .limit(limit);
+
+        //Loop thorough all the results
+        for (Document testObjectDoc: testObjectDocs)
+        {
+            //Add it to the test engine
+            this.testEngine.addTestObject(testObjectDoc);
+        }
+    }
 
 
 }

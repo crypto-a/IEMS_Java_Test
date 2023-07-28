@@ -51,27 +51,47 @@ public class IssueElement
      /*Programmer Name: Ali Rahbar
      /*Method Date: July 19, 2023
      /*Method Description: This method is the constructor for the data pulled form the database
-     /*Method Inputs: issueDoc
+     /*Method Inputs: issueElementDoc
      /*Method Outputs: None
      ******************************************/
 
-    public IssueElement(Document issueDoc)
+    public IssueElement(Document issueElementDoc)
     {
         //SetUp Issue Properties
-        this.issueID = issueDoc.get("_id");
-        this.occurringTime = LocalDateTime.parse(issueDoc.getString("occurringTime"));
-        this.errorMessage = issueDoc.getString("errorMessage");
-        this.scenario = (Document) issueDoc.get("scenario");
-        this.expectedValue = issueDoc.getString("expectedValue");
-        this.actualValue = issueDoc.getString("expectedValue");
-        this.isIssueOpen = issueDoc.getBoolean("isIssueOpen");
-        this.targetedWebPage = issueDoc.getString("targetedWebPage");
+        this.issueID = issueElementDoc.get("_id");
+        this.occurringTime = LocalDateTime.parse(issueElementDoc.getString("occurringTime"));
+        this.errorMessage = issueElementDoc.getString("errorMessage");
+        this.scenario = (Document) issueElementDoc.get("scenario");
+        this.expectedValue = issueElementDoc.getString("expectedValue");
+        this.actualValue = issueElementDoc.getString("expectedValue");
+        this.isIssueOpen = issueElementDoc.getBoolean("isIssueOpen");
+        this.targetedWebPage = issueElementDoc.getString("targetedWebPage");
 
         if (!this.isIssueOpen)
         {
-            this.issueCloser = issueDoc.get("issueCloser");
-            this.developerMessage = issueDoc.getString("developerMessage");
-            this.closedTime = LocalDateTime.parse(issueDoc.getString("closedTime"));
+            this.issueCloser = issueElementDoc.get("issueCloser");
+            this.developerMessage = issueElementDoc.getString("developerMessage");
+            this.closedTime = LocalDateTime.parse(issueElementDoc.getString("closedTime"));
+        }
+    }
+
+    public void updateObject(Document newIssueElementDoc)
+    {
+        //SetUp Issue Properties
+        this.issueID = newIssueElementDoc.get("_id");
+        this.occurringTime = LocalDateTime.parse(newIssueElementDoc.getString("occurringTime"));
+        this.errorMessage = newIssueElementDoc.getString("errorMessage");
+        this.scenario = (Document) newIssueElementDoc.get("scenario");
+        this.expectedValue = newIssueElementDoc.getString("expectedValue");
+        this.actualValue = newIssueElementDoc.getString("expectedValue");
+        this.isIssueOpen = newIssueElementDoc.getBoolean("isIssueOpen");
+        this.targetedWebPage = newIssueElementDoc.getString("targetedWebPage");
+
+        if (!this.isIssueOpen)
+        {
+            this.issueCloser = newIssueElementDoc.get("issueCloser");
+            this.developerMessage = newIssueElementDoc.getString("developerMessage");
+            this.closedTime = LocalDateTime.parse(newIssueElementDoc.getString("closedTime"));
         }
     }
 
@@ -96,10 +116,10 @@ public class IssueElement
         this.isIssueOpen = false;
     }
 
-    public Object getIssueID()
+    public String getIssueID()
     {
         //return the issue ID
-        return this.issueID;
+        return String.valueOf(this.issueID);
     }
 
     public String getOccurringDate ()

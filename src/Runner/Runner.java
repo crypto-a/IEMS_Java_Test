@@ -3,6 +3,7 @@ package Runner;
 import Database.Database;
 import GUI.Event.Event;
 import GUI.GUI;
+import TestEngine.TestObject.TestObject;
 import User.User;
 import TestEngine.TestEngine;
 
@@ -13,7 +14,6 @@ public class Runner
     private final Event event;
     private final User user;
     private final GUI gui;
-    
     private Boolean isRunning;
 
     public Runner()
@@ -23,7 +23,7 @@ public class Runner
 
         //Create the Database
 
-        this.database = new Database();
+        this.database = new Database(this.testEngine);
 
         //Create the Event Object
         this.event = new Event();
@@ -45,6 +45,9 @@ public class Runner
     {
         //Set up the is running value and set it to true
         this.isRunning = true;
+
+        //Load Data from the database
+        this.loadData();
         
         //Loop Forever
         while (this.isRunning)
@@ -112,6 +115,7 @@ public class Runner
             this.sleep(30);
         }
     }
+
     private void sleep(int milliseconds)
     {
         /* Java Engine Timeout */
@@ -125,5 +129,34 @@ public class Runner
             //Print error
             e.printStackTrace();
         }
+    }
+
+    private void loadData()
+    {
+        //Clear all objects
+        this.testEngine.clearData();
+
+        //Start with loading the testObjects
+        this.database.loadTestHistoryArray(20);
+
+        //loop through all the test objects
+        for (TestObject testObject: this.testEngine.getTestObjectArrayList())
+        {
+            //loop through all the testElements
+            for (Object testElementID: testObject.getTestElements())
+            {
+                //Request the full object from the database and add it to the related arrayList
+                this.testEngine.addTestElement(this.database.getTestElement(String.valueOf(testElementID)));
+            }
+
+            //loop through all the issue Elements
+            for (Object issueElementID: testObject.getIssueElements())
+            {
+                //Request the full object from the database and add it to the related arrayList
+                this.testEngine.addIssueElement(this.database.getIssueElement(String.valueOf(issueElementID)));
+            }
+        }
+
+
     }
 }

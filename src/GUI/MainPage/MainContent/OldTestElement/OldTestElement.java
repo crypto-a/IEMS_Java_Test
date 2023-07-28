@@ -22,16 +22,18 @@ public class OldTestElement
         this.testObject = testObject;
         this.event = event;
 
-        this.TestID.setText("this.testObject.getTestID()");
+        this.TestID.setText(this.testObject.getTestID());
 
-        this.testDate.setText("this.testObject.getTestDate()");
+        this.testDate.setText(this.testObject.getTestDate());
 
-        this.testTime.setText("this.testObject.getTestTime()");
+        this.testTime.setText(this.testObject.getTestTime());
 
-        this.detailsButton.addActionListener(new ActionListener() {
+        this.detailsButton.addActionListener(new ActionListener()
+        {
 
             public void actionPerformed(ActionEvent e)
             {
+                //Call the function for the related button
                 detailsButtonClicked();
             }
         });
@@ -46,6 +48,7 @@ public class OldTestElement
 
     private void detailsButtonClicked()
     {
+        //ToDo: Add Functionality to the page
 //        this.event.setControlPanelButtonPressed(1);
 //        this.event.setSelectedTestObject(this.testObject);
     }

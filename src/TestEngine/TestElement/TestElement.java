@@ -259,4 +259,15 @@ public class TestElement
     }
 
 
+    public String getStatus()
+    {
+        if (didPass)
+        {
+            return "Passed";
+        }
+        else
+        {
+            return "Failed";
+        }
+    }
 }

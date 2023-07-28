@@ -2,6 +2,7 @@ package GUI.Event;
 
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
+import TestEngine.TestEngine;
 import TestEngine.TestObject.TestObject;
 
 import java.util.ArrayList;
@@ -16,6 +17,29 @@ public class Event
     private ArrayList<TestObject> testObjectDisplayArrayList;
     private ArrayList<TestElement> testElementDisplayArrayList;
     private ArrayList<IssueElement> issueElementDisplayArrayList;
+
+    private TestElement selectedTestElement;
+    private IssueElement selectedIssueElement;
+
+    public TestElement getSelectedTestElement()
+    {
+        return selectedTestElement;
+    }
+
+    public void setSelectedTestElement(TestElement selectedTestElement)
+    {
+        this.selectedTestElement = selectedTestElement;
+    }
+
+    public IssueElement getSelectedIssueElement()
+    {
+        return selectedIssueElement;
+    }
+
+    public void setSelectedIssueElement(IssueElement selectedIssueElement)
+    {
+        this.selectedIssueElement = selectedIssueElement;
+    }
 
     public int getTestObjectOperationState()
     {

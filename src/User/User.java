@@ -56,6 +56,9 @@ public class User
         {
             //Set is user authenticated to false
             this.isUserAuthenticated = false;
+
+            //Clear the test file as the password saved there is wrong
+            this.passwordManager.clearSavedUserID();
         }
 
 

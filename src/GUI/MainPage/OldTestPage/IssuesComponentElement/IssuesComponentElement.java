@@ -46,13 +46,13 @@ public class IssuesComponentElement
 
     private void detailsButtonClicked()
     {
-        //Set the code to switch to the issue details page
-        this.event.setControlPanelButtonPressed(3);
-
-        //Push the selected issue to the event
-        this.event.setSelectedIssueElement(this.issueElement);
-
-        //Set the code to break wait loop
-        this.event.setFormButtonPressed(0);
+//        //Set the code to switch to the issue details page
+//        this.event.setControlPanelButtonPressed(3);
+//
+//        //Push the selected issue to the event
+//        this.event.setSelectedIssueElement(this.issueElement);
+//
+//        //Set the code to break wait loop
+//        this.event.setFormButtonPressed(0);
     }
 }

@@ -148,8 +148,8 @@ public class TestComponentPage
 
     private void formButtonClicked(int index)
     {
-        //Update Event
-        this.event.setFormButtonPressed(index);
+//        //Update Event
+//        this.event.setFormButtonPressed(index);
     }
 
 }

@@ -72,7 +72,8 @@ public class PasswordManager
 
     public void saveUserID(Object userID)
     {
-        try {
+        try
+        {
             BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true));
 
             bw.write(userID.toString());

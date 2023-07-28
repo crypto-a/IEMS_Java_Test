@@ -18,15 +18,15 @@ public class Runner
 
     public Runner()
     {
+        //Create the Event Object
+        this.event = new Event();
+
         //Create the TestEngine Object
-        this.testEngine = new TestEngine();
+        this.testEngine = new TestEngine(this.event);
 
         //Create the Database
 
         this.database = new Database(this.testEngine);
-
-        //Create the Event Object
-        this.event = new Event();
 
         //Create the User Object
         this.user = new User(database, event);
@@ -106,6 +106,9 @@ public class Runner
 
     private void mainPage()
     {
+        //Push the values to the event object
+        this.testEngine.pushDisplayObjectsToEvent();
+
         //Update the ui
         this.gui.updateMainPage();
 

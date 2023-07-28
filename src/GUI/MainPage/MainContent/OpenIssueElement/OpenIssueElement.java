@@ -25,8 +25,8 @@ public class OpenIssueElement
         this.event = event;
 
         //set text values
-        this.issueID.setText("this.issueElement.getIssueID().toString()");
-        this.issueDate.setText("this.issueElement.getOccurringDate()");
+        this.issueID.setText(this.issueElement.getIssueID());
+        this.issueDate.setText(this.issueElement.getOccurringDate());
 
         //setUp action Listeners for buttons
         this.detailsButton.addActionListener(new ActionListener() {
@@ -46,6 +46,7 @@ public class OpenIssueElement
 
     private void detailsButtonClicked()
     {
+        //ToDo: Add Functionality to the page
         //Push the element to the event object
 //        this.event.setSelectedIssueElement(this.issueElement);
 //

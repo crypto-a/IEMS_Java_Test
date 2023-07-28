@@ -1,5 +1,6 @@
 package TestEngine;
 
+import GUI.Event.Event;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
 import TestEngine.TestObject.TestObject;
@@ -10,9 +11,16 @@ import java.util.ArrayList;
 
 public class TestEngine
 {
+    private final Event event;
     ArrayList<TestObject> testObjectArrayList = new ArrayList<TestObject>();
     ArrayList<TestElement> testElementArrayList = new ArrayList<TestElement>();
     ArrayList<IssueElement> issueElementArrayList = new ArrayList<IssueElement>();
+
+    public TestEngine(Event event)
+    {
+        //Set up object properties
+        this.event = event;
+    }
 
     public void addIssueElement(Document issueDoc)
     {
@@ -91,5 +99,15 @@ public class TestEngine
     public ArrayList<TestObject> getTestObjectArrayList()
     {
         return this.testObjectArrayList;
+    }
+
+    public void pushDisplayObjectsToEvent()
+    {
+        /* Push the TestObjects to the event object */
+        this.event.setTestObjectDisplayArrayList(this.testObjectArrayList);
+
+        this.event.setTestElementDisplayArrayList(this.testElementArrayList);
+
+        this.event.setIssueElementDisplayArrayList(this.issueElementArrayList);
     }
 }

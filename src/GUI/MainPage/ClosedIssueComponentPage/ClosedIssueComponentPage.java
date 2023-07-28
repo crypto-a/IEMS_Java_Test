@@ -40,13 +40,13 @@ public class ClosedIssueComponentPage
         this.occuringDate.setText(this.issueElement.getOccurringDate());
         this.occuringTime.setText(this.issueElement.getOccurringTime());
         this.targetedWebPage.setText((this.issueElement.getTargetedWebPage()));
-        this.scenario.setText(this.issueElement.getScenario());
+        this.scenario.setText(this.issueElement.getScenario().toString());
 
         this.actualValue.setText(this.issueElement.getActualValue());
         this.expectedValue.setText(this.issueElement.getExpectedValue());
         this.errorMessage.setText(this.issueElement.getErrorMessage());
 
-        this.closedStatment.setText("This Issue was Closed By " + testEngine.getUserName(this.issueElement.getIssueCloser()) + " on " + this.issueElement.getClosedDate()+ " at " + this.issueElement.getClosedTime());
+        this.closedStatment.setText("This Issue was Closed By " + "testEngine.getUserName(this.issueElement.getIssueCloser())" + " on " + this.issueElement.getClosedDate()+ " at " + this.issueElement.getClosedTime());
         this.developerMessage.setText(this.issueElement.getDeveloperMessage());
 
         //Set AUp action Listener
@@ -69,7 +69,7 @@ public class ClosedIssueComponentPage
 
     private void backButtonClicked()
     {
-        //Submit the form
-        this.event.setFormButtonPressed(1);
+//        //Submit the form
+//        this.event.setFormButtonPressed(1);
     }
 }

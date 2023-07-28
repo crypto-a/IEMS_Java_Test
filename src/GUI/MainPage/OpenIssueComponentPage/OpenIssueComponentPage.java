@@ -39,7 +39,7 @@ public class OpenIssueComponentPage
         this.occuringDate.setText(this.issueElement.getOccurringDate());
         this.occuringTime.setText(this.issueElement.getOccurringTime());
         this.targetedWebApp.setText(this.issueElement.getTargetedWebPage());
-        this.scenario.setText(this.issueElement.getScenario());
+        this.scenario.setText(this.issueElement.getScenario().toString());
 
         this.actualValue.setText(this.issueElement.getActualValue());
         this.expectedValue.setText(this.issueElement.getExpectedValue());
@@ -73,26 +73,26 @@ public class OpenIssueComponentPage
 
     private void backButtonClicked()
     {
-        //Submit the form
-        this.event.setFormButtonPressed(1);
+//        //Submit the form
+//        this.event.setFormButtonPressed(1);
     }
 
     private void closeButtonClicked()
     {
-        //Check if the verify Button is clicked
-        if (verifyCheckBox.isSelected())
-        {
-            System.out.println(this.developerMessage.getText());
-            //Push the give test ot the event object
-            this.event.setInputValues(0, this.developerMessage.getText());
-
-            //Submit the form
-            this.event.setFormButtonPressed(0);
-
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "PleaseCheck the verification Box", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+//        //Check if the verify Button is clicked
+//        if (verifyCheckBox.isSelected())
+//        {
+//            System.out.println(this.developerMessage.getText());
+//            //Push the give test ot the event object
+//            this.event.setInputValues(0, this.developerMessage.getText());
+//
+//            //Submit the form
+//            this.event.setFormButtonPressed(0);
+//
+//        }
+//        else
+//        {
+//            JOptionPane.showMessageDialog(null, "PleaseCheck the verification Box", "Error", JOptionPane.ERROR_MESSAGE);
+//        }
     }
 }

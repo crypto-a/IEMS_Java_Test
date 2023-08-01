@@ -6,6 +6,7 @@ import TestEngine.TestEngine;
 import TestEngine.TestObject.TestObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Event
 {
@@ -17,6 +18,8 @@ public class Event
     private ArrayList<TestObject> testObjectDisplayArrayList;
     private ArrayList<TestElement> testElementDisplayArrayList;
     private ArrayList<IssueElement> issueElementDisplayArrayList;
+
+    private String[] userInputs;
 
     private TestElement selectedTestElement;
     private IssueElement selectedIssueElement;
@@ -58,6 +61,7 @@ public class Event
     {
         //Set Up the Event properties
         this.formButtonsClicked = new Boolean[] {false, false};
+        this.userInputs = new String[4];
 
         //Set the Initial Value of the Code State to Zero
         this.codeState = 0;
@@ -136,5 +140,23 @@ public class Event
     public void setIssueElementDisplayArrayList(ArrayList<IssueElement> issueElementDisplayArrayList)
     {
         this.issueElementDisplayArrayList = issueElementDisplayArrayList;
+    }
+
+    public void setUserInput(int index, String input)
+    {
+        //Set up the said index in the array list to the set input
+        this.userInputs[index] = input;
+    }
+
+    public String[] getAndResetUserInput()
+    {
+        //Make a copy of the userInputs arraylist
+        String[] userInput = Arrays.copyOf(this.userInputs, this.userInputs.length);
+
+        //Reset UseInputs
+        this.userInputs = new String[4];
+
+        //return user input
+        return userInput;
     }
 }

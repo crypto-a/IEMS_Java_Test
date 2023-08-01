@@ -199,7 +199,38 @@ public class Runner
 
     private void newTestPage()
     {
-        //ToDo
+        //Update the UI
+        this.gui.updateMainPage();
+
+        //wait until the code state changes
+        while(this.event.getCodeState() == 2)
+        {
+            //Sleep
+            this.sleep(30);
+        }
+
+        //Check how the form was submitted. Was it submitted or was ot canceled?
+        switch (this.event.getFromEvent())
+        {
+            case 0 ->
+            {
+                /* If the form was submitted */
+
+                //Collect the user inputs
+                String[] userInputs = this.event.getAndResetUserInput();
+
+                //create the new test object
+                this.testEngine.createNewTestObject(this.user, userInputs[0], userInputs[1], new String[] {userInputs[2], userInputs[3]});
+
+            }
+            case 1 ->
+            {
+                /* If the form was canceled */
+
+
+            }
+        }
+
     }
 
     private void testObjectPage ()

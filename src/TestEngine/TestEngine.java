@@ -4,6 +4,7 @@ import GUI.Event.Event;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
 import TestEngine.TestObject.TestObject;
+import User.User;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -101,6 +102,12 @@ public class TestEngine
         return this.testObjectArrayList;
     }
 
+    public void createNewTestObject(User user, String targetedWebPage, String webPageURL, String[] webPageLoginInfo)
+    {
+        //Create the new Test Object and add it to the test arraylist and the ongoing test
+        this.testObjectArrayList.add(new TestObject(user, targetedWebPage, webPageURL, webPageLoginInfo));
+    }
+
     public void pushDisplayObjectsToEvent()
     {
         /* Push the TestObjects to the event object */
@@ -110,4 +117,6 @@ public class TestEngine
 
         this.event.setIssueElementDisplayArrayList(this.issueElementArrayList);
     }
+
+
 }

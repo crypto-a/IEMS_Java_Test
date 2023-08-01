@@ -33,6 +33,10 @@ public class NewTestPage
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                //Push the text
+
+                pushText();
+
                 //Update the event property
                 formButtonClicked(0);
             }
@@ -74,12 +78,25 @@ public class NewTestPage
 
     private void formButtonClicked(int index)
     {
-        //Update Event
-//        this.event.setFormButtonPressed(index);
+        this.event.setFormButtonsClicked(index);
+
+        this.event.setCodeState(1);
     }
 
-//    private void pushText(int index)
-//    {
-//        this.event.setInputValues(0, this.urlField.getText());
-//    }
+    private void pushText()
+    {
+        //Push the selected web page
+        this.event.setUserInput(0, this.comboBox1.getSelectedItem().toString());
+
+        //Push the URL
+        this.event.setUserInput(1, this.urlField.getText());
+
+        //push the username
+        this.event.setUserInput(2, this.textField1.getText());
+
+        //Push the password field
+        this.event.setUserInput(3, this.passwordField1.getText());
+
+
+    }
 }

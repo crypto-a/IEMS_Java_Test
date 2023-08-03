@@ -111,7 +111,7 @@ public class TestObject
         this.testEndTime = LocalDateTime.parse(testObjectDoc.getString("endTestTime"));
         this.issuer = testObjectDoc.get("testIssuer");
         this.targetedWebPage = testObjectDoc.getString("targetedWebPage");
-        this.webPageURL = testObjectDoc.getString("targetedWebPage");
+        this.webPageURL = testObjectDoc.getString("webPageURL");
         this.testElements = (ArrayList<Object>) testObjectDoc.get("testElements");
         this.issueElements = (ArrayList<Object>) testObjectDoc.get("issueElements");
         this.testLogs = (ArrayList<String>) testObjectDoc.get("testLogs");
@@ -129,7 +129,7 @@ public class TestObject
         this.testEndTime = LocalDateTime.parse(newTestObjectDoc.getString("endTestTime"));
         this.issuer = newTestObjectDoc.get("testIssuer");
         this.targetedWebPage = newTestObjectDoc.getString("targetedWebPage");
-        this.webPageURL = newTestObjectDoc.getString("targetedWebPage");
+        this.webPageURL = newTestObjectDoc.getString("webPageURL");
         this.testElements = (ArrayList<Object>) newTestObjectDoc.get("testElements");
         this.issueElements = (ArrayList<Object>) newTestObjectDoc.get("issueElements");
         this.testLogs = (ArrayList<String>) newTestObjectDoc.get("testLogs");

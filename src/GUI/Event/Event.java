@@ -1,17 +1,19 @@
 package GUI.Event;
 
+import Database.Database;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
 import TestEngine.TestEngine;
 import TestEngine.TestObject.TestObject;
 
+import org.bson.Document;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Event
 {
     private int codeState;
-
+    private Database database;
     private Object[] userAuthFields;
     private final Boolean[] formButtonsClicked;
 
@@ -23,6 +25,34 @@ public class Event
 
     private TestElement selectedTestElement;
     private IssueElement selectedIssueElement;
+    private TestObject selectedTestObject;
+    private Object[] dataUpdateInfo;
+    private Boolean isDataUpdated;
+
+    public Event()
+    {
+        //Set Up the Event properties
+        this.formButtonsClicked = new Boolean[] {false, false};
+        this.userInputs = new String[4];
+
+        //Set the Initial Value of the Code State to Zero
+        this.codeState = 0;
+
+        //Set up is dataUpdated to true
+        this.isDataUpdated = true;
+    }
+
+    public TestObject getSelectedTestObject()
+    {
+        //Return the test object
+        return selectedTestObject;
+    }
+
+    public void setSelectedTestObject(TestObject selectedTestObject)
+    {
+        //Change the value of the test object
+        this.selectedTestObject = selectedTestObject;
+    }
 
     public TestElement getSelectedTestElement()
     {
@@ -57,15 +87,7 @@ public class Event
     private int testObjectOperationState;
 
 
-    public Event()
-    {
-        //Set Up the Event properties
-        this.formButtonsClicked = new Boolean[] {false, false};
-        this.userInputs = new String[4];
 
-        //Set the Initial Value of the Code State to Zero
-        this.codeState = 0;
-    }
 
     public void setFormButtonsClicked(int index)
     {
@@ -158,5 +180,43 @@ public class Event
 
         //return user input
         return userInput;
+    }
+
+    public String getNameFromUserID(Object userID)
+    {
+        //Collect the User info
+        Document userInfo = this.database.getUserInfo(String.valueOf(userID));
+
+        return userInfo.getString("firstName") + " " + userInfo.getString("lastName");
+    }
+
+    public void setDatabase(Database database)
+    {
+        //set the value of the database
+        this.database = database;
+    }
+
+    public synchronized void setDatabaseDateUpdated(int dataIndex, String updatedObjectID)
+    {
+        //fill the dataUpdate info
+        this.dataUpdateInfo = new Object[] { dataIndex, updatedObjectID};
+
+        //Set the is data Updated to false
+        this.isDataUpdated = false;
+    }
+
+    public Boolean checkIfIsDataUpdated()
+    {
+        //Return the boolean
+        return this.isDataUpdated;
+    }
+
+    public Object[] getDataUpdateInfo()
+    {
+        //set isDataUpdated to true
+        this.isDataUpdated = true;
+
+        //return dataUpdateInfo
+        return this.dataUpdateInfo;
     }
 }

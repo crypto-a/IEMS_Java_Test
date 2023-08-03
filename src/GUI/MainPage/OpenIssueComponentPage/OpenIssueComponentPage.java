@@ -23,6 +23,7 @@ public class OpenIssueComponentPage
     private JLabel actualValue;
     private JLabel expectedValue;
     private JLabel errorMessage;
+    private JButton loadScenarioButton;
     private Event event;
     private IssueElement issueElement;
 
@@ -39,7 +40,6 @@ public class OpenIssueComponentPage
         this.occuringDate.setText(this.issueElement.getOccurringDate());
         this.occuringTime.setText(this.issueElement.getOccurringTime());
         this.targetedWebApp.setText(this.issueElement.getTargetedWebPage());
-        this.scenario.setText(this.issueElement.getScenario().toString());
 
         this.actualValue.setText(this.issueElement.getActualValue());
         this.expectedValue.setText(this.issueElement.getExpectedValue());

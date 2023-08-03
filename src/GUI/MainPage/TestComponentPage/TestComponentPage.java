@@ -22,16 +22,14 @@ public class TestComponentPage
     private JLabel testElementIdentification;
 
     private final Event event;
-    private final TestEngine testEngine;
     private final TestElement testElement;
 
     private DefaultMutableTreeNode rootNode;
 
-    public TestComponentPage(TestEngine testEngine, Event event)
+    public TestComponentPage( Event event)
     {
         //SetUp object properties
         this.event = event;
-        this.testEngine = testEngine;
 
         //Collect the test element form event
         this.testElement = this.event.getSelectedTestElement();

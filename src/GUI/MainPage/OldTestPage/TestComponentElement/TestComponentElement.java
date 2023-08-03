@@ -60,8 +60,9 @@ public class TestComponentElement
     private void detailsButtonClicked()
     {
         //Save action to the event so the page changes
-//        this.event.setFormButtonPressed(0);
-//        this.event.setControlPanelButtonPressed(2);
-//        this.event.setSelectedTestElement(this.testElement);
+        this.event.setSelectedTestElement(this.testElement);
+
+        //Change code state
+        this.event.setCodeState(4);
     }
 }

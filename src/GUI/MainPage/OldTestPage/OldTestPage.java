@@ -38,21 +38,18 @@ public class OldTestPage
     private JComboBox comboBox2;
     private JPanel issuesElementPanel;
     private final Event event;
-    private final TestEngine testEngine;
     private final TestObject testObject;
 
-    public OldTestPage(TestEngine testEngine, Event event, TestObject testObject)
+    public OldTestPage(Event event)
     {
         //SetUp Object Properties
-        this.testEngine = testEngine;
         this.event = event;
-        this.testObject = testObject;
+        this.testObject = this.event.getSelectedTestObject();
 
         //System.out.println(this.testObject.toString());
 
-        //ToDo: Set the values the Page should Show
         this.testID.setText(this.testObject.getTestID());
-        this.testIssuer.setText("this.testEngine.getUserName(this.testObject.getIssuerID())");
+        this.testIssuer.setText(this.event.getNameFromUserID(this.testObject.getIssuerID()));
         this.targetedWebPage.setText(this.testObject.getTargetedWebPage());
         this.webPageURL.setText(this.testObject.getWebPageURL());
         this.testDate.setText(this.testObject.getTestDate());
@@ -60,8 +57,6 @@ public class OldTestPage
         this.testDuration.setText(this.testObject.getDuration());
         this.issuesFound.setText(this.testObject.getIssueNum() + " Issues found");
 
-
-        //ToDo: Set Up the action listeners for the page
         this.returnButton.addActionListener(new ActionListener()
         {
             @Override
@@ -86,66 +81,66 @@ public class OldTestPage
         this.testComponentElementsPanel = new JPanel();
         this.issuesElementPanel = new JPanel();
 
-//        //Set Up a box Layout for both
-//        this.testComponentElementsPanel.setLayout(new BoxLayout(this.testComponentElementsPanel, BoxLayout.Y_AXIS));
-//        this.issuesElementPanel.setLayout(new BoxLayout(this.issuesElementPanel, BoxLayout.Y_AXIS));
-//
-//        //Collect the two array lists to display them
-//        ArrayList<TestElement> testElements = this.testObject.getTestElements();
-//        ArrayList<IssueElement> issueElements = this.testObject.getIssueElements();
-//
-//        //Loop though the testElements
-//        for (TestElement testElement: testElements)
-//        {
-//            //Create the element using the UI and request the content
-//            TestComponentElement testComponentElement = new TestComponentElement(this.event, testElement);
-//            JPanel testElementUI = testComponentElement.requestElement();
-//
-//            //Create a container panel for each element
-//            JPanel testElementUIBorder = new JPanel();
-//
-//            //Create a box for testElementUIBorder
-//            testElementUIBorder.setLayout(new BoxLayout(testElementUIBorder, BoxLayout.Y_AXIS));
-//
-//            //Add the element to the Border
-//            testElementUIBorder.add(testElementUI);
-//
-//            //Set maximum height for the testElementUIBorder
-//            testElementUIBorder.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-//
-//            //Add the testElementUIBorder to the
-//            this.testComponentElementsPanel.add(testElementUIBorder);
-//
-//            //Add Vertical Space between Elements
-//            this.testComponentElementsPanel.add(Box.createVerticalStrut(5));
-//
-//        }
-//
-//        //Loop through the IssueElements
-//        for (IssueElement issueElement: issueElements)
-//        {
-//            //Create the UI Element
-//            IssuesComponentElement issuesComponentElement = new IssuesComponentElement(issueElement, this.event);
-//            JPanel issueElementUI = issuesComponentElement.requestElement();
-//
-//            //Create a container panel for each element
-//            JPanel issueElementUIBorder = new JPanel();
-//
-//            //Create a box for testElementUIBorder
-//            issueElementUIBorder.setLayout(new BoxLayout(issueElementUIBorder, BoxLayout.Y_AXIS));
-//
-//            //Add the element to the Border
-//            issueElementUIBorder.add(issueElementUI);
-//
-//            //Set maximum height for the testElementUIBorder
-//            issueElementUIBorder.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-//
-//            //Add it to the issueComponentPanel
-//            this.issuesElementPanel.add(issueElementUIBorder);
-//
-//            //Add Vertical Space between Elements
-//            this.issuesElementPanel.add(Box.createVerticalStrut(5));
-//        }
+        //Set Up a box Layout for both
+        this.testComponentElementsPanel.setLayout(new BoxLayout(this.testComponentElementsPanel, BoxLayout.Y_AXIS));
+        this.issuesElementPanel.setLayout(new BoxLayout(this.issuesElementPanel, BoxLayout.Y_AXIS));
+
+        //Collect the two array lists to display them
+        ArrayList<TestElement> testElements = this.event.getTestElementDisplayArrayList();
+        ArrayList<IssueElement> issueElements = this.event.getIssueElementDisplayArrayList();
+
+        //Loop though the testElements
+        for (TestElement testElement: testElements)
+        {
+            //Create the element using the UI and request the content
+            TestComponentElement testComponentElement = new TestComponentElement(this.event, testElement);
+            JPanel testElementUI = testComponentElement.requestElement();
+
+            //Create a container panel for each element
+            JPanel testElementUIBorder = new JPanel();
+
+            //Create a box for testElementUIBorder
+            testElementUIBorder.setLayout(new BoxLayout(testElementUIBorder, BoxLayout.Y_AXIS));
+
+            //Add the element to the Border
+            testElementUIBorder.add(testElementUI);
+
+            //Set maximum height for the testElementUIBorder
+            testElementUIBorder.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+
+            //Add the testElementUIBorder to the
+            this.testComponentElementsPanel.add(testElementUIBorder);
+
+            //Add Vertical Space between Elements
+            this.testComponentElementsPanel.add(Box.createVerticalStrut(5));
+
+        }
+
+        //Loop through the IssueElements
+        for (IssueElement issueElement: issueElements)
+        {
+            //Create the UI Element
+            IssuesComponentElement issuesComponentElement = new IssuesComponentElement(issueElement, this.event);
+            JPanel issueElementUI = issuesComponentElement.requestElement();
+
+            //Create a container panel for each element
+            JPanel issueElementUIBorder = new JPanel();
+
+            //Create a box for testElementUIBorder
+            issueElementUIBorder.setLayout(new BoxLayout(issueElementUIBorder, BoxLayout.Y_AXIS));
+
+            //Add the element to the Border
+            issueElementUIBorder.add(issueElementUI);
+
+            //Set maximum height for the testElementUIBorder
+            issueElementUIBorder.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+
+            //Add it to the issueComponentPanel
+            this.issuesElementPanel.add(issueElementUIBorder);
+
+            //Add Vertical Space between Elements
+            this.issuesElementPanel.add(Box.createVerticalStrut(5));
+        }
 
         //Set Up margins for elements
         this.testComponentElementsPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

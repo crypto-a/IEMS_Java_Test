@@ -48,8 +48,10 @@ public class OldTestElement
 
     private void detailsButtonClicked()
     {
-        //ToDo: Add Functionality to the page
-//        this.event.setControlPanelButtonPressed(1);
-//        this.event.setSelectedTestObject(this.testObject);
+        //Set the selected test object
+        this.event.setSelectedTestObject(this.testObject);
+
+        //change the code state
+        this.event.setCodeState(3);
     }
 }

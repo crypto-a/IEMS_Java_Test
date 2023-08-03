@@ -2,6 +2,7 @@ package Database;
 
 import Database.ChangeStreamUpdater.ChangeStreamUpdater;
 import Database.DatabaseConnectionInfo.DatabaseConnectionInfo;
+import GUI.Event.Event;
 import TestEngine.TestEngine;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
@@ -20,11 +21,13 @@ public class Database
 {
     private MongoDatabase database;
     private TestEngine testEngine;
+    private Event event;
 
-    public Database(TestEngine testEngine)
+    public Database(TestEngine testEngine, Event event)
     {
         //Set Up object properties
         this.testEngine = testEngine;
+        this.event = event;
 
         //Create the password class
         DatabaseConnectionInfo databaseConnectionInfo = new DatabaseConnectionInfo();
@@ -129,11 +132,7 @@ public class Database
 
     public void startChangeStreamSync()
     {
-        ChangeStreamUpdater changeStreamUpdater = new ChangeStreamUpdater(this, this.database, this.testEngine);
-
-        Thread thread = new Thread(changeStreamUpdater);
-
-        thread.start();
+        new ChangeStreamUpdater(this, this.database, this.testEngine, this.event).run();
     }
     public void loadTestHistoryArray(int limit)
     {

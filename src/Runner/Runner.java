@@ -16,6 +16,8 @@ public class Runner
     private final GUI gui;
     private Boolean isRunning;
 
+    private int fps = 60;
+
     public Runner()
     {
         //Create the Event Object
@@ -26,7 +28,10 @@ public class Runner
 
         //Create the Database
 
-        this.database = new Database(this.testEngine);
+        this.database = new Database(this.testEngine, this.event);
+
+        //Push the database ot event as well
+        this.event.setDatabase(this.database);
 
         //Create the User Object
         this.user = new User(database, event);
@@ -168,6 +173,37 @@ public class Runner
         }
     }
 
+    private void waitTillAction(int currentCodeState)
+    {
+        while (this.event.getCodeState() == currentCodeState)
+        {
+            /* Java Engine Timeout */
+            try
+            {
+                //Sleep
+                Thread.sleep(1000/this.fps);
+            }
+            catch (InterruptedException e)
+            {
+                //Print error
+                e.printStackTrace();
+            }
+
+            //Check for Data Update
+            if (!this.event.checkIfIsDataUpdated())
+            {
+                System.out.println("1");
+                //Ask testEngine to push a copy to the arraylists to the event
+                this.testEngine.pushDisplayObjectsToEvent();
+
+                //Update UI
+                this.gui.updateMainPage();
+
+                //ToDo: this code must be more customized
+            }
+        }
+    }
+
     private void loadData()
     {
         //Clear all objects
@@ -203,11 +239,7 @@ public class Runner
         this.gui.updateMainPage();
 
         //wait until the code state changes
-        while(this.event.getCodeState() == 2)
-        {
-            //Sleep
-            this.sleep(30);
-        }
+        this.waitTillAction(2);
 
         //Check how the form was submitted. Was it submitted or was ot canceled?
         switch (this.event.getFromEvent())
@@ -235,17 +267,32 @@ public class Runner
 
     private void testObjectPage ()
     {
-        //ToDo
+        //Ask testEngine to push a copy to the arraylists to the event
+        this.testEngine.pushDisplayObjectsToEvent();
+
+        //Update the UI
+        this.gui.updateMainPage();
+
+        //wait until the code state changes
+        this.waitTillAction(3);
     }
 
     private void testElementPage()
     {
-        //ToDo
+        //Update the UI
+        this.gui.updateMainPage();
+
+        //wait until the code state changes
+        this.waitTillAction(4);
     }
 
     private void issueElementPage()
     {
-        //ToDo
+        //Update UI
+        this.gui.updateMainPage();
+
+        //Wait till trhe page changes
+        this.waitTillAction(5);
     }
 
     private void settingPage()

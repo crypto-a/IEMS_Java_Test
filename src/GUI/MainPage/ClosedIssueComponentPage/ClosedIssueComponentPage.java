@@ -2,7 +2,6 @@ package GUI.MainPage.ClosedIssueComponentPage;
 
 import GUI.Event.Event;
 import TestEngine.IssueElement.IssueElement;
-import TestEngine.TestEngine;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -23,11 +22,12 @@ public class ClosedIssueComponentPage
     private JLabel expectedValue;
     private JLabel errorMessage;
     private JLabel closedStatment;
+    private JButton loadScenarioButton;
 
     private Event event;
     private IssueElement issueElement;
 
-    public ClosedIssueComponentPage(Event event, TestEngine testEngine)
+    public ClosedIssueComponentPage(Event event)
     {
         //SetUp objects properties
         this.event = event;
@@ -40,13 +40,12 @@ public class ClosedIssueComponentPage
         this.occuringDate.setText(this.issueElement.getOccurringDate());
         this.occuringTime.setText(this.issueElement.getOccurringTime());
         this.targetedWebPage.setText((this.issueElement.getTargetedWebPage()));
-        this.scenario.setText(this.issueElement.getScenario().toString());
 
         this.actualValue.setText(this.issueElement.getActualValue());
         this.expectedValue.setText(this.issueElement.getExpectedValue());
         this.errorMessage.setText(this.issueElement.getErrorMessage());
 
-        this.closedStatment.setText("This Issue was Closed By " + "testEngine.getUserName(this.issueElement.getIssueCloser())" + " on " + this.issueElement.getClosedDate()+ " at " + this.issueElement.getClosedTime());
+        this.closedStatment.setText("This Issue was Closed By " + this.event.getNameFromUserID(this.issueElement.getIssueCloser()) + " on " + this.issueElement.getClosedDate()+ " at " + this.issueElement.getClosedTime());
         this.developerMessage.setText(this.issueElement.getDeveloperMessage());
 
         //Set AUp action Listener

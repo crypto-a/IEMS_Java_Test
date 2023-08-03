@@ -2,8 +2,13 @@ package GUI.MainPage;
 
 import GUI.Event.Event;
 import GUI.GUI;
+import GUI.MainPage.ClosedIssueComponentPage.ClosedIssueComponentPage;
 import GUI.MainPage.MainContent.MainContent;
 import GUI.MainPage.NewTestPage.NewTestPage;
+import GUI.MainPage.OldTestPage.OldTestPage;
+import GUI.MainPage.OldTestPage.TestComponentElement.TestComponentElement;
+import GUI.MainPage.OpenIssueComponentPage.OpenIssueComponentPage;
+import GUI.MainPage.TestComponentPage.TestComponentPage;
 import User.User;
 
 import javax.swing.*;
@@ -75,23 +80,64 @@ public class MainPage
         this.contentPanel = new JPanel(new BorderLayout());
 
         // Check what content is being displayed
-        switch (this.event.getCodeState()) {
-            case 1:
+        switch (this.event.getCodeState())
+        {
+            case 1 ->
+            {
                 // Create the class of the content page
                 MainContent mainContent = new MainContent(this.event);
 
                 // Add it to the contentPanel, and specify the region to fill (CENTER in this case)
                 this.contentPanel.add(mainContent.requestContent(), BorderLayout.CENTER);
-                break;
-
-            case 2:
+            }
+            case 2 ->
+            {
                 //Create the newTest Object
                 NewTestPage newTestPage = new NewTestPage(this.event);
 
                 // Add it to the contentPanel, and specify the region to fill (CENTER in this case)
                 this.contentPanel.add(newTestPage.requestContent(), BorderLayout.CENTER);
-                break;
-                    }
+            }
+            case 3 ->
+            {
+                //Create the old test display object
+                OldTestPage oldTestPage = new OldTestPage(this.event);
+
+                //Add it to the contentPanel, and specify the region to fill (CENTER in this case)
+                this.contentPanel.add(oldTestPage.requestContent(), BorderLayout.CENTER);
+            }
+            case 4 ->
+            {
+                //Create the testElement display page
+                TestComponentPage testComponentPage = new TestComponentPage(this.event);
+
+                //Add it to the contentPanel, and specify the region to fill (CENTER in this case)
+                this.contentPanel.add(testComponentPage.requestContent(), BorderLayout.CENTER);
+            }
+            case 5 ->
+            {
+                if (this.event.getSelectedIssueElement().getIsIssueOpen())
+                {
+                    //Create the open page request
+                    OpenIssueComponentPage openIssueComponentPage = new OpenIssueComponentPage(this.event);
+
+                    //Collect and implement it in the UI
+                    this.contentPanel.add(openIssueComponentPage.requestContent());
+
+                }
+                else
+                {
+                    //Create the closed request Page
+                    ClosedIssueComponentPage closedIssueComponentPage = new ClosedIssueComponentPage(this.event);
+                    //Collect and implement it in the UI
+                    this.contentPanel.add(closedIssueComponentPage.requestContent());
+                }
+            }
+            case 6 ->
+            {
+
+            }
+        }
 
     }
 

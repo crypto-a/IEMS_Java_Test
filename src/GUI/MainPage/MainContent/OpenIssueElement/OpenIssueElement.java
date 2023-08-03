@@ -46,12 +46,8 @@ public class OpenIssueElement
 
     private void detailsButtonClicked()
     {
-        //ToDo: Add Functionality to the page
-        //Push the element to the event object
-//        this.event.setSelectedIssueElement(this.issueElement);
-//
-//        //Set the click command
-//        this.event.setControlPanelButtonPressed(3);
+        //Change code state
+        this.event.setCodeState(5);
     }
 
 }

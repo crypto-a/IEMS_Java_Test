@@ -105,6 +105,9 @@ public class TestElement
 
         //Calculate Duration
         this.processDuration = Duration.between(this.testStartTime, this.testEndTime);
+
+        System.out.println("1");
+        System.out.println(this.didPass);
     }
 
 

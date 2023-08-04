@@ -13,9 +13,9 @@ import java.util.ArrayList;
 public class TestEngine
 {
     private final Event event;
-    ArrayList<TestObject> testObjectArrayList = new ArrayList<TestObject>();
-    ArrayList<TestElement> testElementArrayList = new ArrayList<TestElement>();
-    ArrayList<IssueElement> issueElementArrayList = new ArrayList<IssueElement>();
+    ArrayList<TestObject> testObjectArrayList = new ArrayList<>();
+    ArrayList<TestElement> testElementArrayList = new ArrayList<>();
+    ArrayList<IssueElement> issueElementArrayList = new ArrayList<>();
 
     public TestEngine(Event event)
     {
@@ -44,13 +44,13 @@ public class TestEngine
     public TestObject getTestObject(String objectIDString)
     {
         //loop though every element of the array
-        for(int i = 0; i < this.testObjectArrayList.size(); i++)
+        for (TestObject testObject : this.testObjectArrayList)
         {
             //If it is the one we are looking for
-            if (this.testObjectArrayList.get(i).getTestID().equals(objectIDString))
+            if (testObject.getTestID().equals(objectIDString))
             {
                 //Return the object
-                return this.testObjectArrayList.get(i);
+                return testObject;
             }
         }
 
@@ -60,13 +60,13 @@ public class TestEngine
     public TestElement getTestElement(String objectIDString)
     {
         //loop though every element of the array
-        for(int i = 0; i < this.testElementArrayList.size(); i++)
+        for (TestElement testElement : this.testElementArrayList)
         {
             //If it is the one we are looking for
-            if (this.testElementArrayList.get(i).getTestID().equals(objectIDString))
+            if (testElement.getTestID().equals(objectIDString))
             {
                 //Return the object
-                return this.testElementArrayList.get(i);
+                return testElement;
             }
         }
 
@@ -76,13 +76,13 @@ public class TestEngine
     public IssueElement getIssueElement(String objectIDString)
     {
         //loop though every element of the array
-        for(int i = 0; i < this.issueElementArrayList.size(); i++)
+        for (IssueElement issueElement : this.issueElementArrayList)
         {
             //If it is the one we are looking for
-            if (this.issueElementArrayList.get(i).getIssueID().equals(objectIDString))
+            if (issueElement.getIssueID().equals(objectIDString))
             {
                 //Return the object
-                return this.issueElementArrayList.get(i);
+                return issueElement;
             }
         }
 
@@ -113,7 +113,7 @@ public class TestEngine
         /* Push the TestObjects to the event object */
         this.event.setTestObjectDisplayArrayList(this.testObjectArrayList);
 
-        ArrayList<IssueElement> openIssuesArrayList = new ArrayList<IssueElement>();
+        ArrayList<IssueElement> openIssuesArrayList = new ArrayList<>();
 
         //Loop through all issues
         for (IssueElement issueElement : this.issueElementArrayList)
@@ -133,8 +133,8 @@ public class TestEngine
     public void pushDisplayObjectsToEventForOldTestDisplay(TestObject testObject)
     {
         //create the arraylists that will be pushed
-        ArrayList<TestElement> testElementArrayListToPush = new ArrayList<TestElement>();
-        ArrayList<IssueElement> issueElementArrayListToPush = new ArrayList<IssueElement>();
+        ArrayList<TestElement> testElementArrayListToPush = new ArrayList<>();
+        ArrayList<IssueElement> issueElementArrayListToPush = new ArrayList<>();
 
         //Loop trough every test element
         for (TestElement testElement: this.testElementArrayList)
@@ -153,7 +153,7 @@ public class TestEngine
         //loop through every issue element
         for (IssueElement issueElement: this.issueElementArrayList)
         {
-            //Check if it is contained in the obvjects issue arraylost
+            //Check if it is contained in the object's issue arraylist
             if (testObject.getIssueElements().contains(new ObjectId(issueElement.getIssueID())))
             {
                 //Add the object to the array list

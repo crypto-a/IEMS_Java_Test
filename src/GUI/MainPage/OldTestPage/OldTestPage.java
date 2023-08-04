@@ -10,6 +10,8 @@ import TestEngine.TestObject.TestObject;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,7 +62,8 @@ public class OldTestPage
 
         //Set the selected tab and combobox
         this.comboBox1.setSelectedIndex(this.event.getOldTestPageTestComponentComboBoxSelected());
-        this.comboBox2.setSelectedItem(this.event.getOldTestPageIssuesComboBoxSelected());
+        this.comboBox2.setSelectedIndex(this.event.getOldTestPageIssuesComboBoxSelected());
+        this.tabbedPane1.setSelectedIndex(this.event.getOldTestPagePanelSelected());
         //ToDo
 
         this.returnButton.addActionListener(new ActionListener()
@@ -73,7 +76,7 @@ public class OldTestPage
             }
         });
 
-        comboBox1.addActionListener(new ActionListener()
+        this.comboBox1.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -82,6 +85,27 @@ public class OldTestPage
                 testElementComboBoxChange();
             }
         });
+
+        this.comboBox2.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                //Run the code for the change in the combobox
+                issueElementComboBoxChange();
+            }
+        });
+
+        this.tabbedPane1.addChangeListener(new ChangeListener()
+        {
+            @Override
+            public void stateChanged(ChangeEvent e)
+            {
+                //Run the related function to change the tabs
+                tabbedPanelChange();
+            }
+        });
+
     }
 
     public JPanel requestContent()
@@ -177,10 +201,29 @@ public class OldTestPage
         //Change the display state in the event object
         this.event.setTestElementShowCode(this.comboBox1.getSelectedIndex());
 
+        //change the selected event object
         this.event.setOldTestPageTestComponentComboBoxSelected(this.comboBox1.getSelectedIndex());
 
         //Update the page again
         this.event.requestPageRefresh();
+    }
+
+    private void issueElementComboBoxChange()
+    {
+        //Change the display state in the event object
+        this.event.setIssueElementShowCode(this.comboBox2.getSelectedIndex());
+
+        //change the selected event object
+        this.event.setOldTestPageIssuesComboBoxSelected(this.comboBox2.getSelectedIndex());
+
+        //Update the page again
+        this.event.requestPageRefresh();
+    }
+
+    private void tabbedPanelChange()
+    {
+        //Record the change
+        this.event.setOldTestPagePanelSelected(this.tabbedPane1.getSelectedIndex());
     }
 
 }

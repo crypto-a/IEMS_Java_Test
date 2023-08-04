@@ -151,5 +151,14 @@ public class Database
         }
     }
 
+    public void updateIssueElement(Document issueElement)
+    {
+        //Connect to the collection
+        MongoCollection<org.bson.Document> issueUnitsCollection = this.database.getCollection("issueUnits");
+
+        //Create the Update Document and add it to the database
+        issueUnitsCollection.updateOne(new Document("_id", (Object) issueElement.get("_id")), new Document("$set", issueElement));
+    }
+
 
 }

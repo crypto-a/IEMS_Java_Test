@@ -29,10 +29,12 @@ public class OpenIssueElement
         this.issueDate.setText(this.issueElement.getOccurringDate());
 
         //setUp action Listeners for buttons
-        this.detailsButton.addActionListener(new ActionListener() {
+        this.detailsButton.addActionListener(new ActionListener()
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                //run the function related to the button
                 detailsButtonClicked();
             }
         });
@@ -46,6 +48,9 @@ public class OpenIssueElement
 
     private void detailsButtonClicked()
     {
+        //push the selectedIssueElement
+        this.event.setSelectedIssueElement(this.issueElement);
+
         //Change code state
         this.event.setCodeState(5);
     }

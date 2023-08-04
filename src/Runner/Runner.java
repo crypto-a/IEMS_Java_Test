@@ -190,16 +190,13 @@ public class Runner
             }
 
             //Check for Data Update
-            if (!this.event.checkIfIsDataUpdated())
+            this.checkForUpdates();
+
+            //Check to see if the page needs refreshing
+            if (this.event.getRefreshNeeded())
             {
-                System.out.println("1");
-                //Ask testEngine to push a copy to the arraylists to the event
-                this.testEngine.pushDisplayObjectsToEvent();
-
-                //Update UI
+                //Update ui
                 this.gui.updateMainPage();
-
-                //ToDo: this code must be more customized
             }
         }
     }
@@ -268,7 +265,7 @@ public class Runner
     private void testObjectPage ()
     {
         //Ask testEngine to push a copy to the arraylists to the event
-        this.testEngine.pushDisplayObjectsToEvent();
+        this.testEngine.pushDisplayObjectsToEventForOldTestDisplay(this.event.getSelectedTestObject());
 
         //Update the UI
         this.gui.updateMainPage();
@@ -291,12 +288,58 @@ public class Runner
         //Update UI
         this.gui.updateMainPage();
 
-        //Wait till trhe page changes
+
+        if (this.event.getSelectedIssueElement().getIsIssueOpen())
+        {
+            //Loop Until the page is submitted
+            while (this.event.getCodeState() == 5)
+            {
+                //Sleep
+                this.sleep(30);
+
+                //Check for updates
+                this.checkForUpdates();
+
+                if (this.event.getFromEvent() == 0)
+                {
+                    //break out of the loop
+                    break;
+                }
+            }
+
+            //Close the issue
+            this.event.getSelectedIssueElement().closeIssue(this.user.getUserID(), this.event.getAndResetUserInput()[0]);
+
+            //Update that in the database
+            this.database.updateIssueElement(this.event.getSelectedIssueElement().getAsDocument());
+
+            //UpdateUI
+            this.gui.updateMainPage();
+
+        }
+
+        //Wait till the page changes
         this.waitTillAction(5);
     }
 
     private void settingPage()
     {
         //ToDo
+    }
+
+    private void checkForUpdates()
+    {
+        //Check for updates
+        if (!this.event.checkIfIsDataUpdated())
+        {
+            System.out.println("1");
+            //Ask testEngine to push a copy to the arraylists to the event
+            this.testEngine.pushDisplayObjectsToEvent();
+
+            //Update UI
+            this.gui.updateMainPage();
+
+            //ToDo: this code must be more customized
+        }
     }
 }

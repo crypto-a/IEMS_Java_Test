@@ -58,7 +58,7 @@ public class TestObject
         switch (this.targetedWebPage)
         {
             case "DLC Demo":
-                //SetUp the Thread
+                //Set Up the Thread
                 Thread thread = new Thread((Runnable) new DLCDemo());//ToDo
 
                 //Start the thread

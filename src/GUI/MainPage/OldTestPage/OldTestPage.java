@@ -57,16 +57,31 @@ public class OldTestPage
         this.testDuration.setText(this.testObject.getDuration());
         this.issuesFound.setText(this.testObject.getIssueNum() + " Issues found");
 
+
+        //Set the selected tab and combobox
+        this.comboBox1.setSelectedIndex(this.event.getOldTestPageTestComponentComboBoxSelected());
+        this.comboBox2.setSelectedItem(this.event.getOldTestPageIssuesComboBoxSelected());
+        //ToDo
+
         this.returnButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
                 //Update the event property
-                formButtonClicked(1);
+                formButtonClicked();
             }
         });
 
+        comboBox1.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                //Run the code for the change in the combobox
+                testElementComboBoxChange();
+            }
+        });
     }
 
     public JPanel requestContent()
@@ -149,97 +164,23 @@ public class OldTestPage
 
     }
 
-    private void formButtonClicked(int index)
+    private void formButtonClicked()
     {
-//        //Update Event
-//        this.event.setFormButtonPressed(index);
+        //Reset the states
+        this.event.resetOldTestPageElement();
+        //Update Event
+        this.event.setCodeState(1);
     }
 
-    private void fillIssuesPanel()
+    private void testElementComboBoxChange()
     {
-        this.issuesPanel = new JPanel();
-        this.issuesPanel.setLayout(new BoxLayout(this.testComponentPanel, BoxLayout.Y_AXIS));
+        //Change the display state in the event object
+        this.event.setTestElementShowCode(this.comboBox1.getSelectedIndex());
 
-//        /* Add the Issue Elements */
-//        //Collect the array List of TestElements form the test Object
-//        ArrayList<IssueElement> issueElements = this.testObject.getIssueElements();
-//
-//        //Loop though all the elements
-//        for (int i = 0; i < issueElements.size(); i++)
-//        {
-//            //Create the elements
-//            IssuesComponentElement issuesComponentElement = new IssuesComponentElement(issueElements.get(i), this.event);
-//
-//            //Collect the JPanel element
-//            JPanel issueElementPanel = issuesComponentElement.requestElement();
-//
-//            // Create a container panel for each element
-//            JPanel issuesContainerPanel = new JPanel();
-//            issuesContainerPanel.setLayout(new BoxLayout(issuesContainerPanel, BoxLayout.Y_AXIS));
-//
-//            // Add the element panel to the container panel
-//            issuesContainerPanel.add(issueElementPanel);
-//
-//            // Set the maximum height for the container panel
-//            issuesContainerPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-//
-//            // Add the container panel to the history panel
-//            this.issuesPanel.add(issuesContainerPanel);
-//
-//            // Add vertical spacing between elements
-//            if (i < issueElements.size() - 1)
-//            {
-//                this.issuesPanel.add(Box.createVerticalStrut(5));
-//            }
-//
-//            this.issuesPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-//
-//        }
+        this.event.setOldTestPageTestComponentComboBoxSelected(this.comboBox1.getSelectedIndex());
+
+        //Update the page again
+        this.event.requestPageRefresh();
     }
 
-    private void fillTestComponentPanel() {
-//        // Create the JPanel Object
-//        this.testComponentPanel = new JPanel();
-//
-//        // Set Up the Border Properties
-//        this.testComponentPanel.setLayout(new BoxLayout(this.testComponentPanel, BoxLayout.Y_AXIS));
-//
-//
-//
-//        //Collect the array List of TestElements form the test Object
-//        ArrayList<TestElement> testElements = this.testObject.getTestElements();
-//
-//        //Loop though all the elements
-//        for (int i = 0; i < testElements.size(); i++)
-//        {
-//            //Create the elements
-//            TestComponentElement testComponentElement = new TestComponentElement(this.event, testElements.get(i));
-//
-//            //Collect the JPanel element
-//            JPanel testElementPanel = testComponentElement.requestElement();
-//
-//            // Create a container panel for each element
-//            JPanel testsContainerPanel = new JPanel();
-//            testsContainerPanel.setLayout(new BoxLayout(testsContainerPanel, BoxLayout.Y_AXIS));
-//
-//            // Add the element panel to the container panel
-//            testsContainerPanel.add(testElementPanel);
-//
-//            // Set the maximum height for the container panel
-//            testsContainerPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-//
-//            // Add the container panel to the history panel
-//            this.testComponentPanel.add(testsContainerPanel);
-//
-//            // Add vertical spacing between elements
-//            if (i < testElements.size() - 1) {
-//                this.testComponentPanel.add(Box.createVerticalStrut(5));
-//            }
-//
-//        }
-//
-//        //setUp a margin for elements
-//        this.testComponentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-//
-    }
 }

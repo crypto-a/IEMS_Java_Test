@@ -246,7 +246,9 @@
                         </constraints>
                         <properties>
                           <model>
-                            <item value=" &lt; Select An Option &gt; "/>
+                            <item value="All Tests"/>
+                            <item value="Passed Tests"/>
+                            <item value="Failed Tests"/>
                           </model>
                         </properties>
                       </component>
@@ -287,7 +289,9 @@
                         </constraints>
                         <properties>
                           <model>
-                            <item value=" &lt; Select An Option &gt;"/>
+                            <item value="All Issues"/>
+                            <item value="Open Issues"/>
+                            <item value="Closed Issues"/>
                           </model>
                         </properties>
                       </component>

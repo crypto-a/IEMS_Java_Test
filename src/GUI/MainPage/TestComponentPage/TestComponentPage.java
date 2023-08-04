@@ -122,7 +122,7 @@ public class TestComponentPage
             public void actionPerformed(ActionEvent e)
             {
                 //Update the event property
-                formButtonClicked(1);
+                formButtonClicked();
             }
         });
 
@@ -144,10 +144,10 @@ public class TestComponentPage
         this.testDetailsTree = new JTree(this.rootNode);
     }
 
-    private void formButtonClicked(int index)
+    private void formButtonClicked()
     {
-//        //Update Event
-//        this.event.setFormButtonPressed(index);
+        //Update Event
+        this.event.setCodeState(3);
     }
 
 }

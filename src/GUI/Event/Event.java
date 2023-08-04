@@ -13,21 +13,29 @@ import java.util.Arrays;
 public class Event
 {
     private int codeState;
+    private int previousCodeState;
     private Database database;
     private Object[] userAuthFields;
     private final Boolean[] formButtonsClicked;
-
     private ArrayList<TestObject> testObjectDisplayArrayList;
     private ArrayList<TestElement> testElementDisplayArrayList;
     private ArrayList<IssueElement> issueElementDisplayArrayList;
-
+    private ArrayList<IssueElement> openIssueElementDisplayArrayList;
     private String[] userInputs;
-
     private TestElement selectedTestElement;
     private IssueElement selectedIssueElement;
     private TestObject selectedTestObject;
     private Object[] dataUpdateInfo;
     private Boolean isDataUpdated;
+
+    private int testElementShowCode;
+    private int issueElementShowCode;
+
+    private int oldTestPageTestComponentComboBoxSelected;
+    private int oldTestPageIssuesComboBoxSelected;
+    private int oldTestPagePanelSelected;
+
+    public Boolean refreshNeeded;
 
     public Event()
     {
@@ -40,6 +48,9 @@ public class Event
 
         //Set up is dataUpdated to true
         this.isDataUpdated = true;
+
+        //Set Up the refresh needed
+        this.refreshNeeded = false;
     }
 
     public TestObject getSelectedTestObject()
@@ -71,6 +82,7 @@ public class Event
 
     public void setSelectedIssueElement(IssueElement selectedIssueElement)
     {
+        //Change the property
         this.selectedIssueElement = selectedIssueElement;
     }
 
@@ -85,9 +97,6 @@ public class Event
     }
 
     private int testObjectOperationState;
-
-
-
 
     public void setFormButtonsClicked(int index)
     {
@@ -124,6 +133,9 @@ public class Event
 
     public void setCodeState(int codeState)
     {
+        //Save the previous code state
+        this.previousCodeState = this.codeState;
+
         //Set the new Value of the Code state
         this.codeState = codeState;
     }
@@ -146,7 +158,45 @@ public class Event
 
     public ArrayList<TestElement> getTestElementDisplayArrayList()
     {
-        return testElementDisplayArrayList;
+        ArrayList<TestElement> pushedTestElementDisplayArrayList = new ArrayList<TestElement>();
+
+        //filter to get the required arrayList
+        switch (this.testElementShowCode)
+        {
+            case 0 ->
+            {
+                //If the user wants to see all the tests
+                pushedTestElementDisplayArrayList.addAll(this.testElementDisplayArrayList);
+            }
+            case 1 ->
+            {
+                //If the user only wants the passed tests
+                for (TestElement testElement : this.testElementDisplayArrayList)
+                {
+                    if (testElement.getDidPass())
+                    {
+                        //Add it to the arrayList
+                        pushedTestElementDisplayArrayList.add(testElement);
+                    }
+                }
+            }
+            case 2 ->
+            {
+                //If the user only wants failed tests
+                for (TestElement testElement : this.testElementDisplayArrayList)
+                {
+
+                    if (!(testElement.getDidPass()))
+                    {
+                        //Add it to that arrayList
+                        pushedTestElementDisplayArrayList.add(testElement);
+                    }
+                }
+            }
+        }
+
+        //Return the ArrayList
+        return pushedTestElementDisplayArrayList;
     }
 
     public void setTestElementDisplayArrayList(ArrayList<TestElement> testElementDisplayArrayList)
@@ -218,5 +268,101 @@ public class Event
 
         //return dataUpdateInfo
         return this.dataUpdateInfo;
+    }
+
+    public ArrayList<IssueElement> getOpenIssueElementDisplayArrayList()
+    {
+        return openIssueElementDisplayArrayList;
+    }
+
+    public void setOpenIssueElementDisplayArrayList(ArrayList<IssueElement> openIssueElementDisplayArrayList)
+    {
+        //set the value of the open Issues ArrayList
+        this.openIssueElementDisplayArrayList = openIssueElementDisplayArrayList;
+    }
+
+    public void getPreviousCodeState()
+    {
+        //Change the code state to the prevoius code state
+        this.codeState = this.previousCodeState;
+    }
+
+    public int getTestElementShowCode()
+    {
+        return testElementShowCode;
+    }
+
+    public void setTestElementShowCode(int testElementShowCode)
+    {
+        this.testElementShowCode = testElementShowCode;
+    }
+
+    public int getIssueElementShowCode()
+    {
+        return issueElementShowCode;
+    }
+
+    public void setIssueElementShowCode(int issueElementShowCode)
+    {
+        this.issueElementShowCode = issueElementShowCode;
+    }
+
+    public void requestPageRefresh()
+    {
+        this.refreshNeeded = true;
+    }
+
+    public Boolean getRefreshNeeded()
+    {
+        if (this.refreshNeeded)
+        {
+            this.refreshNeeded = false;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public int getOldTestPageTestComponentComboBoxSelected()
+    {
+        return oldTestPageTestComponentComboBoxSelected;
+    }
+
+    public void setOldTestPageTestComponentComboBoxSelected(int oldTestPageTestComponentComboBoxSelected)
+    {
+        this.oldTestPageTestComponentComboBoxSelected = oldTestPageTestComponentComboBoxSelected;
+    }
+
+    public int getOldTestPageIssuesComboBoxSelected()
+    {
+        return oldTestPageIssuesComboBoxSelected;
+    }
+
+    public void setOldTestPageIssuesComboBoxSelected(int oldTestPageIssuesComboBoxSelected)
+    {
+        this.oldTestPageIssuesComboBoxSelected = oldTestPageIssuesComboBoxSelected;
+    }
+
+    public int getOldTestPagePanelSelected()
+    {
+        return oldTestPagePanelSelected;
+    }
+
+    public void setOldTestPagePanelSelected(int oldTestPagePanelSelected)
+    {
+        this.oldTestPagePanelSelected = oldTestPagePanelSelected;
+    }
+
+    public void resetOldTestPageElement()
+    {
+        //Reset the selected elements
+        this.oldTestPageIssuesComboBoxSelected = 0;
+        this.oldTestPageTestComponentComboBoxSelected = 0;
+        this.oldTestPagePanelSelected = 0;
+
+        //Reset the show code
+        this.testElementShowCode = 0;
+        this.issueElementShowCode = 0;
     }
 }

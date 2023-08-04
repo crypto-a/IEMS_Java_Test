@@ -113,10 +113,61 @@ public class TestEngine
         /* Push the TestObjects to the event object */
         this.event.setTestObjectDisplayArrayList(this.testObjectArrayList);
 
-        this.event.setTestElementDisplayArrayList(this.testElementArrayList);
+        ArrayList<IssueElement> openIssuesArrayList = new ArrayList<IssueElement>();
 
-        this.event.setIssueElementDisplayArrayList(this.issueElementArrayList);
+        //Loop through all issues
+        for (IssueElement issueElement : this.issueElementArrayList)
+        {
+            //If the issue is open
+            if (issueElement.getIsIssueOpen())
+            {
+                //Add the object to the arrayList
+                openIssuesArrayList.add(issueElement);
+            }
+        }
+
+        //Add it to the event object
+        this.event.setOpenIssueElementDisplayArrayList(openIssuesArrayList);
     }
+
+    public void pushDisplayObjectsToEventForOldTestDisplay(TestObject testObject)
+    {
+        //create the arraylists that will be pushed
+        ArrayList<TestElement> testElementArrayListToPush = new ArrayList<TestElement>();
+        ArrayList<IssueElement> issueElementArrayListToPush = new ArrayList<IssueElement>();
+
+        //Loop trough every test element
+        for (TestElement testElement: this.testElementArrayList)
+        {
+            //If the id is in the arrayList
+            if (testObject.getTestElements().contains(new ObjectId(testElement.getTestID())))
+            {
+                //Add the object to the to push array List
+                testElementArrayListToPush.add(testElement);
+            }
+        }
+
+        //Push it to event
+        this.event.setTestElementDisplayArrayList(testElementArrayListToPush);
+
+        //loop through every issue element
+        for (IssueElement issueElement: this.issueElementArrayList)
+        {
+            //Check if it is contained in the obvjects issue arraylost
+            if (testObject.getIssueElements().contains(new ObjectId(issueElement.getIssueID())))
+            {
+                //Add the object to the array list
+                issueElementArrayListToPush.add(issueElement);
+            }
+        }
+
+        //Push the to push array list to the event object to get displayed
+        this.event.setIssueElementDisplayArrayList(issueElementArrayListToPush);
+
+
+    }
+
+
 
 
 }

@@ -88,7 +88,7 @@ public class MainContent
         this.issuesPanel = new JPanel();
         this.issuesPanel.setLayout(new BoxLayout(this.issuesPanel, BoxLayout.Y_AXIS));
 
-        ArrayList<IssueElement> issuesList = this.event.getIssueElementDisplayArrayList();
+        ArrayList<IssueElement> issuesList = this.event.getOpenIssueElementDisplayArrayList();
 
         //Loop through all the issues
         for (int i = 0; i < issuesList.size(); i++)

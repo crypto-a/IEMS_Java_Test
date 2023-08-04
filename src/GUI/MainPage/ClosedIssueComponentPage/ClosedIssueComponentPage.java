@@ -68,7 +68,7 @@ public class ClosedIssueComponentPage
 
     private void backButtonClicked()
     {
-//        //Submit the form
-//        this.event.setFormButtonPressed(1);
+        //Go back to the previous page
+        this.event.getPreviousCodeState();
     }
 }

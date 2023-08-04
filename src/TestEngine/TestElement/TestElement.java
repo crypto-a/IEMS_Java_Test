@@ -273,4 +273,9 @@ public class TestElement
             return "Failed";
         }
     }
+
+    public String getTestLog()
+    {
+        return this.testLog;
+    }
 }

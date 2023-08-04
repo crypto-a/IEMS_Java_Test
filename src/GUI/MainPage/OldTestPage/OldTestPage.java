@@ -5,23 +5,19 @@ import GUI.MainPage.OldTestPage.IssuesComponentElement.IssuesComponentElement;
 import GUI.MainPage.OldTestPage.TestComponentElement.TestComponentElement;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
-import TestEngine.TestEngine;
 import TestEngine.TestObject.TestObject;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class OldTestPage
 {
     private JButton returnButton;
     private JPanel mainPanel;
-    private JList list1;
+    private JList testLogs;
     private JLabel testID;
     private JLabel testIssuer;
     private JLabel targetedWebPage;
@@ -39,6 +35,7 @@ public class OldTestPage
     private JPanel testComponentElementsPanel;
     private JComboBox comboBox2;
     private JPanel issuesElementPanel;
+    private JScrollPane testLogsScrollPanel;
     private final Event event;
     private final TestObject testObject;
 
@@ -55,7 +52,7 @@ public class OldTestPage
         this.targetedWebPage.setText(this.testObject.getTargetedWebPage());
         this.webPageURL.setText(this.testObject.getWebPageURL());
         this.testDate.setText(this.testObject.getTestDate());
-        this.testTime.setText(this.testObject.getTestTime());
+        this.testTime.setText(this.testObject.getTestStartTime());
         this.testDuration.setText(this.testObject.getDuration());
         this.issuesFound.setText(this.testObject.getIssueNum() + " Issues found");
 
@@ -64,48 +61,18 @@ public class OldTestPage
         this.comboBox1.setSelectedIndex(this.event.getOldTestPageTestComponentComboBoxSelected());
         this.comboBox2.setSelectedIndex(this.event.getOldTestPageIssuesComboBoxSelected());
         this.tabbedPane1.setSelectedIndex(this.event.getOldTestPagePanelSelected());
-        //ToDo
 
-        this.returnButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                //Update the event property
-                formButtonClicked();
-            }
-        });
+        //Add the content to the JList
 
-        this.comboBox1.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                //Run the code for the change in the combobox
-                testElementComboBoxChange();
-            }
-        });
+        //Clear the test logs
+        this.testLogs.setListData(this.event.getTestLogsArrayList());
 
-        this.comboBox2.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                //Run the code for the change in the combobox
-                issueElementComboBoxChange();
-            }
-        });
 
-        this.tabbedPane1.addChangeListener(new ChangeListener()
-        {
-            @Override
-            public void stateChanged(ChangeEvent e)
-            {
-                //Run the related function to change the tabs
-                tabbedPanelChange();
-            }
-        });
-
+        //Set Up the action listeners
+        this.returnButton.addActionListener(e -> formButtonClicked());
+        this.comboBox1.addActionListener(e -> testElementComboBoxChange());
+        this.comboBox2.addActionListener(e -> issueElementComboBoxChange());
+        this.tabbedPane1.addChangeListener(e -> tabbedPanelChange());
     }
 
     public JPanel requestContent()
@@ -184,8 +151,6 @@ public class OldTestPage
         //Set Up margins for elements
         this.testComponentElementsPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         this.issuesElementPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-
     }
 
     private void formButtonClicked()

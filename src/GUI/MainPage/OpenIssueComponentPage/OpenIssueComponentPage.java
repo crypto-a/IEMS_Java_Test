@@ -46,23 +46,9 @@ public class OpenIssueComponentPage
         this.errorMessage.setText(this.issueElement.getErrorMessage());
 
         //SetAUp action Listiners
-        this.backButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                backButtonClicked();
-            }
-        });
+        this.backButton.addActionListener(e -> backButtonClicked());
 
-        this.closeIssueButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                closeButtonClicked();
-            }
-        });
+        this.closeIssueButton.addActionListener(e -> closeButtonClicked());
     }
 
     public JPanel requestContent()

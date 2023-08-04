@@ -184,23 +184,18 @@
             <properties/>
             <border type="none" title="TestLogs"/>
             <children>
-              <scrollpane id="a4bcd">
+              <scrollpane id="a4bcd" binding="testLogsScrollPanel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="9e9b2" class="javax.swing.JList" binding="list1" default-binding="true">
+                  <component id="9e9b2" class="javax.swing.JList" binding="testLogs">
                     <constraints/>
                     <properties>
                       <font name="Monospaced" size="14" style="0"/>
-                      <model>
-                        <item value="Passed"/>
-                        <item value="Passed"/>
-                        <item value="Failed"/>
-                        <item value="Passed"/>
-                      </model>
+                      <model/>
                     </properties>
                   </component>
                 </children>

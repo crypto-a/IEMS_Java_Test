@@ -185,7 +185,7 @@ public class TestObject
         return this.testStartTime.toString().split("T")[0];
     }
 
-    public String getTestTime()
+    public String getTestStartTime()
     {
         //Return the time
         return this.testStartTime.toString().split("T")[1].split("\\.")[0];
@@ -245,4 +245,14 @@ public class TestObject
     }
 
 
+    public String getTestEndTime()
+    {
+        //Return the time
+        return this.testEndTime.toString().split("T")[1].split("\\.")[0];
+    }
+
+    public String getTestDuration()
+    {
+        return this.testDuration.toString();
+    }
 }

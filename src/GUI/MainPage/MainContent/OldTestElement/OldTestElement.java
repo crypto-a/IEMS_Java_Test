@@ -26,7 +26,7 @@ public class OldTestElement
 
         this.testDate.setText(this.testObject.getTestDate());
 
-        this.testTime.setText(this.testObject.getTestTime());
+        this.testTime.setText(this.testObject.getTestStartTime());
 
         this.detailsButton.addActionListener(new ActionListener()
         {

@@ -25,7 +25,6 @@ public class MainPage
     private JButton logOutButton;
     private JPanel contentPanel;
     private JLabel nameField;
-    private JButton button1;
     private JButton refreshUIButton;
 
     private final User user;

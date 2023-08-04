@@ -3,7 +3,6 @@ package GUI.Event;
 import Database.Database;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
-import TestEngine.TestEngine;
 import TestEngine.TestObject.TestObject;
 
 import org.bson.Document;
@@ -21,6 +20,7 @@ public class Event
     private ArrayList<TestElement> testElementDisplayArrayList;
     private ArrayList<IssueElement> issueElementDisplayArrayList;
     private ArrayList<IssueElement> openIssueElementDisplayArrayList;
+    private ArrayList<String> testLogsDisplayArrayList;
     private String[] userInputs;
     private TestElement selectedTestElement;
     private IssueElement selectedIssueElement;
@@ -158,7 +158,7 @@ public class Event
 
     public ArrayList<TestElement> getTestElementDisplayArrayList()
     {
-        ArrayList<TestElement> pushedTestElementDisplayArrayList = new ArrayList<TestElement>();
+        ArrayList<TestElement> pushedTestElementDisplayArrayList = new ArrayList<>();
 
         //filter to get the required arrayList
         switch (this.testElementShowCode)
@@ -206,7 +206,52 @@ public class Event
 
     public ArrayList<IssueElement> getIssueElementDisplayArrayList()
     {
-        return issueElementDisplayArrayList;
+        //Create an Array list in witch the related files will be put
+        ArrayList<IssueElement> pushedIssueElementArrayList = new ArrayList<>();
+
+        switch (this.issueElementShowCode)
+        {
+            case 0 ->
+            {
+                //add all the object to the array list
+                pushedIssueElementArrayList.addAll(this.issueElementDisplayArrayList);
+            }
+
+            case 1 ->
+            {
+                /* If they only want to see open issues */
+
+                //loop through all the elements
+                for (IssueElement issueElement: this.issueElementDisplayArrayList)
+                {
+                    //Check if the issue sis open
+                    if (issueElement.getIsIssueOpen())
+                    {
+                        //Add it to the push arraylist
+                        pushedIssueElementArrayList.add(issueElement);
+                    }
+                }
+            }
+
+            case 2 ->
+            {
+                /* If they only want to see the closed Issues */
+
+                //loop through all the elements
+                for (IssueElement issueElement: this.issueElementDisplayArrayList)
+                {
+                    //Check if the issue sis Closed
+                    if (!(issueElement.getIsIssueOpen()))
+                    {
+                        //Add it to the push arraylist
+                        pushedIssueElementArrayList.add(issueElement);
+                    }
+                }
+            }
+        }
+
+        //Return the arrayList
+        return pushedIssueElementArrayList;
     }
 
     public void setIssueElementDisplayArrayList(ArrayList<IssueElement> issueElementDisplayArrayList)
@@ -364,5 +409,27 @@ public class Event
         //Reset the show code
         this.testElementShowCode = 0;
         this.issueElementShowCode = 0;
+    }
+
+    public String[] getTestLogsArrayList()
+    {
+        //Initialize the arrayList
+        this.testLogsDisplayArrayList = new ArrayList<>();
+
+        //Add the first statement to it
+        this.testLogsDisplayArrayList.add("Tests Started - Time: " + this.selectedTestObject.getTestStartTime());
+
+        //loop through all the issue elements
+        for (TestElement testElement: this.testElementDisplayArrayList)
+        {
+            //add the test log of that element to the arraylist
+            this.testLogsDisplayArrayList.add(testElement.getTestLog());
+        }
+
+        //Add Final Statement
+        this.testLogsDisplayArrayList.add("Tests Ended - Time: " + this.selectedTestObject.getTestEndTime());
+
+        //Retunr the arraylist
+        return this.testLogsDisplayArrayList.toArray(new String[0]);
     }
 }

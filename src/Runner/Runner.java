@@ -292,7 +292,7 @@ public class Runner
         if (this.event.getSelectedIssueElement().getIsIssueOpen())
         {
             //Loop Until the page is submitted
-            while (this.event.getCodeState() == 5)
+            while (true)
             {
                 //Sleep
                 this.sleep(30);
@@ -304,6 +304,11 @@ public class Runner
                 {
                     //break out of the loop
                     break;
+                }
+                if (this.event.getCodeState() != 5)
+                {
+                    //return out of the method
+                    return;
                 }
             }
 

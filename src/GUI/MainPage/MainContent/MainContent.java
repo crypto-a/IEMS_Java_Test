@@ -40,6 +40,12 @@ public class MainContent
         //SetUp object Properties
         this.event = event;
 
+        //Set up the panel selected
+        this.tabbedPane1.setSelectedIndex(this.event.getMainPagePanelSelected());
+
+        //Set up an event listener for the changes in the panels
+        this.tabbedPane1.addChangeListener(e -> mainPagePanelChange());
+
     }
 
     public JPanel requestContent()
@@ -120,5 +126,11 @@ public class MainContent
 
         // Add margin to the issuesPanel
         this.issuesPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+    }
+
+    private void mainPagePanelChange()
+    {
+        //Save the change to the event object
+        this.event.setMainPagePanelSelected(this.tabbedPane1.getSelectedIndex());
     }
 }

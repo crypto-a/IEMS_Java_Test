@@ -34,7 +34,7 @@ public class Event
     private int oldTestPageTestComponentComboBoxSelected;
     private int oldTestPageIssuesComboBoxSelected;
     private int oldTestPagePanelSelected;
-
+    private int mainPagePanelSelected;
     public Boolean refreshNeeded;
 
     public Event()
@@ -51,6 +51,9 @@ public class Event
 
         //Set Up the refresh needed
         this.refreshNeeded = false;
+
+        //Set the iitial value of the mainPagePanelSelected to zero
+        this.mainPagePanelSelected = 0;
     }
 
     public TestObject getSelectedTestObject()
@@ -431,5 +434,15 @@ public class Event
 
         //Retunr the arraylist
         return this.testLogsDisplayArrayList.toArray(new String[0]);
+    }
+
+    public int getMainPagePanelSelected()
+    {
+        return mainPagePanelSelected;
+    }
+
+    public void setMainPagePanelSelected(int mainPagePanelSelected)
+    {
+        this.mainPagePanelSelected = mainPagePanelSelected;
     }
 }

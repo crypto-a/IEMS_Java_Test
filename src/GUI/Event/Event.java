@@ -30,12 +30,14 @@ public class Event
 
     private int testElementShowCode;
     private int issueElementShowCode;
-
     private int oldTestPageTestComponentComboBoxSelected;
     private int oldTestPageIssuesComboBoxSelected;
     private int oldTestPagePanelSelected;
     private int mainPagePanelSelected;
+    private int mainPageTestObjectSortComboBoxSelect;
     public Boolean refreshNeeded;
+    private Boolean sortRequested;
+
 
     public Event()
     {
@@ -54,6 +56,7 @@ public class Event
 
         //Set the iitial value of the mainPagePanelSelected to zero
         this.mainPagePanelSelected = 0;
+        this.sortRequested = false;
     }
 
     public TestObject getSelectedTestObject()
@@ -444,5 +447,38 @@ public class Event
     public void setMainPagePanelSelected(int mainPagePanelSelected)
     {
         this.mainPagePanelSelected = mainPagePanelSelected;
+    }
+
+    public int getMainPageTestObjectSortComboBoxSelect()
+    {
+        return mainPageTestObjectSortComboBoxSelect;
+    }
+
+    public void setMainPageTestObjectSortComboBoxSelect(int mainPageTestObjectSortComboBoxSelect)
+    {
+        this.mainPageTestObjectSortComboBoxSelect = mainPageTestObjectSortComboBoxSelect;
+    }
+
+    public void requestSort()
+    {
+        this.sortRequested = true;
+    }
+
+    public Boolean isSortRequested()
+    {
+        //Check if a sort is requested
+        if(this.sortRequested)
+        {
+            //set the value to false
+            this.sortRequested = false;
+
+            //Return true to initialize sort
+            return true;
+        }
+        else
+        {
+            //Return false to not do an action
+            return false;
+        }
     }
 }

@@ -106,6 +106,9 @@ public class TestEngine
     {
         //Create the new Test Object and add it to the test arraylist and the ongoing test
         this.testObjectArrayList.add(new TestObject(user, targetedWebPage, webPageURL, webPageLoginInfo));
+
+        //Reset the sort button
+        this.event.setMainPageTestObjectSortComboBoxSelect(0);
     }
 
     public void pushDisplayObjectsToEvent()
@@ -171,6 +174,9 @@ public class TestEngine
     {
         //Call the merge sort function
         this.mergeSortAscending(this.testObjectArrayList);
+
+        //Push the new arrayList to event
+        this.pushTestObjectArrayListToEvent();
     }
 
     private void mergeSortAscending(ArrayList<TestObject> inputArrayList)
@@ -188,9 +194,21 @@ public class TestEngine
         //get the mid index
         int midIndex = inputLength / 2;
 
-        //Form the right side and left side of the arrayList
-        ArrayList<TestObject> leftHalf = (ArrayList<TestObject>) inputArrayList.subList(0, midIndex);
-        ArrayList<TestObject> rightHalf = (ArrayList<TestObject>) inputArrayList.subList(midIndex, inputLength);
+        //Create the left and right arrays
+        ArrayList<TestObject> leftHalf = new ArrayList<>();
+        ArrayList<TestObject> rightHalf = new ArrayList<>();
+
+        //Populate the leftHalf array
+        for (int i = 0; i < midIndex; i++)
+        {
+            leftHalf.add(inputArrayList.get(i));
+        }
+
+        //Populate the right half array
+        for (int i = midIndex; i < inputLength; i++)
+        {
+            rightHalf.add(inputArrayList.get(i));
+        }
 
         //Call the merge sort to add recursion
         mergeSortAscending(leftHalf);
@@ -248,10 +266,13 @@ public class TestEngine
             k++;
         }
     }
-    public void sortByNewToOld()
+    public void sortTestObjectsByOldToNew()
     {
         //Call the merge sort descending method
         this.mergeSortDescending(this.testObjectArrayList);
+
+        //Push the new arrayList to event
+        this.pushTestObjectArrayListToEvent();
     }
 
     private void mergeSortDescending(ArrayList<TestObject> inputArrayList)
@@ -269,9 +290,21 @@ public class TestEngine
         //get the mid index
         int midIndex = inputLength / 2;
 
-        //Form the right side and left side of the arrayList
-        ArrayList<TestObject> leftHalf = (ArrayList<TestObject>) inputArrayList.subList(0, midIndex);
-        ArrayList<TestObject> rightHalf = (ArrayList<TestObject>) inputArrayList.subList(midIndex, inputLength);
+        //Create the left and right arrays
+        ArrayList<TestObject> leftHalf = new ArrayList<>();
+        ArrayList<TestObject> rightHalf = new ArrayList<>();
+
+        //Populate the leftHalf array
+        for (int i = 0; i < midIndex; i++)
+        {
+            leftHalf.add(inputArrayList.get(i));
+        }
+
+        //Populate the right half array
+        for (int i = midIndex; i < inputLength; i++)
+        {
+            rightHalf.add(inputArrayList.get(i));
+        }
 
         //Call the merge sort to add recursion
         mergeSortDescending(leftHalf);
@@ -328,6 +361,12 @@ public class TestEngine
             j++;
             k++;
         }
+    }
+
+    public void pushTestObjectArrayListToEvent()
+    {
+        //Change the value in the event object
+        this.event.setTestObjectDisplayArrayList(this.testObjectArrayList);
     }
 
 }

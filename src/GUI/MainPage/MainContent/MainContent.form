@@ -153,9 +153,7 @@
                           <model>
                             <item value="&lt;Select an Option&gt;"/>
                             <item value="Newest to oldest"/>
-                            <item value="Name"/>
-                            <item value="Date"/>
-                            <item value="Time"/>
+                            <item value="Oldest to Newest"/>
                           </model>
                         </properties>
                       </component>

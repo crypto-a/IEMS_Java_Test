@@ -151,11 +151,7 @@ public class Runner
         //Update the ui
         this.gui.updateMainPage();
 
-        while(this.event.getCodeState() == 1)
-        {
-            //Sleep
-            this.sleep(30);
-        }
+        this.waitTillAction(1);
     }
 
     private void sleep(int milliseconds)
@@ -189,15 +185,9 @@ public class Runner
                 e.printStackTrace();
             }
 
-            //Check for Data Update
-            this.checkForUpdates();
+            //Do the regular checks the computer has to constantly do
+            this.regularChecks();
 
-            //Check to see if the page needs refreshing
-            if (this.event.getRefreshNeeded())
-            {
-                //Update ui
-                this.gui.updateMainPage();
-            }
         }
     }
 
@@ -345,6 +335,32 @@ public class Runner
             this.gui.updateMainPage();
 
             //ToDo: this code must be more customized
+        }
+    }
+
+    private void regularChecks()
+    {
+        //Check for Data Update
+        this.checkForUpdates();
+
+        //Check if the sort requests
+        if (this.event.isSortRequested())
+        {
+
+            //See what scenario there is and sort based of that
+            switch (this.event.getMainPageTestObjectSortComboBoxSelect())
+            {
+                case 0 -> this.testEngine.pushDisplayObjectsToEvent();
+                case 1 -> this.testEngine.sortTestObjectsByNewToOld();
+                case 2 -> this.testEngine.sortTestObjectsByOldToNew();
+            }
+        }
+
+        //Check to see if the page needs refreshing
+        if (this.event.getRefreshNeeded())
+        {
+            //Update ui
+            this.gui.updateMainPage();
         }
     }
 }

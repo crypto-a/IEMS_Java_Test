@@ -42,9 +42,11 @@ public class MainContent
 
         //Set up the panel selected
         this.tabbedPane1.setSelectedIndex(this.event.getMainPagePanelSelected());
+        this.comboBox1.setSelectedIndex(this.event.getMainPageTestObjectSortComboBoxSelect());
 
         //Set up an event listener for the changes in the panels
         this.tabbedPane1.addChangeListener(e -> mainPagePanelChange());
+        this.comboBox1.addActionListener(e -> sortRequest());
 
     }
 
@@ -132,5 +134,18 @@ public class MainContent
     {
         //Save the change to the event object
         this.event.setMainPagePanelSelected(this.tabbedPane1.getSelectedIndex());
+    }
+
+    private void sortRequest()
+    {
+
+        //Push the sort index to the event
+        this.event.setMainPageTestObjectSortComboBoxSelect(this.comboBox1.getSelectedIndex());
+
+        //request a sort
+        this.event.requestSort();
+
+        //RequestUI Update
+        this.event.requestPageRefresh();
     }
 }

@@ -167,7 +167,167 @@ public class TestEngine
 
     }
 
+    public void sortTestObjectsByNewToOld()
+    {
+        //Call the merge sort function
+        this.mergeSortAscending(this.testObjectArrayList);
+    }
 
+    private void mergeSortAscending(ArrayList<TestObject> inputArrayList)
+    {
+        //Get the length of the input Array
+        int inputLength = inputArrayList.size();
 
+        //check if the input length is less than two then it breaks
+        if (inputLength < 2)
+        {
+            //break out of the method
+            return;
+        }
+
+        //get the mid index
+        int midIndex = inputLength / 2;
+
+        //Form the right side and left side of the arrayList
+        ArrayList<TestObject> leftHalf = (ArrayList<TestObject>) inputArrayList.subList(0, midIndex);
+        ArrayList<TestObject> rightHalf = (ArrayList<TestObject>) inputArrayList.subList(midIndex, inputLength);
+
+        //Call the merge sort to add recursion
+        mergeSortAscending(leftHalf);
+        mergeSortAscending(rightHalf);
+
+        //Merge the two arrayLists
+
+        //Merge the two methods
+        int leftSize = leftHalf.size();
+        int rightSize = rightHalf.size();
+
+        //Create the merge indexes
+        int i = 0, j = 0, k = 0;
+
+        while (i < leftSize && j < rightSize)
+        {
+
+            if (leftHalf.get(i).getTestDateTime().isAfter(rightHalf.get(j).getTestDateTime()))
+            {
+                //Add the i index of the left half to the input array
+                inputArrayList.set(k, leftHalf.get(i));
+
+                //incriment i
+                i++;
+            }
+            else
+            {
+                //Add the j index of the left half to the input array
+                inputArrayList.set(k, rightHalf.get(j));
+
+                //incriment j
+                j++;
+            }
+
+            k++;
+        }
+
+        while (i < leftSize)
+        {
+            //Add the i index of the left half to the input array
+            inputArrayList.set(k, leftHalf.get(i));
+
+            //incriment i and k
+            i++;
+            k++;
+        }
+
+        while (j < rightSize)
+        {
+            //Add the j index of the left half to the input array
+            inputArrayList.set(k, rightHalf.get(j));
+
+            //incriment j and k
+            j++;
+            k++;
+        }
+    }
+    public void sortByNewToOld()
+    {
+        //Call the merge sort descending method
+        this.mergeSortDescending(this.testObjectArrayList);
+    }
+
+    private void mergeSortDescending(ArrayList<TestObject> inputArrayList)
+    {
+        //Get the length of the input Array
+        int inputLength = inputArrayList.size();
+
+        //check if the input length is less than two then it breaks
+        if (inputLength < 2)
+        {
+            //break out of the method
+            return;
+        }
+
+        //get the mid index
+        int midIndex = inputLength / 2;
+
+        //Form the right side and left side of the arrayList
+        ArrayList<TestObject> leftHalf = (ArrayList<TestObject>) inputArrayList.subList(0, midIndex);
+        ArrayList<TestObject> rightHalf = (ArrayList<TestObject>) inputArrayList.subList(midIndex, inputLength);
+
+        //Call the merge sort to add recursion
+        mergeSortDescending(leftHalf);
+        mergeSortDescending(rightHalf);
+
+        //Merge the two arrayLists
+
+        //Merge the two methods
+        int leftSize = leftHalf.size();
+        int rightSize = rightHalf.size();
+
+        //Create the merge indexes
+        int i = 0, j = 0, k = 0;
+
+        while (i < leftSize && j < rightSize)
+        {
+
+            if (rightHalf.get(j).getTestDateTime().isAfter(leftHalf.get(i).getTestDateTime()))
+            {
+                //Add the i index of the left half to the input array
+                inputArrayList.set(k, leftHalf.get(i));
+
+                //incriment i
+                i++;
+            }
+            else
+            {
+                //Add the j index of the left half to the input array
+                inputArrayList.set(k, rightHalf.get(j));
+
+                //incriment j
+                j++;
+            }
+
+            k++;
+        }
+
+        while (i < leftSize)
+        {
+            //Add the i index of the left half to the input array
+            inputArrayList.set(k, leftHalf.get(i));
+
+            //incriment i and k
+            i++;
+            k++;
+        }
+
+        while (j < rightSize)
+        {
+            //Add the j index of the left half to the input array
+            inputArrayList.set(k, rightHalf.get(j));
+
+            //incriment j and k
+            j++;
+            k++;
+        }
+    }
 
 }

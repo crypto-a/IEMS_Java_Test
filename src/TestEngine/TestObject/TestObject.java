@@ -255,4 +255,10 @@ public class TestObject
     {
         return this.testDuration.toString();
     }
+
+    public LocalDateTime getTestDateTime()
+    {
+        //Return the start time
+        return testStartTime;
+    }
 }

@@ -15,7 +15,7 @@ public class Event
     private int previousCodeState;
     private Database database;
     private Object[] userAuthFields;
-    private final Boolean[] formButtonsClicked;
+    private Boolean[] formButtonsClicked;
     private ArrayList<TestObject> testObjectDisplayArrayList;
     private ArrayList<TestElement> testElementDisplayArrayList;
     private ArrayList<IssueElement> issueElementDisplayArrayList;
@@ -36,8 +36,12 @@ public class Event
     private int mainPagePanelSelected;
     private int mainPageTestObjectSortComboBoxSelect;
     public Boolean refreshNeeded;
-    private Boolean sortRequested;
+    private Boolean testObjectSortRequested;
+    private Boolean openIssuesSortRequested;
+    private ArrayList<String[]> usersList;
 
+    private int testHistoryPageIssuerComboBoxSelected;
+    private int openIssuesPageSortComboBoxSelected;
 
     public Event()
     {
@@ -54,9 +58,13 @@ public class Event
         //Set Up the refresh needed
         this.refreshNeeded = false;
 
-        //Set the iitial value of the mainPagePanelSelected to zero
+        //Set the initial value of the mainPagePanelSelected to zero
         this.mainPagePanelSelected = 0;
-        this.sortRequested = false;
+        this.testObjectSortRequested = false;
+        this.openIssuesSortRequested = false;
+
+        //Set the initial values for the filters
+        this.testHistoryPageIssuerComboBoxSelected = 0;
     }
 
     public TestObject getSelectedTestObject()
@@ -154,7 +162,37 @@ public class Event
 
     public ArrayList<TestObject> getTestObjectDisplayArrayList()
     {
+        //Create the pushtestaArrayLst
+        ArrayList<TestObject> pushTetsObjectArrayList = new ArrayList<>();
+
+        //Depending on the issue code
+        switch (this.testHistoryPageIssuerComboBoxSelected)
+        {
+            case 0 ->
+            {
+                pushTetsObjectArrayList.addAll(this.testObjectDisplayArrayList);
+            }
+            default ->
+            {
+                //get the users object ID
+               String userID = this.usersList.get(this.testHistoryPageIssuerComboBoxSelected - 1)[1];
+
+               //Loop through every element
+                for (TestObject testObject: this.testObjectDisplayArrayList)
+                {
+                    //check if it's made by that user
+                    if (testObject.getIssuerID().toString().equals(userID))
+                    {
+                        //add it to the push arrayList
+                        pushTetsObjectArrayList.add(testObject);
+                    }
+                }
+            }
+
+        }
+
         return testObjectDisplayArrayList;
+
     }
 
     public void setTestObjectDisplayArrayList(ArrayList<TestObject> testObjectDisplayArrayList)
@@ -323,6 +361,7 @@ public class Event
 
     public ArrayList<IssueElement> getOpenIssueElementDisplayArrayList()
     {
+        //Return the openIssues ArrayList
         return openIssueElementDisplayArrayList;
     }
 
@@ -459,18 +498,18 @@ public class Event
         this.mainPageTestObjectSortComboBoxSelect = mainPageTestObjectSortComboBoxSelect;
     }
 
-    public void requestSort()
+    public void requestTestObjectSort()
     {
-        this.sortRequested = true;
+        this.testObjectSortRequested = true;
     }
 
-    public Boolean isSortRequested()
+    public Boolean isTestObjectSortRequested()
     {
         //Check if a sort is requested
-        if(this.sortRequested)
+        if(this.testObjectSortRequested)
         {
             //set the value to false
-            this.sortRequested = false;
+            this.testObjectSortRequested = false;
 
             //Return true to initialize sort
             return true;
@@ -481,4 +520,63 @@ public class Event
             return false;
         }
     }
+
+    public ArrayList<String[]> getUsersList()
+    {
+        return usersList;
+    }
+
+    public void setUsersList(ArrayList<String[]> usersList)
+    {
+        this.usersList = usersList;
+    }
+
+    public void setPreviousCodeState(int previousCodeState)
+    {
+        this.previousCodeState = previousCodeState;
+    }
+
+    public int getTestHistoryPageIssuerComboBoxSelected()
+    {
+        return testHistoryPageIssuerComboBoxSelected;
+    }
+
+    public void setTestHistoryPageIssuerComboBoxSelected(int testHistoryPageIssuerComboBoxSelected)
+    {
+        this.testHistoryPageIssuerComboBoxSelected = testHistoryPageIssuerComboBoxSelected;
+    }
+
+    public int getOpenIssuesPageSortComboBoxSelected()
+    {
+        return openIssuesPageSortComboBoxSelected;
+    }
+
+    public void setOpenIssuesPageSortComboBoxSelected(int openIssuesPageSortComboBoxSelected)
+    {
+        this.openIssuesPageSortComboBoxSelected = openIssuesPageSortComboBoxSelected;
+    }
+
+    public void requestOpenIssuesSort()
+    {
+        this.openIssuesSortRequested = true;
+    }
+
+    public Boolean isOpenIssuesSortRequested()
+    {
+        //Check if a sort is requested
+        if(this.openIssuesSortRequested)
+        {
+            //set the value to false
+            this.openIssuesSortRequested = false;
+
+            //Return true to initialize sort
+            return true;
+        }
+        else
+        {
+            //Return false to not do an action
+            return false;
+        }
+    }
+
 }

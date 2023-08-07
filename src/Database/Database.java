@@ -16,6 +16,7 @@ import static com.mongodb.client.model.Filters.eq;
 import org.bson.types.ObjectId;
 
 import javax.print.Doc;
+import java.util.ArrayList;
 
 public class Database
 {
@@ -158,6 +159,35 @@ public class Database
 
         //Create the Update Document and add it to the database
         issueUnitsCollection.updateOne(new Document("_id", (Object) issueElement.get("_id")), new Document("$set", issueElement));
+    }
+
+    public void loadUsersList()
+    {
+        //Connect to the collection
+        MongoCollection<org.bson.Document> accountsCollection = this.database.getCollection("accounts");
+
+        // Create a projection document to specify the properties to include
+        //Get the data for the user with the given username form the database
+        Bson projectionFields = Projections.fields(
+                Projections.include("firstName", "lastName"),
+                Projections.include("_id"));
+
+        MongoCursor<Document> cursor  = accountsCollection.find().projection(projectionFields).iterator();
+
+        ArrayList<String[]> usersList = new ArrayList<>();
+
+        //loop through all the lists of users
+        while (cursor.hasNext())
+        {
+            //Get the next document
+            Document document = cursor.next();
+
+            //Add it to the usersList
+            usersList.add(new String[]{document.getString("firstName")+ " "+ document.getString("lastName"), document.get("_id").toString()});
+        }
+
+        //Return the usersList
+        this.event.setUsersList(usersList);
     }
 
 

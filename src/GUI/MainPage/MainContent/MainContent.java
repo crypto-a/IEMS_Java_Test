@@ -4,14 +4,8 @@ import GUI.Event.Event;
 import GUI.MainPage.MainContent.OldTestElement.OldTestElement;
 import GUI.MainPage.MainContent.OpenIssueElement.OpenIssueElement;
 import TestEngine.IssueElement.IssueElement;
-import TestEngine.TestElement.TestElement;
-import TestEngine.TestEngine;
+import User.User;
 import TestEngine.TestObject.TestObject;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -21,6 +15,7 @@ import java.util.ArrayList;
 public class MainContent
 {
     private final Event event;
+    private final User user;
 
     private JPanel MainPanel;
     private JTabbedPane tabbedPane1;
@@ -31,22 +26,49 @@ public class MainContent
     private JButton resetButton;
     private JButton clearButton;
     private JComboBox comboBox1;
-    private JComboBox comboBox2;
+    private JComboBox testHistoryIssuerComboBox;
     private JPanel issuesPanel;
     private JPanel testDisplayPanel;
+    private JComboBox comboBox2;
+    private JComboBox issuesIssuerComboBox;
 
-    public MainContent(Event event)
+    public MainContent(Event event, User user)
     {
         //SetUp object Properties
         this.event = event;
+        this.user = user;
+
+        //Set Up the values for the filters
+        ArrayList<String[]> userList = this.event.getUsersList();
+
+        //Create the userList array
+        String[] userNamesList = new String[userList.size() + 1];
+
+        //Add the first element
+        userNamesList[0] = " <Select An Option> ";
+
+        //Populate the userNameList
+        for (int i = 0; i < userList.size(); i++)
+        {
+            //add the names to the arraylist
+            userNamesList[i + 1] = userList.get(i)[0];
+        }
+
+        //Add the ArrayList to the issuer filters
+        this.testHistoryIssuerComboBox.setModel(new DefaultComboBoxModel(userNamesList));
 
         //Set up the panel selected
         this.tabbedPane1.setSelectedIndex(this.event.getMainPagePanelSelected());
         this.comboBox1.setSelectedIndex(this.event.getMainPageTestObjectSortComboBoxSelect());
+        this.comboBox2.setSelectedIndex(this.event.getOpenIssuesPageSortComboBoxSelected());
+        this.testHistoryIssuerComboBox.setSelectedIndex(this.event.getTestHistoryPageIssuerComboBoxSelected());
 
         //Set up an event listener for the changes in the panels
         this.tabbedPane1.addChangeListener(e -> mainPagePanelChange());
         this.comboBox1.addActionListener(e -> sortRequest());
+        this.testHistoryIssuerComboBox.addActionListener(e -> testSFilterRequest());
+        this.resetButton.addActionListener(e -> resetButtonClicked());
+        this.comboBox2.addActionListener(e -> openIssuesSortRequest());
 
     }
 
@@ -138,14 +160,41 @@ public class MainContent
 
     private void sortRequest()
     {
-
         //Push the sort index to the event
         this.event.setMainPageTestObjectSortComboBoxSelect(this.comboBox1.getSelectedIndex());
 
         //request a sort
-        this.event.requestSort();
+        this.event.requestTestObjectSort();
 
         //RequestUI Update
         this.event.requestPageRefresh();
     }
+
+    private void testSFilterRequest()
+    {
+        //push the item selected to the event object
+        this.event.setTestHistoryPageIssuerComboBoxSelected(this.testHistoryIssuerComboBox.getSelectedIndex());
+
+        //request a refresh
+        this.event.requestPageRefresh();
+    }
+
+    private void resetButtonClicked()
+    {
+        //reset the filter
+        this.testHistoryIssuerComboBox.setSelectedIndex(0);
+    }
+
+    private void openIssuesSortRequest()
+    {
+        //Push the sort index to the event
+        this.event.setOpenIssuesPageSortComboBoxSelected(this.comboBox2.getSelectedIndex());
+
+        //request a sort
+        this.event.requestOpenIssuesSort();
+
+        //RequestUI Update
+        this.event.requestPageRefresh();
+    }
+
 }

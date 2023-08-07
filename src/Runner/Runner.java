@@ -344,7 +344,7 @@ public class Runner
         this.checkForUpdates();
 
         //Check if the sort requests
-        if (this.event.isSortRequested())
+        if (this.event.isTestObjectSortRequested())
         {
 
             //See what scenario there is and sort based of that
@@ -353,6 +353,19 @@ public class Runner
                 case 0 -> this.testEngine.pushDisplayObjectsToEvent();
                 case 1 -> this.testEngine.sortTestObjectsByNewToOld();
                 case 2 -> this.testEngine.sortTestObjectsByOldToNew();
+            }
+        }
+
+        //Check if the sort requests
+        if (this.event.isOpenIssuesSortRequested())
+        {
+
+            //See what scenario there is and sort based of that
+            switch (this.event.getOpenIssuesPageSortComboBoxSelected())
+            {
+                case 0 -> this.testEngine.pushDisplayObjectsToEvent();
+                case 1 -> this.testEngine.sortOpenIssueObjectsByNewToOld();
+                case 2 -> this.testEngine.sortOpenIssueObjectsByOldToNew();
             }
         }
 

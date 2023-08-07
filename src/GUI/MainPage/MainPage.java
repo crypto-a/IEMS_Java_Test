@@ -39,32 +39,9 @@ public class MainPage
         this.user = user;
 
         //Setup action listeners for the buttons in the control panel
-        this.newTestButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                newTestButtonClicked();
-            }
-        });
-
-        this.logOutButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                logOutButtonClicked();
-            }
-        });
-
-        this.refreshUIButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                refreshButtonCLicked();
-            }
-        });
+        this.newTestButton.addActionListener(e -> newTestButtonClicked());
+        this.logOutButton.addActionListener(e -> logOutButtonClicked());
+        this.refreshUIButton.addActionListener(e -> refreshButtonCLicked());
     }
 
     public JPanel getMainPanel()
@@ -84,7 +61,7 @@ public class MainPage
             case 1 ->
             {
                 // Create the class of the content page
-                MainContent mainContent = new MainContent(this.event);
+                MainContent mainContent = new MainContent(this.event, this.user);
 
                 // Add it to the contentPanel, and specify the region to fill (CENTER in this case)
                 this.contentPanel.add(mainContent.requestContent(), BorderLayout.CENTER);

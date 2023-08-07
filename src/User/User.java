@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class User
 {
@@ -24,11 +25,13 @@ public class User
     private LocalDateTime lastLoginDate;
 
     private final Database database;
+    private final Event event;
     private final PasswordManager passwordManager;
 
     public User(Database database, Event event)
     {
         this.database = database;
+        this.event = event;
 
         //Create the password manager
         this.passwordManager = new PasswordManager();
@@ -61,7 +64,8 @@ public class User
             this.passwordManager.clearSavedUserID();
         }
 
-
+        //load the users lIst
+        this.loadUsersList();
     }
 
     private void loadUserInfo(Document userAuthenticationDocument)
@@ -166,5 +170,10 @@ public class User
 
         //clear the password saver
         this.passwordManager.clearSavedUserID();
+    }
+
+    private void loadUsersList()
+    {
+        this.database.loadUsersList();
     }
 }

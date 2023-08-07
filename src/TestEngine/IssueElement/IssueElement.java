@@ -203,4 +203,9 @@ public class IssueElement
 
         return issueDoc;
     }
+
+    public LocalDateTime getDateTime()
+    {
+        return this.occurringTime;
+    }
 }

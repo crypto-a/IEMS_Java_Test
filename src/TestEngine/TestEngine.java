@@ -116,21 +116,8 @@ public class TestEngine
         /* Push the TestObjects to the event object */
         this.event.setTestObjectDisplayArrayList(this.testObjectArrayList);
 
-        ArrayList<IssueElement> openIssuesArrayList = new ArrayList<>();
-
-        //Loop through all issues
-        for (IssueElement issueElement : this.issueElementArrayList)
-        {
-            //If the issue is open
-            if (issueElement.getIsIssueOpen())
-            {
-                //Add the object to the arrayList
-                openIssuesArrayList.add(issueElement);
-            }
-        }
-
         //Add it to the event object
-        this.event.setOpenIssueElementDisplayArrayList(openIssuesArrayList);
+        this.event.setOpenIssueElementDisplayArrayList(this.getOpenIssues());
     }
 
     public void pushDisplayObjectsToEventForOldTestDisplay(TestObject testObject)
@@ -173,13 +160,14 @@ public class TestEngine
     public void sortTestObjectsByNewToOld()
     {
         //Call the merge sort function
-        this.mergeSortAscending(this.testObjectArrayList);
+        this.testObjectsMergeSortAscending(this.testObjectArrayList);
 
         //Push the new arrayList to event
         this.pushTestObjectArrayListToEvent();
     }
 
-    private void mergeSortAscending(ArrayList<TestObject> inputArrayList)
+
+    private void testObjectsMergeSortAscending(ArrayList<TestObject> inputArrayList)
     {
         //Get the length of the input Array
         int inputLength = inputArrayList.size();
@@ -211,8 +199,8 @@ public class TestEngine
         }
 
         //Call the merge sort to add recursion
-        mergeSortAscending(leftHalf);
-        mergeSortAscending(rightHalf);
+        testObjectsMergeSortAscending(leftHalf);
+        testObjectsMergeSortAscending(rightHalf);
 
         //Merge the two arrayLists
 
@@ -269,13 +257,13 @@ public class TestEngine
     public void sortTestObjectsByOldToNew()
     {
         //Call the merge sort descending method
-        this.mergeSortDescending(this.testObjectArrayList);
+        this.testObjectsMergeSortDescending(this.testObjectArrayList);
 
         //Push the new arrayList to event
         this.pushTestObjectArrayListToEvent();
     }
 
-    private void mergeSortDescending(ArrayList<TestObject> inputArrayList)
+    private void testObjectsMergeSortDescending(ArrayList<TestObject> inputArrayList)
     {
         //Get the length of the input Array
         int inputLength = inputArrayList.size();
@@ -307,8 +295,8 @@ public class TestEngine
         }
 
         //Call the merge sort to add recursion
-        mergeSortDescending(leftHalf);
-        mergeSortDescending(rightHalf);
+        testObjectsMergeSortDescending(leftHalf);
+        testObjectsMergeSortDescending(rightHalf);
 
         //Merge the two arrayLists
 
@@ -369,4 +357,221 @@ public class TestEngine
         this.event.setTestObjectDisplayArrayList(this.testObjectArrayList);
     }
 
+    public void sortOpenIssueObjectsByNewToOld()
+    {
+        //Collect the open Issues
+        ArrayList<IssueElement> openIssues = this.getOpenIssues();
+
+        //Sort them
+        this.openIssuesMergeSortAscending(openIssues);
+
+        //push them to the event object
+        this.event.setOpenIssueElementDisplayArrayList(openIssues);
+    }
+
+    public void sortOpenIssueObjectsByOldToNew()
+    {
+        //Collect the open Issues
+        ArrayList<IssueElement> openIssues = this.getOpenIssues();
+
+        //Sort them
+        this.openIssuesMergeSortDescending(openIssues);
+
+        //push them to the event object
+        this.event.setOpenIssueElementDisplayArrayList(openIssues);
+    }
+
+    private ArrayList<IssueElement> getOpenIssues()
+    {
+        ArrayList<IssueElement> openIssuesArrayList = new ArrayList<>();
+
+        //Loop through all issues
+        for (IssueElement issueElement : this.issueElementArrayList)
+        {
+            //If the issue is open
+            if (issueElement.getIsIssueOpen())
+            {
+                //Add the object to the arrayList
+                openIssuesArrayList.add(issueElement);
+            }
+        }
+
+        return openIssuesArrayList;
+    }
+
+    private void openIssuesMergeSortAscending(ArrayList<IssueElement> inputArrayList)
+    {
+        //Get the length of the input Array
+        int inputLength = inputArrayList.size();
+
+        //check if the input length is less than two then it breaks
+        if (inputLength < 2)
+        {
+            //break out of the method
+            return;
+        }
+
+        //get the mid index
+        int midIndex = inputLength / 2;
+
+        //Create the left and right arrays
+        ArrayList<IssueElement> leftHalf = new ArrayList<>();
+        ArrayList<IssueElement> rightHalf = new ArrayList<>();
+
+        //Populate the leftHalf array
+        for (int i = 0; i < midIndex; i++)
+        {
+            leftHalf.add(inputArrayList.get(i));
+        }
+
+        //Populate the right half array
+        for (int i = midIndex; i < inputLength; i++)
+        {
+            rightHalf.add(inputArrayList.get(i));
+        }
+
+        //Call the merge sort to add recursion
+        openIssuesMergeSortAscending(leftHalf);
+        openIssuesMergeSortAscending(rightHalf);
+
+        //Merge the two arrayLists
+
+        //Merge the two methods
+        int leftSize = leftHalf.size();
+        int rightSize = rightHalf.size();
+
+        //Create the merge indexes
+        int i = 0, j = 0, k = 0;
+
+        while (i < leftSize && j < rightSize)
+        {
+
+            if (leftHalf.get(i).getDateTime().isAfter(rightHalf.get(j).getDateTime()))
+            {
+                //Add the i index of the left half to the input array
+                inputArrayList.set(k, leftHalf.get(i));
+
+                //incriment i
+                i++;
+            }
+            else
+            {
+                //Add the j index of the left half to the input array
+                inputArrayList.set(k, rightHalf.get(j));
+
+                //incriment j
+                j++;
+            }
+
+            k++;
+        }
+
+        while (i < leftSize)
+        {
+            //Add the i index of the left half to the input array
+            inputArrayList.set(k, leftHalf.get(i));
+
+            //incriment i and k
+            i++;
+            k++;
+        }
+
+        while (j < rightSize)
+        {
+            //Add the j index of the left half to the input array
+            inputArrayList.set(k, rightHalf.get(j));
+
+            //incriment j and k
+            j++;
+            k++;
+        }
+    }
+
+    private void openIssuesMergeSortDescending(ArrayList<IssueElement> inputArrayList)
+    {
+        //Get the length of the input Array
+        int inputLength = inputArrayList.size();
+
+        //check if the input length is less than two then it breaks
+        if (inputLength < 2)
+        {
+            //break out of the method
+            return;
+        }
+
+        //get the mid index
+        int midIndex = inputLength / 2;
+
+        //Create the left and right arrays
+        ArrayList<IssueElement> leftHalf = new ArrayList<>();
+        ArrayList<IssueElement> rightHalf = new ArrayList<>();
+
+        //Populate the leftHalf array
+        for (int i = 0; i < midIndex; i++)
+        {
+            leftHalf.add(inputArrayList.get(i));
+        }
+
+        //Populate the right half array
+        for (int i = midIndex; i < inputLength; i++)
+        {
+            rightHalf.add(inputArrayList.get(i));
+        }
+
+        //Call the merge sort to add recursion
+        openIssuesMergeSortDescending(leftHalf);
+        openIssuesMergeSortDescending(rightHalf);
+
+        //Merge the two arrayLists
+
+        //Merge the two methods
+        int leftSize = leftHalf.size();
+        int rightSize = rightHalf.size();
+
+        //Create the merge indexes
+        int i = 0, j = 0, k = 0;
+
+        while (i < leftSize && j < rightSize)
+        {
+
+            if (rightHalf.get(j).getDateTime().isAfter(leftHalf.get(i).getDateTime()))
+            {
+                //Add the i index of the left half to the input array
+                inputArrayList.set(k, leftHalf.get(i));
+
+                //incriment i
+                i++;
+            }
+            else
+            {
+                //Add the j index of the left half to the input array
+                inputArrayList.set(k, rightHalf.get(j));
+
+                //incriment j
+                j++;
+            }
+
+            k++;
+        }
+
+        while (i < leftSize)
+        {
+            //Add the i index of the left half to the input array
+            inputArrayList.set(k, leftHalf.get(i));
+
+            //incriment i and k
+            i++;
+            k++;
+        }
+
+        while (j < rightSize)
+        {
+            //Add the j index of the left half to the input array
+            inputArrayList.set(k, rightHalf.get(j));
+
+            //incriment j and k
+            j++;
+            k++;
+        }
+    }
 }

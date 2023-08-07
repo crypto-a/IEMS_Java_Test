@@ -1,6 +1,7 @@
 package TestEngine;
 
 import GUI.Event.Event;
+import SearchEngine.SearchEngine;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
 import TestEngine.TestObject.TestObject;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 public class TestEngine
 {
     private final Event event;
+    private final SearchEngine searchEngine;
     ArrayList<TestObject> testObjectArrayList = new ArrayList<>();
     ArrayList<TestElement> testElementArrayList = new ArrayList<>();
     ArrayList<IssueElement> issueElementArrayList = new ArrayList<>();
@@ -21,6 +23,12 @@ public class TestEngine
     {
         //Set up object properties
         this.event = event;
+
+        //Create the search engine for the testObjects
+        this.searchEngine = new SearchEngine();
+
+        //Add the search engin to the event object
+        this.event.setSearchEngine(this.searchEngine);
     }
 
     public void addIssueElement(Document issueDoc)
@@ -37,8 +45,14 @@ public class TestEngine
 
     public void addTestObject(Document testObjectDoc)
     {
+        //Create the test object
+        TestObject testObject =new TestObject(testObjectDoc);
+
         //add the testObjectODc to the testObjectArrayList
-        this.testObjectArrayList.add(new TestObject(testObjectDoc));
+        this.testObjectArrayList.add(testObject);
+
+        //Index the object to the search engine
+        this.searchEngine.index(testObjectDoc, testObject);
     }
 
     public TestObject getTestObject(String objectIDString)
@@ -165,8 +179,6 @@ public class TestEngine
         //Push the new arrayList to event
         this.pushTestObjectArrayListToEvent();
     }
-
-
     private void testObjectsMergeSortAscending(ArrayList<TestObject> inputArrayList)
     {
         //Get the length of the input Array

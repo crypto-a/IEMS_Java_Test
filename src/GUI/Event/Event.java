@@ -1,6 +1,7 @@
 package GUI.Event;
 
 import Database.Database;
+import SearchEngine.SearchEngine;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
 import TestEngine.TestObject.TestObject;
@@ -11,6 +12,8 @@ import java.util.Arrays;
 
 public class Event
 {
+    private int databaseLoadLimit;
+    private int databaseShowNumber;
     private int codeState;
     private int previousCodeState;
     private Database database;
@@ -27,7 +30,6 @@ public class Event
     private TestObject selectedTestObject;
     private Object[] dataUpdateInfo;
     private Boolean isDataUpdated;
-
     private int testElementShowCode;
     private int issueElementShowCode;
     private int oldTestPageTestComponentComboBoxSelected;
@@ -39,9 +41,10 @@ public class Event
     private Boolean testObjectSortRequested;
     private Boolean openIssuesSortRequested;
     private ArrayList<String[]> usersList;
-
+    private SearchEngine searchEngine;
     private int testHistoryPageIssuerComboBoxSelected;
     private int openIssuesPageSortComboBoxSelected;
+    private String searchQuery;
 
     public Event()
     {
@@ -65,6 +68,9 @@ public class Event
 
         //Set the initial values for the filters
         this.testHistoryPageIssuerComboBoxSelected = 0;
+
+        this.databaseLoadLimit = 20;
+        this.databaseShowNumber = 20;
     }
 
     public TestObject getSelectedTestObject()
@@ -579,4 +585,42 @@ public class Event
         }
     }
 
+    public void searchTestObject(String searchQuery)
+    {
+        //Set the value of the search query
+        this.searchQuery = searchQuery;
+
+        //do search
+        this.testObjectDisplayArrayList = this.searchEngine.search(this.searchQuery);
+    }
+
+    public void setSearchEngine(SearchEngine searchEngine)
+    {
+        this.searchEngine = searchEngine;
+    }
+
+    public String getSearchQuery()
+    {
+        return searchQuery;
+    }
+
+    public int getDatabaseLoadLimit()
+    {
+        return databaseLoadLimit;
+    }
+
+    public void setDatabaseLoadLimit(int databaseLoadLimit)
+    {
+        this.databaseLoadLimit = databaseLoadLimit;
+    }
+
+    public void setDatabaseShowNumber(int databaseShowNumber)
+    {
+        this.databaseShowNumber = databaseShowNumber;
+    }
+
+    public int getDatabaseShowNumber()
+    {
+        return databaseShowNumber;
+    }
 }

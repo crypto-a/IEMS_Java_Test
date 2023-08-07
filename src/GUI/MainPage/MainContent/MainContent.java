@@ -30,6 +30,7 @@ public class MainContent
     private JPanel issuesPanel;
     private JPanel testDisplayPanel;
     private JComboBox comboBox2;
+    private JSpinner spinner1;
     private JComboBox issuesIssuerComboBox;
 
     public MainContent(Event event, User user)
@@ -62,6 +63,8 @@ public class MainContent
         this.comboBox1.setSelectedIndex(this.event.getMainPageTestObjectSortComboBoxSelect());
         this.comboBox2.setSelectedIndex(this.event.getOpenIssuesPageSortComboBoxSelected());
         this.testHistoryIssuerComboBox.setSelectedIndex(this.event.getTestHistoryPageIssuerComboBoxSelected());
+        this.textField1.setText(this.event.getSearchQuery());
+        this.spinner1.setValue(this.event.getDatabaseShowNumber());
 
         //Set up an event listener for the changes in the panels
         this.tabbedPane1.addChangeListener(e -> mainPagePanelChange());
@@ -69,6 +72,9 @@ public class MainContent
         this.testHistoryIssuerComboBox.addActionListener(e -> testSFilterRequest());
         this.resetButton.addActionListener(e -> resetButtonClicked());
         this.comboBox2.addActionListener(e -> openIssuesSortRequest());
+        this.searchButton.addActionListener(e -> searchRequest());
+        this.clearButton.addActionListener(e -> clearSearch());
+        this.spinner1.addChangeListener(e -> databaseLoadChange());
 
     }
 
@@ -197,4 +203,32 @@ public class MainContent
         this.event.requestPageRefresh();
     }
 
+    private void searchRequest()
+    {
+        //Get the search object form the event and run the query
+        this.event.searchTestObject(this.textField1.getText());
+
+        //request update for mage
+        this.event.requestPageRefresh();
+    }
+
+    private void clearSearch()
+    {
+        //Reset the search
+        this.event.searchTestObject("");
+
+        //refresh page
+        this.event.requestPageRefresh();
+    }
+
+    private void databaseLoadChange()
+    {
+        if ((int) this.spinner1.getValue() < -1)
+        {
+            this.spinner1.setValue(-1);
+        }
+
+        //push the number to the event
+        this.event.setDatabaseShowNumber((int) this.spinner1.getValue());
+    }
 }

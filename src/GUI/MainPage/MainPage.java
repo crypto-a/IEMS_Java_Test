@@ -43,6 +43,7 @@ public class MainPage
         this.logOutButton.addActionListener(e -> logOutButtonClicked());
         this.refreshUIButton.addActionListener(e -> refreshButtonCLicked());
         this.usersButton.addActionListener(e -> usersButtonClicked());
+        this.mainButton.addActionListener(e -> mainButtonClicked());
     }
 
     public JPanel getMainPanel()
@@ -153,5 +154,15 @@ public class MainPage
     {
         //Change code state
         this.event.setCodeState(7);
+    }
+
+    private void mainButtonClicked()
+    {
+        //reset the panel in the main page
+        this.event.setMainPagePanelSelected(0);
+
+
+        //change the code state
+        this.event.setCodeState(1);
     }
 }

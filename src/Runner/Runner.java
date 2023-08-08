@@ -68,57 +68,15 @@ public class Runner
             //Make different pages run based on the codeState
             switch (codeState)
             {
-                case 0:
-                    /* If we are in the SignIn page */
-
-                    //Run the authentication method
-                    this.userAuthenticationPage();
-
-                    break;
-
-                case 1:
-                    /* If we are in the main page */
-
-                    //Run the main page method
-                    this.mainPage();
-
-                    break;
-
-                case 2:
-                    /* If we are in the new Test Page */
-
-                    //Run the new Test method
-                    this.newTestPage();
-
-                    break;
-                case 3:
-                    /* If we are in the Test Object Display Page */
-
-                    //Run the testObject page method
-                    this.testObjectPage();
-
-                    break;
-                case 4:
-                    /* If we are in the test element display page */
-
-                    //Run the test Element Page method
-                    this.testElementPage();
-
-                    break;
-                case 5:
-                    /* If we are in the issue element Display page */
-
-                    //Run the Issue element Page method
-                    this.issueElementPage();
-
-                    break;
-                case 6:
-                    /* If we are in the Settings page */
-
-                    //Run the settings page method
-                    this.settingPage();
-
-                    break;
+                case 0 -> this.userAuthenticationPage();
+                case 1 -> this.mainPage();
+                case 2 -> this.newTestPage();
+                case 3 -> this.testObjectPage();
+                case 4 -> this.testElementPage();
+                case 5 -> this.issueElementPage();
+                case 6 -> this.settingPage();
+                case 7 -> this.userListPage();
+                case 8 -> this.addUserPage();
             }
         }
     }
@@ -321,7 +279,29 @@ public class Runner
 
     private void settingPage()
     {
-        //ToDo
+        //Update the UI
+        this.gui.updateMainPage();
+
+        //wait until the code state changes
+        this.waitTillAction(6);
+    }
+
+    private void userListPage()
+    {
+        //Update the UI
+        this.gui.updateMainPage();
+
+        //wait until the code state changes
+        this.waitTillAction(7);
+    }
+
+    private void addUserPage()
+    {
+        //Update the UI
+        this.gui.updateMainPage();
+
+        //wait until the code state changes
+        this.waitTillAction(8);
     }
 
     private void checkForUpdates()

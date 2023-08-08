@@ -199,7 +199,7 @@ public class Runner
                 String[] userInputs = this.event.getAndResetUserInput();
 
                 //create the new test object
-                this.testEngine.createNewTestObject(this.user, userInputs[0], userInputs[1], new String[] {userInputs[2], userInputs[3]});
+                this.testEngine.createNewTestObject(this.user, userInputs[0], userInputs[1], userInputs[4], new String[] {userInputs[2], userInputs[3]});
 
             }
             case 1 ->

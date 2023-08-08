@@ -53,7 +53,7 @@ public class Event
     {
         //Set Up the Event properties
         this.formButtonsClicked = new Boolean[] {false, false};
-        this.userInputs = new String[4];
+        this.userInputs = new String[5];
 
         //Set the Initial Value of the Code State to Zero
         this.codeState = 0;
@@ -206,7 +206,8 @@ public class Event
 
         }
 
-        return testObjectDisplayArrayList;
+        //Retunr the values
+        return pushTetsObjectArrayList;
 
     }
 
@@ -678,5 +679,11 @@ public class Event
 
         //Send the confirmation email
         this.email.newUserEmail(userDoc.getString("firstName"), userDoc.getString("email"), userDoc.getString("username"), password);
+    }
+
+    public void addUsersArrayListElement(String fullName, String userIDString)
+    {
+        //add a vlaue to the list
+        this.usersList.add(new String[]{fullName, userIDString});
     }
 }

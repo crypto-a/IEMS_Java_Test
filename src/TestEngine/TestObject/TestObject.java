@@ -1,6 +1,7 @@
 package TestEngine.TestObject;
 
 import TestAutomations.DLCDemo.DLCDemo;
+import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -18,15 +19,17 @@ public class TestObject
     private Object issuer;
     private String targetedWebPage;
     private String webPageURL;
-    private ArrayList<Object> testElements = new ArrayList<Object>();
-    private ArrayList<Object> issueElements = new ArrayList<Object>();
-    private ArrayList<String> testLogs = new ArrayList<String>();
-    private ArrayList<Duration> backEndResponseTimes = new ArrayList<Duration>();
+    private ArrayList<Object> testElements = new ArrayList<>();
+    private ArrayList<Object> issueElements = new ArrayList<>();
+    private ArrayList<String> testLogs = new ArrayList<>();
+    private final ArrayList<Duration> backEndResponseTimes = new ArrayList<>();
 
     private int numberOfTests;
     private int estimatedTime;
     private Duration averageBackEndResponseTime;
     private String[] webPageLoginInfo;
+
+    private String testDescription;
 
 
 
@@ -38,13 +41,14 @@ public class TestObject
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public TestObject(Object issuer, String targetedWebPage, String webPageURL, String[] webPageLoginInfo )
+    public TestObject(Object issuer, String targetedWebPage, String webPageURL, String testDescription, String[] webPageLoginInfo )
     {
         //SetUp object Properties
         this.issuer = issuer;
         this.targetedWebPage = targetedWebPage;
         this.webPageURL = webPageURL;
         this.webPageLoginInfo = webPageLoginInfo;
+        this.testDescription = testDescription;
 
         //Record the time of starting a test
         this.testStartTime = LocalDateTime.now();
@@ -57,18 +61,25 @@ public class TestObject
         //Check to see witch test was requested
         switch (this.targetedWebPage)
         {
-            case "DLC Demo":
+            case "DLC Demo" ->
+            {
                 //Set Up the Thread
                 Thread thread = new Thread((Runnable) new DLCDemo());//ToDo
 
+
                 //Start the thread
                 thread.start();
+            }
+            case "DERMS" ->
+            {
+                //Set Up the Thread
+                Thread thread = new Thread((Runnable) new DLCDemo());//ToDo
 
-                break;
 
-            case "DERMS":
-                //ToDO
-                break;
+                //Start the thread
+                thread.start();
+            }
+            //ToDo
         }
 
         /* Do after Test Processes */
@@ -116,6 +127,7 @@ public class TestObject
         this.issueElements = (ArrayList<Object>) testObjectDoc.get("issueElements");
         this.testLogs = (ArrayList<String>) testObjectDoc.get("testLogs");
         this.numberOfTests = testObjectDoc.getInteger("numberOfTests");
+        this.testDescription = testObjectDoc.getString("testDescription");
 
         //Calculate Duration
         this.testDuration = Duration.between(this.testStartTime, this.testEndTime);
@@ -134,6 +146,7 @@ public class TestObject
         this.issueElements = (ArrayList<Object>) newTestObjectDoc.get("issueElements");
         this.testLogs = (ArrayList<String>) newTestObjectDoc.get("testLogs");
         this.numberOfTests = newTestObjectDoc.getInteger("numberOfTests");
+        this.testDescription = newTestObjectDoc.getString("testDescription");
 
         //Calculate Duration
         this.testDuration = Duration.between(this.testStartTime, this.testEndTime);
@@ -260,5 +273,22 @@ public class TestObject
     {
         //Return the start time
         return testStartTime;
+    }
+
+    public void setTestID(Object testID)
+    {
+        this.testID = testID;
+    }
+
+    public String getTestDescription()
+    {
+        //return the test discription
+        return this.testDescription;
+    }
+
+    public Boolean containsElement(String elementID)
+    {
+        /* Look through the test elements and Issue elements arraylist */
+        return this.testElements.contains(new ObjectId(elementID)) || this.issueElements.contains(new ObjectId(elementID));
     }
 }

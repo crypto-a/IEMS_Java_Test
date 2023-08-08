@@ -80,6 +80,11 @@ public class AddUserPage
         //pass values to the event to take care of the rest
         this.event.addUser(userDoc, userPass);
 
+        //Notify user
+        JOptionPane.showMessageDialog(null, "The user data has been added to the system! They will receive an email with their username and password!", "User Added SuccessFully", JOptionPane.INFORMATION_MESSAGE);
+
+        //Change the cde state
+        this.event.setCodeState(7);
 
     }
 

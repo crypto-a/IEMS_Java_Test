@@ -20,7 +20,6 @@ public class MainPage
     private JPanel mainPanel;
     private JButton newTestButton;
     private JButton usersButton;
-    private JButton settingsButton;
     private JButton logOutButton;
     private JPanel contentPanel;
     private JLabel nameField;

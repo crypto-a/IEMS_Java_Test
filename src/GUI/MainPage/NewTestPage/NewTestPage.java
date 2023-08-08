@@ -15,12 +15,12 @@ public class NewTestPage
     private JButton backButton;
     private JButton startTestButton;
     private JTextField urlField;
-    private JCheckBox UITestCheckBox;
     private JPanel mainPanel;
     private JTextField textField1;
     private JPasswordField passwordField1;
     private JComboBox comboBox1;
     private JPanel newTestForm;
+    private JTextArea textArea1;
 
     public NewTestPage(Event event)
     {
@@ -28,29 +28,16 @@ public class NewTestPage
         this.event = event;
         //Set Up the action Listiners
         //form submit button
-        this.startTestButton.addActionListener(new ActionListener()
+        this.startTestButton.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                //Push the text
+            //Push the text
+            pushText();
 
-                pushText();
-
-                //Update the event property
-                formButtonClicked(0);
-            }
+            //Update the event property
+            formButtonClicked(0);
         });
 
-        this.backButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                //Update the event property
-                formButtonClicked(1);
-            }
-        });
+        this.backButton.addActionListener(e -> formButtonClicked(1));
 
         this.urlField.addKeyListener(new KeyListener()
         {
@@ -97,6 +84,7 @@ public class NewTestPage
         //Push the password field
         this.event.setUserInput(3, this.passwordField1.getText());
 
-
+        //Push the test description
+        this.event.setUserInput(4, this.textArea1.getText());
     }
 }

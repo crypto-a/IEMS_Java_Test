@@ -11,7 +11,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class OldTestPage
 {
@@ -36,6 +35,7 @@ public class OldTestPage
     private JComboBox comboBox2;
     private JPanel issuesElementPanel;
     private JScrollPane testLogsScrollPanel;
+    private JTextArea textArea1;
     private final Event event;
     private final TestObject testObject;
 
@@ -62,7 +62,8 @@ public class OldTestPage
         this.comboBox2.setSelectedIndex(this.event.getOldTestPageIssuesComboBoxSelected());
         this.tabbedPane1.setSelectedIndex(this.event.getOldTestPagePanelSelected());
 
-        //Add the content to the JList
+        //write the test description ot the text area
+        this.textArea1.setText(this.testObject.getTestDescription());
 
         //Clear the test logs
         this.testLogs.setListData(this.event.getTestLogsArrayList());
@@ -190,5 +191,6 @@ public class OldTestPage
         //Record the change
         this.event.setOldTestPagePanelSelected(this.tabbedPane1.getSelectedIndex());
     }
+
 
 }

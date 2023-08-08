@@ -212,6 +212,4 @@ public class Database
         // Delete the document
         accountsCollection.deleteOne(filter);
     }
-
-
 }

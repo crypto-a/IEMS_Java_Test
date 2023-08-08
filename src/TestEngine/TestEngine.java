@@ -119,10 +119,10 @@ public class TestEngine
         return this.testObjectArrayList;
     }
 
-    public void createNewTestObject(User user, String targetedWebPage, String webPageURL, String[] webPageLoginInfo)
+    public void createNewTestObject(User user, String targetedWebPage, String webPageURL,String testDescription, String[] webPageLoginInfo)
     {
         //Create the new Test Object and add it to the test arraylist and the ongoing test
-        this.testObjectArrayList.add(new TestObject(user, targetedWebPage, webPageURL, webPageLoginInfo));
+        this.testObjectArrayList.add(new TestObject(user, targetedWebPage, webPageURL, testDescription, webPageLoginInfo));
 
         //Reset the sort button
         this.event.setMainPageTestObjectSortComboBoxSelect(0);

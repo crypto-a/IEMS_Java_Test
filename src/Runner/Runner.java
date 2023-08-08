@@ -7,6 +7,8 @@ import TestEngine.TestObject.TestObject;
 import User.User;
 import TestEngine.TestEngine;
 
+import javax.swing.*;
+
 public class Runner
 {
     private final TestEngine testEngine;
@@ -197,7 +199,7 @@ public class Runner
         this.testEngine.clearData();
 
         //Start with loading the testObjects
-        this.database.loadTestHistoryArray(20);
+        this.database.loadTestHistoryArray();
 
         //loop through all the test objects
         for (TestObject testObject: this.testEngine.getTestObjectArrayList())
@@ -369,6 +371,27 @@ public class Runner
             }
         }
 
+        //Check to see if the data is requested to get reseted
+        if (this.event.isDataResetRequested())
+        {
+
+
+            //clear the test engine
+            this.testEngine.clearData();
+
+            //Show test to user
+            JOptionPane.showMessageDialog(null, "Please Wait. We are Loading your Data...", "Processing Request", JOptionPane.NO_OPTION);
+
+            //load data again
+            this.database.loadTestHistoryArray();
+
+            JOptionPane.getRootFrame().dispose();
+
+            //Show test to user
+            JOptionPane.showMessageDialog(null, "Your Data is now Loaded!", "Request Completed", JOptionPane.INFORMATION_MESSAGE);
+
+        }
+
         //Check to see if the page needs refreshing
         if (this.event.getRefreshNeeded())
         {
@@ -376,4 +399,5 @@ public class Runner
             this.gui.updateMainPage();
         }
     }
+
 }

@@ -31,6 +31,7 @@ public class MainContent
     private JPanel testDisplayPanel;
     private JComboBox comboBox2;
     private JSpinner spinner1;
+    private JButton loadButton;
     private JComboBox issuesIssuerComboBox;
 
     public MainContent(Event event, User user)
@@ -74,7 +75,7 @@ public class MainContent
         this.comboBox2.addActionListener(e -> openIssuesSortRequest());
         this.searchButton.addActionListener(e -> searchRequest());
         this.clearButton.addActionListener(e -> clearSearch());
-        this.spinner1.addChangeListener(e -> databaseLoadChange());
+        this.loadButton.addActionListener(e -> databaseLoadChange());
 
     }
 
@@ -223,12 +224,35 @@ public class MainContent
 
     private void databaseLoadChange()
     {
-        if ((int) this.spinner1.getValue() < -1)
+        if ((int) this.spinner1.getValue() < 0)
         {
-            this.spinner1.setValue(-1);
+            this.spinner1.setValue(0);
+
+            //Show error
+            JOptionPane.showMessageDialog(null, "Sorry, You are not allowed to put in Numbers less than 0", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        //push the number to the event
-        this.event.setDatabaseShowNumber((int) this.spinner1.getValue());
+        if (!this.event.getIsTestRunning())
+        {
+            //push the number to the event
+            this.event.setDatabaseShowNumber((int) this.spinner1.getValue());
+
+            //request to reset data
+            this.event.requestDataReset();
+
+            //request Page refresh
+            this.event.requestPageRefresh();
+
+
+        }
+        else
+        {
+            //reset value
+            this.spinner1.setValue(this.event.getDatabaseShowNumber());
+
+            //Show error
+            JOptionPane.showMessageDialog(null, "Oh No. You can't change the loading limit during a test! Try again later!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 }

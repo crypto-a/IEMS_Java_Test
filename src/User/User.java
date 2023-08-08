@@ -23,6 +23,7 @@ public class User
     private LocalDate dateOfBirth;
     private LocalDateTime registrationDate;
     private LocalDateTime lastLoginDate;
+    private Boolean isAdmin;
 
     private final Database database;
     private final Event event;
@@ -70,12 +71,13 @@ public class User
 
     private void loadUserInfo(Document userAuthenticationDocument)
     {
-        //Load different properties th the user object
+        //Load different properties the the user object
         this.firstName = userAuthenticationDocument.getString("firstName");
         this.lastName = userAuthenticationDocument.getString("lastName");
         this.userID = userAuthenticationDocument.get("_id");
         this.email = userAuthenticationDocument.getString("email");
         this.lastName = userAuthenticationDocument.getString("lastName");
+        this.isAdmin = userAuthenticationDocument.getBoolean("isAdmin");
 
         System.out.println("Hi " + this.firstName);
     }
@@ -175,5 +177,17 @@ public class User
     private void loadUsersList()
     {
         this.database.loadUsersList();
+    }
+
+    public Boolean isAdmin()
+    {
+        //Return isAdmin
+        return this.isAdmin;
+    }
+
+    public String generateUniqueString(int length)
+    {
+        //Return the results
+        return this.passwordManager.generateRandomPassword(length);
     }
 }

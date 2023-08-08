@@ -9,6 +9,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
@@ -21,6 +22,9 @@ public class PasswordManager
 
     private String filePath = "src/User/PasswordManager/UUID.txt";
     private final String secretKeyString = "hpM8/x<$i4}E`d)rc=Qu!)B7`:rrjO=djWW@wP*YY-Yi]rGeC@?Io;OP$/k+zv;";
+    private static final String LOWERCASE_CHARS = "abcdefghijklmnopqrstuvwxyz";
+    private static final String UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String DIGITS = "0123456789";
 
     public PasswordManager()
     {
@@ -145,5 +149,20 @@ public class PasswordManager
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String generateRandomPassword(int length)
+    {
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder();
+        String charSet = LOWERCASE_CHARS + UPPERCASE_CHARS + DIGITS;
+
+        for (int i = 0; i < length; i++)
+        {
+            int randomIndex = random.nextInt(charSet.length());
+            password.append(charSet.charAt(randomIndex));
+        }
+
+        return password.toString();
     }
 }

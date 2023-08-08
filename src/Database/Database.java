@@ -135,14 +135,14 @@ public class Database
     {
         new ChangeStreamUpdater(this, this.database, this.testEngine, this.event).run();
     }
-    public void loadTestHistoryArray(int limit)
+    public void loadTestHistoryArray()
     {
         //Connect to the collection
         MongoCollection<org.bson.Document> testObjectCollection = this.database.getCollection("tests");
 
         FindIterable<Document> testObjectDocs = testObjectCollection.find()
                 .sort(Sorts.descending("startTestTime"))
-                .limit(limit);
+                .limit(this.event.getDatabaseShowNumber());
 
         //Loop thorough all the results
         for (Document testObjectDoc: testObjectDocs)
@@ -188,6 +188,29 @@ public class Database
 
         //Return the usersList
         this.event.setUsersList(usersList);
+    }
+
+    public void addUser(Document userDoc)
+    {
+        //Connect to the accounts collection
+        MongoCollection<org.bson.Document> accountsCollection = this.database.getCollection("accounts");
+
+        accountsCollection.insertOne(userDoc);
+    }
+
+    public void removeUser(String userID)
+    {
+        //Connect to the accounts collection
+        MongoCollection<org.bson.Document> accountsCollection = this.database.getCollection("accounts");
+
+        //Create the objectID
+        ObjectId documentId = new ObjectId(userID);
+
+        // Create a filter to find the document by ObjectId
+        Document filter = new Document("_id", documentId);
+
+        // Delete the document
+        accountsCollection.deleteOne(filter);
     }
 
 

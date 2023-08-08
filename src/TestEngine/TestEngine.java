@@ -109,6 +109,9 @@ public class TestEngine
         this.testObjectArrayList.clear();
         this.testElementArrayList.clear();
         this.issueElementArrayList.clear();
+
+        //Clear the search engine
+        this.searchEngine.clearSearchModel();
     }
 
     public ArrayList<TestObject> getTestObjectArrayList()

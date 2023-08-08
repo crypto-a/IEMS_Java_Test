@@ -5,6 +5,7 @@ import SearchEngine.SearchEngine;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
 import TestEngine.TestObject.TestObject;
+import Email.Email;
 
 import org.bson.Document;
 import java.util.ArrayList;
@@ -45,7 +46,9 @@ public class Event
     private int testHistoryPageIssuerComboBoxSelected;
     private int openIssuesPageSortComboBoxSelected;
     private String searchQuery;
-
+    private Boolean isTestRunning;
+    private Boolean requestDataReset;
+    private final Email email;
     public Event()
     {
         //Set Up the Event properties
@@ -71,6 +74,12 @@ public class Event
 
         this.databaseLoadLimit = 20;
         this.databaseShowNumber = 20;
+
+        this.isTestRunning = false;
+        this.requestDataReset = false;
+
+        //Run the email object
+        this.email = new Email();
     }
 
     public TestObject getSelectedTestObject()
@@ -604,16 +613,6 @@ public class Event
         return searchQuery;
     }
 
-    public int getDatabaseLoadLimit()
-    {
-        return databaseLoadLimit;
-    }
-
-    public void setDatabaseLoadLimit(int databaseLoadLimit)
-    {
-        this.databaseLoadLimit = databaseLoadLimit;
-    }
-
     public void setDatabaseShowNumber(int databaseShowNumber)
     {
         this.databaseShowNumber = databaseShowNumber;
@@ -622,5 +621,62 @@ public class Event
     public int getDatabaseShowNumber()
     {
         return databaseShowNumber;
+    }
+
+    public Boolean getIsTestRunning()
+    {
+        return isTestRunning;
+    }
+
+    public void setIsTestRunning(Boolean testRunning)
+    {
+        isTestRunning = testRunning;
+    }
+
+    public void requestDataReset()
+    {
+        this.requestDataReset = true;
+    }
+
+    public Boolean isDataResetRequested()
+    {
+        if (this.requestDataReset)
+        {
+            this.requestDataReset = false;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public String getUserEmail(String userID)
+    {
+        //Get the user document from the database
+        String userEmail = this.database.getUserInfo(userID).getString("email");
+
+        //Return the email
+        return userEmail;
+    }
+
+    public void removeUser(String userID, int listIndexSelected)
+    {
+        //remove user
+        this.database.removeUser(userID);
+
+        //remove users form the usersList
+        this.usersList.remove(listIndexSelected);
+    }
+
+    public void addUser(Document userDoc, String password)
+    {
+        //Add the user to the database
+        this.database.addUser(userDoc);
+
+        //Add the user to the userList
+        this.usersList.add(new String[]{userDoc.getString("firstName") + " " + userDoc.getString("lastName"), userDoc.get("_id").toString()});
+
+        //Send the confirmation email
+        this.email.newUserEmail(userDoc.getString("firstName"), userDoc.getString("email"), userDoc.getString("username"), password);
     }
 }

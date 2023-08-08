@@ -2,30 +2,30 @@ package GUI.MainPage;
 
 import GUI.Event.Event;
 import GUI.GUI;
+import GUI.MainPage.AddUserPage.AddUserPage;
 import GUI.MainPage.ClosedIssueComponentPage.ClosedIssueComponentPage;
 import GUI.MainPage.MainContent.MainContent;
 import GUI.MainPage.NewTestPage.NewTestPage;
 import GUI.MainPage.OldTestPage.OldTestPage;
-import GUI.MainPage.OldTestPage.TestComponentElement.TestComponentElement;
 import GUI.MainPage.OpenIssueComponentPage.OpenIssueComponentPage;
 import GUI.MainPage.TestComponentPage.TestComponentPage;
+import GUI.MainPage.UsersPage.UsersPage;
 import User.User;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainPage
 {
     private JPanel mainPanel;
     private JButton newTestButton;
-    private JButton Refresh;
+    private JButton usersButton;
     private JButton settingsButton;
     private JButton logOutButton;
     private JPanel contentPanel;
     private JLabel nameField;
     private JButton refreshUIButton;
+    private JButton mainButton;
 
     private final User user;
     private final Event event;
@@ -42,6 +42,7 @@ public class MainPage
         this.newTestButton.addActionListener(e -> newTestButtonClicked());
         this.logOutButton.addActionListener(e -> logOutButtonClicked());
         this.refreshUIButton.addActionListener(e -> refreshButtonCLicked());
+        this.usersButton.addActionListener(e -> usersButtonClicked());
     }
 
     public JPanel getMainPanel()
@@ -113,6 +114,22 @@ public class MainPage
             {
 
             }
+            case 7 ->
+            {
+                //Create the UserPage
+                UsersPage usersPage = new UsersPage(this.user, this.event);
+
+                //Request the main content
+                this.contentPanel.add(usersPage.requestContent());
+            }
+            case 8 ->
+            {
+                //Create the addUser page
+                AddUserPage addUserPage = new AddUserPage(this.event, this.user);
+
+                //Request the main content
+                this.contentPanel.add(addUserPage.requestContent());
+            }
         }
 
     }
@@ -130,5 +147,11 @@ public class MainPage
     private void refreshButtonCLicked()
     {
         this.gui.updateMainPage();
+    }
+
+    private void usersButtonClicked()
+    {
+        //Change code state
+        this.event.setCodeState(7);
     }
 }

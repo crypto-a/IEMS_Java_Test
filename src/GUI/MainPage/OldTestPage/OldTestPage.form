@@ -118,15 +118,6 @@
                   <text value="DERMS"/>
                 </properties>
               </component>
-              <component id="ad5c2" class="javax.swing.JLabel" binding="webPageURL">
-                <constraints>
-                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Monospaced" size="10" style="0"/>
-                  <text value="https://derms.iemssolution.com/"/>
-                </properties>
-              </component>
               <component id="fb65b" class="javax.swing.JLabel" binding="testTime">
                 <constraints>
                   <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -172,6 +163,14 @@
                   <text value="2023-07-21"/>
                 </properties>
               </component>
+              <component id="303cb" class="javax.swing.JButton" binding="openWebsiteButton" default-binding="true">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Open website"/>
+                </properties>
+              </component>
             </children>
           </grid>
           <grid id="baec5" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -188,13 +187,15 @@
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <horizontalScrollBarPolicy value="30"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="9e9b2" class="javax.swing.JList" binding="testLogs">
                     <constraints/>
                     <properties>
-                      <font name="Monospaced" size="14" style="0"/>
+                      <font name="Monospaced" size="12" style="0"/>
                       <model/>
                     </properties>
                   </component>

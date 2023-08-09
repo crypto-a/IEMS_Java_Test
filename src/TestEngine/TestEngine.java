@@ -2,6 +2,7 @@ package TestEngine;
 
 import GUI.Event.Event;
 import SearchEngine.SearchEngine;
+import TestAutomations.DLCDemo.DLCDemo;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
 import TestEngine.TestObject.TestObject;
@@ -18,6 +19,7 @@ public class TestEngine
     ArrayList<TestObject> testObjectArrayList = new ArrayList<>();
     ArrayList<TestElement> testElementArrayList = new ArrayList<>();
     ArrayList<IssueElement> issueElementArrayList = new ArrayList<>();
+    private TestObject runningTestObject;
 
     public TestEngine(Event event)
     {
@@ -121,8 +123,39 @@ public class TestEngine
 
     public void createNewTestObject(User user, String targetedWebPage, String webPageURL,String testDescription, String[] webPageLoginInfo)
     {
-        //Create the new Test Object and add it to the test arraylist and the ongoing test
-        this.testObjectArrayList.add(new TestObject(user, targetedWebPage, webPageURL, testDescription, webPageLoginInfo));
+        //Create the new Test Object
+        this.runningTestObject = new TestObject(user.getUserID(), targetedWebPage, webPageURL, testDescription, webPageLoginInfo);
+
+
+        //Check to see witch test was requested
+        switch (this.runningTestObject.getTargetedWebPage())
+        {
+            case "DLCDemo" ->
+            {
+
+                //Set Up the Thread
+                Thread thread = new Thread((Runnable) new DLCDemo(this, this.runningTestObject));//ToDo
+
+
+                //Start the thread
+                thread.start();
+            }
+            case "DERMS" ->
+            {
+                //Set Up the Thread
+//                Thread thread = new Thread((Runnable) new DERMS());//ToDo
+//
+//
+//                //Start the thread
+//                thread.start();
+            }
+            //ToDo
+        }
+
+        this.testObjectArrayList.add(this.runningTestObject);
+
+        //ToDo: Update the database
+
 
         //Reset the sort button
         this.event.setMainPageTestObjectSortComboBoxSelect(0);
@@ -588,5 +621,29 @@ public class TestEngine
             j++;
             k++;
         }
+    }
+
+    public void createNewTestElement(String testElementIdentification, String scenario, String[][] actualValue, String[][] expectedValue)
+    {
+        TestElement testElement = new TestElement(new ObjectId(), testElementIdentification, scenario, actualValue, expectedValue);
+
+        //Add the test element to the tests ArrayList
+        this.testElementArrayList.add(testElement);
+
+        //ToDo: push to database
+
+        //add it to the object
+        this.runningTestObject.addNewTestElement(testElement.getTestID());
+
+        //if we are in the test Display page refresh page
+        if(this.event.getCodeState() == 3 && this.event.getSelectedTestObject() == this.runningTestObject)
+        {
+            //push the elements to the event
+            this.pushDisplayObjectsToEventForOldTestDisplay(this.runningTestObject);
+
+            //Refresh page
+            this.event.requestPageRefresh();
+        }
+
     }
 }

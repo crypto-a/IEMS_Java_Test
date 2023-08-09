@@ -487,8 +487,11 @@ public class Event
             this.testLogsDisplayArrayList.add(testElement.getTestLog());
         }
 
-        //Add Final Statement
-        this.testLogsDisplayArrayList.add("Tests Ended - Time: " + this.selectedTestObject.getTestEndTime());
+        if (!(this.selectedTestObject.getTestEndTime() == null))
+        {
+            //Add Final Statement
+            this.testLogsDisplayArrayList.add("Tests Ended - Time: " + this.selectedTestObject.getTestEndTime());
+        }
 
         //Retunr the arraylist
         return this.testLogsDisplayArrayList.toArray(new String[0]);
@@ -685,5 +688,11 @@ public class Event
     {
         //add a vlaue to the list
         this.usersList.add(new String[]{fullName, userIDString});
+    }
+
+    public void disconnectDatabase()
+    {
+        //disconnect database
+        this.database.terminate();
     }
 }

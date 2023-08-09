@@ -173,7 +173,7 @@ public class TestElement
             this.didPass = true;
 
             //create a testLog
-            this.testLog = this.testID + " - " + this.scenario + " ------- Passed";
+            this.testLog = this.testID + " - Passed";
         } else
         {
             this.didPass = false;

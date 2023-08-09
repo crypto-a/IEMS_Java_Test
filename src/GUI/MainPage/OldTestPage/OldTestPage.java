@@ -36,6 +36,7 @@ public class OldTestPage
     private JPanel issuesElementPanel;
     private JScrollPane testLogsScrollPanel;
     private JTextArea textArea1;
+    private JButton openWebsiteButton;
     private final Event event;
     private final TestObject testObject;
 
@@ -50,7 +51,6 @@ public class OldTestPage
         this.testID.setText(this.testObject.getTestID());
         this.testIssuer.setText(this.event.getNameFromUserID(this.testObject.getIssuerID()));
         this.targetedWebPage.setText(this.testObject.getTargetedWebPage());
-        this.webPageURL.setText(this.testObject.getWebPageURL());
         this.testDate.setText(this.testObject.getTestDate());
         this.testTime.setText(this.testObject.getTestStartTime());
         this.testDuration.setText(this.testObject.getDuration());

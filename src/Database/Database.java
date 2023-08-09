@@ -23,6 +23,7 @@ public class Database
     private MongoDatabase database;
     private TestEngine testEngine;
     private Event event;
+    private MongoClient mongoClient;
 
     public Database(TestEngine testEngine, Event event)
     {
@@ -37,7 +38,7 @@ public class Database
         try
         {
             // Connect to the cluster
-            MongoClient mongoClient = MongoClients.create(databaseConnectionInfo.connectionURL);
+            this.mongoClient = MongoClients.create(databaseConnectionInfo.connectionURL);
 
             // Connect to the Database
             this.database = mongoClient.getDatabase("IEMS-Test-Software");
@@ -211,5 +212,11 @@ public class Database
 
         // Delete the document
         accountsCollection.deleteOne(filter);
+    }
+
+    public void terminate()
+    {
+        //Close the connection
+        this.mongoClient.close();
     }
 }

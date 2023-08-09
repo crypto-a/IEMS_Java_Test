@@ -48,12 +48,8 @@ public class GUI extends JFrame
             @Override
             public void windowClosing(WindowEvent e)
             {
-                // Perform cleanup or termination actions here
-                // For example, close database connections, save data, etc.
+                endCode();
 
-                //ToDo
-                // Terminate the application gracefully
-                System.exit(0);
             }
         });
     }
@@ -99,42 +95,18 @@ public class GUI extends JFrame
 
     }
 
-    public void loadingDialog()
+    private void endCode()
     {
-        // Create a custom JDialog to act as the non-closable JOptionPane
-        JDialog dialog = new JDialog((JFrame) null, "Please wait...", true);
-        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE); // Prevent closing by clicking the close button
-        dialog.setSize(200, 100);
+        //disconnect the database
+        this.event.disconnectDatabase();
 
-        // Create a panel with custom background color
-        JPanel panel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(new Color(240, 240, 240)); // Light gray background color
-                g.fillRect(0, 0, getWidth(), getHeight());
-            }
-        };
-        panel.setLayout(new BorderLayout());
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        //clear test engine data
+        this.testEngine.clearData();
 
-        // Create a label with custom font and alignment
-        JLabel label = new JLabel("Loading...");
-        label.setFont(new Font("Arial", Font.BOLD, 16));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        panel.add(label, BorderLayout.CENTER);
+        //Close the JFrame
+        dispose();
 
-        dialog.add(panel);
-
-        // Show the dialog in the center of the screen
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-
-        // Simulate data loading process (e.g., fetching data from a database)
-        // In this example, we use a timer to represent the loading process.
-        Timer timer = new Timer(3000, e -> {
-            // Data loading is completed, close the non-closable dialog
-            dialog.dispose();
-        });
+        //Exit code
+        System.exit(0);
     }
 }

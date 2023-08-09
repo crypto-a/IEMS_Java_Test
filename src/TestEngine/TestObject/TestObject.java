@@ -1,5 +1,6 @@
 package TestEngine.TestObject;
 
+import TestAutomations.DERMS.DERMS;
 import TestAutomations.DLCDemo.DLCDemo;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
@@ -56,52 +57,7 @@ public class TestObject
         //Set up objetc ID
         this.testID = new ObjectId();
 
-        /* Run Tests */
 
-        //Check to see witch test was requested
-        switch (this.targetedWebPage)
-        {
-            case "DLC Demo" ->
-            {
-                //Set Up the Thread
-                Thread thread = new Thread((Runnable) new DLCDemo());//ToDo
-
-
-                //Start the thread
-                thread.start();
-            }
-            case "DERMS" ->
-            {
-                //Set Up the Thread
-                Thread thread = new Thread((Runnable) new DLCDemo());//ToDo
-
-
-                //Start the thread
-                thread.start();
-            }
-            //ToDo
-        }
-
-        /* Do after Test Processes */
-
-        //Record the end Time of the test
-        this.testEndTime = LocalDateTime.now();
-
-        //Calculate the duration of the test
-        this.testDuration = Duration.between(testStartTime, testEndTime);
-
-        if (backEndResponseTimes.size() != 0)
-        {
-            // Calculate the total duration for server responseTime
-            Duration totalDuration = Duration.ZERO;
-            for (Duration duration : backEndResponseTimes)
-            {
-                totalDuration = totalDuration.plus(duration);
-            }
-
-            // calculate the average duration and Save value to the server
-            this.averageBackEndResponseTime = totalDuration.dividedBy(backEndResponseTimes.size());
-        }
 
 
     }
@@ -232,7 +188,7 @@ public class TestObject
             long seconds = this.testDuration.minusHours(hours).minusMinutes(minutes).getSeconds();
 
             //Return the duration in a text format
-            return hours + " hours, " + minutes + " minutes and " + seconds + " seconds";
+            return hours + " hrs, " + minutes + " mins and " + seconds + " secs";
         }
         else
         {
@@ -260,6 +216,11 @@ public class TestObject
 
     public String getTestEndTime()
     {
+        if (this.testEndTime == null)
+        {
+            return null;
+        }
+
         //Return the time
         return this.testEndTime.toString().split("T")[1].split("\\.")[0];
     }
@@ -290,5 +251,39 @@ public class TestObject
     {
         /* Look through the test elements and Issue elements arraylist */
         return this.testElements.contains(new ObjectId(elementID)) || this.issueElements.contains(new ObjectId(elementID));
+    }
+
+    public String[] getWebPageLoginInfo()
+    {
+        return webPageLoginInfo;
+    }
+
+    public void postTestCalculations()
+    {
+        /* Do after Test Processes */
+
+        //Record the end Time of the test
+        this.testEndTime = LocalDateTime.now();
+
+        //Calculate the duration of the test
+        this.testDuration = Duration.between(testStartTime, testEndTime);
+
+        if (backEndResponseTimes.size() != 0)
+        {
+            // Calculate the total duration for server responseTime
+            Duration totalDuration = Duration.ZERO;
+            for (Duration duration : backEndResponseTimes)
+            {
+                totalDuration = totalDuration.plus(duration);
+            }
+
+            // calculate the average duration and Save value to the server
+            this.averageBackEndResponseTime = totalDuration.dividedBy(backEndResponseTimes.size());
+        }
+    }
+
+    public void addNewTestElement(String testID)
+    {
+        this.testElements.add(new ObjectId(testID));
     }
 }

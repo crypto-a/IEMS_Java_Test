@@ -6,6 +6,8 @@ import GUI.GUI;
 import TestEngine.TestObject.TestObject;
 import User.User;
 import TestEngine.TestEngine;
+import org.bson.types.ObjectId;
+import org.bson.types.ObjectId;
 
 import javax.swing.*;
 
@@ -55,6 +57,8 @@ public class Runner
 
         //Load Data from the database
         this.loadData();
+
+        this.testEngine.createNewTestObject(this.user, "DLCDemo", "http://ec2-54-210-75-155.compute-1.amazonaws.com:3452/", "This is a test test", new String[]{"javad.zare@iemssolution.com", "DLC_2023"});
         
         //Loop Forever
         while (this.isRunning)
@@ -247,9 +251,6 @@ public class Runner
                 //Sleep
                 this.sleep(30);
 
-                //Check for updates
-                this.checkForUpdates();
-
                 if (this.event.getFromEvent() == 0)
                 {
                     //break out of the loop
@@ -304,27 +305,9 @@ public class Runner
         this.waitTillAction(8);
     }
 
-    private void checkForUpdates()
-    {
-        //Check for updates
-        if (!this.event.checkIfIsDataUpdated())
-        {
-            System.out.println("1");
-            //Ask testEngine to push a copy to the arraylists to the event
-            this.testEngine.pushDisplayObjectsToEvent();
-
-            //Update UI
-            this.gui.updateMainPage();
-
-            //ToDo: this code must be more customized
-        }
-    }
 
     private void regularChecks()
     {
-        //Check for Data Update
-        this.checkForUpdates();
-
         //Check if the sort requests
         if (this.event.isTestObjectSortRequested())
         {

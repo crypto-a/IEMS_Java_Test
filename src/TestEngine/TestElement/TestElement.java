@@ -130,24 +130,32 @@ public class TestElement
                     if (!(Arrays.equals(actualValue, expectedValue)))
                     {
                         /* If the two arrays are not the same*/
-                        //Construct a message
-                        String errormessage = this.testElementIdentification + " " + actualValue[0] + ": value Arrays are not equal";
-
-                        //Create an issue object
-                        this.createIssue(this.scenario, Arrays.toString(expectedValue), Arrays.toString(actualValue), errormessage);
-
-                        //Incriment issue counter
-                        this.numberOfErrors++;
 
                         //Loop through every other element to find the issue
                         for (int i = 1; i < actualValue.length; i++)
                         {
+                            if (actualValue[i].equals("-0.000"))
+                            {
+                                actualValue[i] = "0.000";
+                            }
+                            if (expectedValue[i].equals("-0.000"))
+                            {
+                                expectedValue[i] = "0.000";
+                            }
                             if (actualValue[i].equals(expectedValue[i]))
                             {
                                 result[i] = "True";
                             } else
                             {
                                 result[i] = "False";
+                                //Incriment issue counter
+                                this.numberOfErrors++;
+
+                                //Construct a message
+                                String errormessage = this.testElementIdentification + " " + actualValue[0] + ": value Arrays are not equal";
+
+                                //Create an issue object
+                                this.createIssue(this.scenario, Arrays.toString(expectedValue), Arrays.toString(actualValue), errormessage);
                             }
                         }
 
@@ -178,7 +186,7 @@ public class TestElement
         {
             this.didPass = false;
             //create a testLog
-            this.testLog = this.testID + " - " + this.scenario + " ------- Failed - " + this.numberOfErrors + "errors detected";
+            this.testLog = this.testID + " - Failed";
         }
     }
 

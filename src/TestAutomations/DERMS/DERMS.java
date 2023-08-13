@@ -209,12 +209,11 @@ public class DERMS extends Test
                 }
             }
 
-
-
-
         }
 
 
+        this.terminateDriver();
+        this.testObject.postTestCalculations();
     }
 
     private void normalizeWebsiteData(String data)

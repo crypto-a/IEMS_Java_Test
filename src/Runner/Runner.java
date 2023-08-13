@@ -58,8 +58,7 @@ public class Runner
         //Load Data from the database
         this.loadData();
 
-        this.testEngine.createNewTestObject(this.user, "DLCDemo", "http://ec2-54-210-75-155.compute-1.amazonaws.com:3452/", "This is a test test", new String[]{"javad.zare@iemssolution.com", "DLC_2023"});
-        
+        testEngine.createNewTestObject(user, "DERMS", "https://derms.iemssolution.com/", "This is a test test", new String[]{"alirahbar2005@gmail.com", "Spacex12345678900!"});
         //Loop Forever
         while (this.isRunning)
         {

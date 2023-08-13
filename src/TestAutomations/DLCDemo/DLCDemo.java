@@ -23,11 +23,10 @@ public class DLCDemo extends Test
             {
                     { "line-element", "line_data", "p_from_mw", "q_from_mvar", "p_to_mw", "q_to_mvar", "pl_mw", "ql_mvar", "i_from_ka", "i_to_ka", "vm_from_pu", "va_from_degree", "vm_to_pu", "va_to_degree", "loading_percent"},
                     { "bus-element", "bus_data", "vm_pu", "va_degree", "lam_p" },
-//                    {"transformer-element", "transformer_data"},
-//                    {"evse-element", "evse_data"},
+                    {"transformer-element", "transformer_data", "p_hv_mw", "q_hv_mvar", "p_lv_mw", "q_lv_mvar", "pl_mw", "ql_mvar", "i_hv_ka", "i_lv_ka", "i_lv_ka", "vm_hv_pu", "va_hv_degree", "vm_lv_pu", "va_lv_degree", "loading_percent"},
+                    {"evse-element", "evse_data", "p_mw", "q_mvar"},
                     {"pv-element", "pv_data", "p_mw", "q_mvar"},
                     {"load-element", "load_data", "p_mw", "q_mvar"}
-
             };
     public DLCDemo(TestEngine testEngine, TestObject testObject)
     {
@@ -101,6 +100,10 @@ public class DLCDemo extends Test
                 }
             }
         }
+
+        //Go to next page
+        this.loadPage(this.testObject.getWebPageURL() + "/#/network");
+
 
         this.terminateDriver();
         this.testObject.postTestCalculations();
@@ -180,7 +183,7 @@ public class DLCDemo extends Test
             //Create an instance to round numbers
             DecimalFormat decimalFormat = new DecimalFormat("0.000");
 
-            System.out.println(propertiesFinal[0]);
+
 
             //loop thought the numeric elements of the array
             for(int i = 1; i < propertiesFinal.length; i++)
@@ -188,10 +191,10 @@ public class DLCDemo extends Test
 
                 try
                 {
-                    System.out.println(propertiesFinal[i]);
+
                     propertiesFinal[i] = (String) decimalFormat.format(Double.parseDouble(propertiesFinal[i]));
 
-                    System.out.println(propertiesFinal[i]);
+
 
                     if (propertiesFinal[i].equals("-0.000"))
                     {
@@ -200,7 +203,6 @@ public class DLCDemo extends Test
                 }
                 catch (Exception e)
                 {
-                    System.out.println(propertiesFinal[i]);
 
                     propertiesFinal[i] = (String) decimalFormat.format(Double.parseDouble(propertiesFinal[i]));
 

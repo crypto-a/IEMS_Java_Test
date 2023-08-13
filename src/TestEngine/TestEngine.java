@@ -2,6 +2,7 @@ package TestEngine;
 
 import GUI.Event.Event;
 import SearchEngine.SearchEngine;
+import TestAutomations.DERMS.DERMS;
 import TestAutomations.DLCDemo.DLCDemo;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
@@ -143,11 +144,11 @@ public class TestEngine
             case "DERMS" ->
             {
                 //Set Up the Thread
-//                Thread thread = new Thread((Runnable) new DERMS());//ToDo
-//
-//
-//                //Start the thread
-//                thread.start();
+                Thread thread = new Thread((Runnable) new DERMS(this, this.runningTestObject));//ToDo
+
+
+                //Start the thread
+                thread.start();
             }
             //ToDo
         }

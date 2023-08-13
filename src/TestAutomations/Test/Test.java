@@ -3,6 +3,7 @@ package TestAutomations.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -19,13 +20,14 @@ public abstract class Test implements Runnable
     {
         // Configure ChromeDriver options
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless"); // Run Chrome in headless mode (optional)
+        //options.setCapability("goog:loggingPrefs", "{\"browser\": \"ALL\"}");
+        //options.addArguments("--headless"); // Run Chrome in headless mode (optional)
 
         //Setup Selenium
         System.setProperty("webdriver.chrome.driver", this.chromeDriverUrl);
 
         //Create the ChromeDriver Object
-        this.driver = new ChromeDriver(/* ToDo: Add the options to run headless */);
+        this.driver = new ChromeDriver();
 
         // Create a JavascriptExecutor instance
          this.js = (JavascriptExecutor) this.driver;
@@ -58,7 +60,7 @@ public abstract class Test implements Runnable
             passwordElement.sendKeys(password);
 
             /* Click on the login Button */
-            WebElement loginButton = this.driver.findElement(By.cssSelector("[aria-label='Login']"));
+            WebElement loginButton = this.driver.findElement(By.cssSelector(".p-button"));
 
             //Click on the login button
             loginButton.click();
@@ -83,13 +85,25 @@ public abstract class Test implements Runnable
         this.driver.findElement(By.cssSelector(buttonCssSelector)).click();
     }
 
+    public void doubleClick(String cssSelector)
+    {
+        // Find the element you want to double click
+        WebElement elementToDoubleClick = driver.findElement(By.cssSelector(cssSelector));
+
+        // Create an Actions object
+        Actions actions = new Actions(driver);
+
+        // Perform double click
+        actions.doubleClick(elementToDoubleClick).build().perform();
+    }
+
     public void selectDropDown(String dropDownCssSelector, int elementNumber)
     {
         // Perform the click on the feeder button
         this.driver.findElement(By.cssSelector(dropDownCssSelector)).click();
 
         //Select the feeder
-        this.driver.findElements(By.cssSelector(".p-dropdown-item")).get(elementNumber).click();
+        this.driver.findElements(By.cssSelector("li.p-dropdown-item")).get(elementNumber).click();
     }
 
     public void selectDropDownRandomly(String dropDownCssSelector)
@@ -165,6 +179,11 @@ public abstract class Test implements Runnable
         this.driver.quit();
     }
 
+    public WebElement getElementFromWebPage(String cssSelector)
+    {
+         return driver.findElement(By.cssSelector(cssSelector));
+
+    }
 
     @Override
     public abstract void run();

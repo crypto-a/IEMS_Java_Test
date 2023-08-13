@@ -16,6 +16,8 @@ public class OldTestElement
     private JLabel testDate;
     private JLabel testTime;
     private JPanel elementPanel;
+    private JProgressBar progressBar1;
+    private JLabel ongoingText;
 
     public OldTestElement(TestObject testObject, Event event)
     {
@@ -28,15 +30,18 @@ public class OldTestElement
 
         this.testTime.setText(this.testObject.getTestStartTime());
 
-        this.detailsButton.addActionListener(new ActionListener()
+        if (this.testObject.getDuration().equals("Test is currently Running"))
         {
 
-            public void actionPerformed(ActionEvent e)
-            {
-                //Call the function for the related button
-                detailsButtonClicked();
-            }
-        });
+        }
+        else
+        {
+            this.progressBar1.setVisible(false);
+            this.ongoingText.setVisible(false);
+        }
+
+        this.detailsButton.addActionListener(e -> detailsButtonClicked());
+
 
     }
 

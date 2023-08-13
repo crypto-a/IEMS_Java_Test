@@ -8,6 +8,8 @@ import TestEngine.TestObject.TestObject;
 import Email.Email;
 
 import org.bson.Document;
+import org.openqa.selenium.WebDriver;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -49,6 +51,9 @@ public class Event
     private Boolean isTestRunning;
     private Boolean requestDataReset;
     private final Email email;
+    private int[] savedVerticalPositionTestElements = {0};
+    private int[] savedVerticalPositionIssueElements = {0};
+    private int[] savedVerticalPositionTestLogs = {0};
     public Event()
     {
         //Set Up the Event properties
@@ -694,5 +699,35 @@ public class Event
     {
         //disconnect database
         this.database.terminate();
+    }
+
+    public int[] getSavedVerticalPositionTestElements()
+    {
+        return savedVerticalPositionTestElements;
+    }
+
+    public void setSavedVerticalPositionTestElements(int[] savedVerticalPositionTestElements)
+    {
+        this.savedVerticalPositionTestElements = savedVerticalPositionTestElements;
+    }
+
+    public int[] getSavedVerticalPositionIssueElements()
+    {
+        return savedVerticalPositionIssueElements;
+    }
+
+    public void setSavedVerticalPositionIssueElements(int[] savedVerticalPositionIssueElements)
+    {
+        this.savedVerticalPositionIssueElements = savedVerticalPositionIssueElements;
+    }
+
+    public int[] getSavedVerticalPositionTestLogs()
+    {
+        return savedVerticalPositionTestLogs;
+    }
+
+    public void setSavedVerticalPositionTestLogs(int[] savedVerticalPositionTestLogs)
+    {
+        this.savedVerticalPositionTestLogs = savedVerticalPositionTestLogs;
     }
 }

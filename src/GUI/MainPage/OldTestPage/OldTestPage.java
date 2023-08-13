@@ -11,6 +11,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 
 public class OldTestPage
 {
@@ -37,6 +39,8 @@ public class OldTestPage
     private JScrollPane testLogsScrollPanel;
     private JTextArea textArea1;
     private JButton openWebsiteButton;
+    private JScrollPane testElementScrollPanel;
+    private JScrollPane issueElementScrollPanel;
     private final Event event;
     private final TestObject testObject;
 
@@ -68,12 +72,23 @@ public class OldTestPage
         //Clear the test logs
         this.testLogs.setListData(this.event.getTestLogsArrayList());
 
+        JScrollBar testLogsVerticalScrollBar = this.testLogsScrollPanel.getVerticalScrollBar();
+        JScrollBar testElementsVerticalScrollBar = this.testElementScrollPanel.getVerticalScrollBar();
+        JScrollBar issueElementsVerticalScrollBar = this.issueElementScrollPanel.getVerticalScrollBar();
+
+        testLogsVerticalScrollBar.setValue(this.event.getSavedVerticalPositionTestLogs()[0]);
+        testElementsVerticalScrollBar.setValue(this.event.getSavedVerticalPositionTestElements()[0]);
+        issueElementsVerticalScrollBar.setValue(this.event.getSavedVerticalPositionIssueElements()[0]);
 
         //Set Up the action listeners
         this.returnButton.addActionListener(e -> formButtonClicked());
         this.comboBox1.addActionListener(e -> testElementComboBoxChange());
         this.comboBox2.addActionListener(e -> issueElementComboBoxChange());
         this.tabbedPane1.addChangeListener(e -> tabbedPanelChange());
+        testLogsVerticalScrollBar.addAdjustmentListener(e -> this.event.setSavedVerticalPositionTestLogs(new int[]{testLogsVerticalScrollBar.getValue()}));
+        testElementsVerticalScrollBar.addAdjustmentListener(e -> this.event.setSavedVerticalPositionTestElements(new int[]{testElementsVerticalScrollBar.getValue()}));
+        issueElementsVerticalScrollBar.addAdjustmentListener(e -> this.event.setSavedVerticalPositionIssueElements(new int[]{issueElementsVerticalScrollBar.getValue()}));
+
     }
 
     public JPanel requestContent()
@@ -158,6 +173,12 @@ public class OldTestPage
     {
         //Reset the states
         this.event.resetOldTestPageElement();
+
+        //reset the scroll panel values
+        this.event.setSavedVerticalPositionIssueElements(new int[]{0});
+        this.event.setSavedVerticalPositionTestLogs(new int[]{0});
+        this.event.setSavedVerticalPositionTestElements(new int[]{0});
+
         //Update Event
         this.event.setCodeState(1);
     }

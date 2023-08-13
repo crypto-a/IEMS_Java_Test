@@ -6,6 +6,13 @@ import GUI.MainPage.MainContent.OpenIssueElement.OpenIssueElement;
 import TestEngine.IssueElement.IssueElement;
 import User.User;
 import TestEngine.TestObject.TestObject;
+import com.sun.javafx.application.PlatformImpl;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import org.openqa.selenium.WebDriver;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -19,7 +26,6 @@ public class MainContent
 
     private JPanel MainPanel;
     private JTabbedPane tabbedPane1;
-    private JProgressBar progressBar1;
     private JPanel historyPanel;
     private JTextField textField1;
     private JButton searchButton;
@@ -28,7 +34,6 @@ public class MainContent
     private JComboBox comboBox1;
     private JComboBox testHistoryIssuerComboBox;
     private JPanel issuesPanel;
-    private JPanel testDisplayPanel;
     private JComboBox comboBox2;
     private JSpinner spinner1;
     private JButton loadButton;
@@ -157,6 +162,7 @@ public class MainContent
 
         // Add margin to the issuesPanel
         this.issuesPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+
     }
 
     private void mainPagePanelChange()

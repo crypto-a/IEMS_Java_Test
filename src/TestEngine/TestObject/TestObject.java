@@ -1,5 +1,6 @@
 package TestEngine.TestObject;
 
+import GUI.Event.Event;
 import TestAutomations.DERMS.DERMS;
 import TestAutomations.DLCDemo.DLCDemo;
 import TestEngine.IssueElement.IssueElement;
@@ -32,6 +33,8 @@ public class TestObject
 
     private String testDescription;
 
+    private Event event;
+
 
 
     /*****************************************
@@ -42,7 +45,7 @@ public class TestObject
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public TestObject(Object issuer, String targetedWebPage, String webPageURL, String testDescription, String[] webPageLoginInfo )
+    public TestObject(Event event, Object issuer, String targetedWebPage, String webPageURL, String testDescription, String[] webPageLoginInfo )
     {
         //SetUp object Properties
         this.issuer = issuer;
@@ -50,6 +53,8 @@ public class TestObject
         this.webPageURL = webPageURL;
         this.webPageLoginInfo = webPageLoginInfo;
         this.testDescription = testDescription;
+
+        this.event = event;
 
         //Record the time of starting a test
         this.testStartTime = LocalDateTime.now();
@@ -280,6 +285,10 @@ public class TestObject
             // calculate the average duration and Save value to the server
             this.averageBackEndResponseTime = totalDuration.dividedBy(backEndResponseTimes.size());
         }
+
+        //requestUpdate
+        this.event.setIsTestRunning(false);
+        this.event.requestPageRefresh();
     }
 
     public void addNewTestElement(String testID)

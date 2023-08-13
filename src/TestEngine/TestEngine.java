@@ -10,6 +10,7 @@ import TestEngine.TestObject.TestObject;
 import User.User;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.openqa.selenium.WebDriver;
 
 import java.util.ArrayList;
 
@@ -125,7 +126,7 @@ public class TestEngine
     public void createNewTestObject(User user, String targetedWebPage, String webPageURL,String testDescription, String[] webPageLoginInfo)
     {
         //Create the new Test Object
-        this.runningTestObject = new TestObject(user.getUserID(), targetedWebPage, webPageURL, testDescription, webPageLoginInfo);
+        this.runningTestObject = new TestObject(this.event, user.getUserID(), targetedWebPage, webPageURL, testDescription, webPageLoginInfo);
 
 
         //Check to see witch test was requested
@@ -149,11 +150,27 @@ public class TestEngine
 
                 //Start the thread
                 thread.start();
+
+
             }
             //ToDo
         }
 
-        this.testObjectArrayList.add(this.runningTestObject);
+        /* Java Engine Timeout */
+        try
+        {
+            //Sleep
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e)
+        {
+            //Print error
+            e.printStackTrace();
+        }
+
+        this.event.setIsTestRunning(true);
+
+        this.testObjectArrayList.add(0, this.runningTestObject);
 
         //ToDo: Update the database
 
@@ -647,4 +664,5 @@ public class TestEngine
         }
 
     }
+
 }

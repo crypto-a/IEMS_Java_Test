@@ -4,8 +4,10 @@ import Database.Database;
 import SearchEngine.SearchEngine;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
+import TestEngine.TestEngine;
 import TestEngine.TestObject.TestObject;
 import Email.Email;
+import User.User;
 
 import org.bson.Document;
 import org.openqa.selenium.WebDriver;
@@ -54,6 +56,9 @@ public class Event
     private int[] savedVerticalPositionTestElements = {0};
     private int[] savedVerticalPositionIssueElements = {0};
     private int[] savedVerticalPositionTestLogs = {0};
+    private User user;
+    private TestEngine testEngine;
+
     public Event()
     {
         //Set Up the Event properties
@@ -729,5 +734,30 @@ public class Event
     public void setSavedVerticalPositionTestLogs(int[] savedVerticalPositionTestLogs)
     {
         this.savedVerticalPositionTestLogs = savedVerticalPositionTestLogs;
+    }
+
+    public void emailUserResults()
+    {
+        //email them
+        this.email.emailTestResults(this.user, this.selectedTestObject);
+    }
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser(User user)
+    {
+        this.user = user;
+    }
+
+    public TestEngine getTestEngine()
+    {
+        return this.testEngine;
+    }
+
+    public void setTestEngine(TestEngine testEngine) {
+        this.testEngine = testEngine;
     }
 }

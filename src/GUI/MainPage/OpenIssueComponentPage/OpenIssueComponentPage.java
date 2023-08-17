@@ -1,6 +1,9 @@
 package GUI.MainPage.OpenIssueComponentPage;
 
 import GUI.Event.Event;
+import TestAutomations.DERMS.DERMS;
+import TestAutomations.DLCDemo.DLCDemo;
+import TestAutomations.Test.Test;
 import TestEngine.IssueElement.IssueElement;
 
 import javax.swing.*;
@@ -49,6 +52,7 @@ public class OpenIssueComponentPage
         this.backButton.addActionListener(e -> backButtonClicked());
 
         this.closeIssueButton.addActionListener(e -> closeButtonClicked());
+        this.loadScenarioButton.addActionListener(e -> loadScenarioButtonClicked());
     }
 
     public JPanel requestContent()
@@ -78,6 +82,36 @@ public class OpenIssueComponentPage
         else
         {
             JOptionPane.showMessageDialog(null, "PleaseCheck the verification Box", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void loadScenarioButtonClicked()
+    {
+        //Check to see witch test was requested
+        switch (this.issueElement.getTargetedWebPage())
+        {
+            case "DLC Demo" ->
+            {
+
+                //Set Up the Thread
+                Thread thread = new Thread((Runnable) new DLCDemo(this.event.getSelectedTestObject(), Test.Load_A_Scenario, this.issueElement.getScenario()));
+
+
+                //Start the thread
+                thread.start();
+            }
+            case "DERMS" ->
+            {
+                //Set Up the Thread
+                Thread thread = new Thread((Runnable) new DERMS(this.event.getSelectedTestObject(), Test.Load_A_Scenario, this.issueElement.getScenario()));
+
+
+                //Start the thread
+                thread.start();
+
+
+            }
+            //ToDo
         }
     }
 }

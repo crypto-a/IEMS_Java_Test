@@ -39,12 +39,12 @@ public class TestComponentPage
         this.testElementIdentification.setText(this.testElement.getTestElementIdentification());
         this.testStatus.setText(this.testElement.getStatus());
         this.testErrors.setText(this.testElement.getErrorsNum());
-        this.testScnario.setText(this.testElement.getScenario());
+        this.testScnario.setText(String.valueOf(this.testElement.getScenario()));
 
         //collect the test data form test element
         String[][][] testdata = this.testElement.getTestData();
 
-        //Loop trough att th elements
+        //Loop trough all th elements
         for(int i = 0; i < testdata[0].length; i++)
         {
             //Collect tht eID

@@ -37,6 +37,9 @@ public class MainPage
         this.event = event;
         this.user = user;
 
+        //Show the users name
+        this.nameField.setText(this.user.getName());
+
         //Setup action listeners for the buttons in the control panel
         this.newTestButton.addActionListener(e -> newTestButtonClicked());
         this.logOutButton.addActionListener(e -> logOutButtonClicked());

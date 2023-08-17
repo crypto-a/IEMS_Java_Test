@@ -9,7 +9,7 @@ public class IssueElement
     private Object issueID;
     private LocalDateTime occurringTime;
     private String errorMessage;
-    private String scenario;
+    private int scenario;
     private String expectedValue;
     private String actualValue;
     private Boolean isIssueOpen;
@@ -26,7 +26,7 @@ public class IssueElement
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public IssueElement(String targetedWebPage, String scenario, String expectedValue, String actualValue, String errorMessage)
+    public IssueElement(String targetedWebPage, int scenario, String expectedValue, String actualValue, String errorMessage)
     {
         //SetUp ObjectID
         this.targetedWebPage = targetedWebPage;
@@ -61,7 +61,7 @@ public class IssueElement
         this.issueID = issueElementDoc.get("_id");
         this.occurringTime = LocalDateTime.parse(issueElementDoc.getString("occurringTime"));
         this.errorMessage = issueElementDoc.getString("errorMessage");
-        this.scenario = issueElementDoc.getString("scenario");
+        this.scenario = issueElementDoc.getInteger("scenario");
         this.expectedValue = issueElementDoc.getString("expectedValue");
         this.actualValue = issueElementDoc.getString("expectedValue");
         this.isIssueOpen = issueElementDoc.getBoolean("isIssueOpen");
@@ -81,7 +81,7 @@ public class IssueElement
         this.issueID = newIssueElementDoc.get("_id");
         this.occurringTime = LocalDateTime.parse(newIssueElementDoc.getString("occurringTime"));
         this.errorMessage = newIssueElementDoc.getString("errorMessage");
-        this.scenario = newIssueElementDoc.getString("scenario");
+        this.scenario = newIssueElementDoc.getInteger("scenario");
         this.expectedValue = newIssueElementDoc.getString("expectedValue");
         this.actualValue = newIssueElementDoc.getString("expectedValue");
         this.isIssueOpen = newIssueElementDoc.getBoolean("isIssueOpen");
@@ -148,7 +148,7 @@ public class IssueElement
         return isIssueOpen;
     }
 
-    public String getScenario()
+    public int getScenario()
     {
         return this.scenario;
     }

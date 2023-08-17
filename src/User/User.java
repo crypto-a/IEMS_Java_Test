@@ -50,6 +50,9 @@ public class User
 
                 //Set is user authenticated to true
                 this.isUserAuthenticated = true;
+
+                //push the user object to the event
+                this.event.setUser(this);
             }
             else
             {
@@ -67,6 +70,7 @@ public class User
 
         //load the users lIst
         this.loadUsersList();
+
     }
 
     private void loadUserInfo(Document userAuthenticationDocument)
@@ -111,6 +115,9 @@ public class User
                         System.out.println(1);
                         this.passwordManager.saveUserID(userAuthDoc.get("_id"));
                     }
+
+                    //push the user object to the event
+                    this.event.setUser(this);
 
                     return true;
                 }
@@ -189,5 +196,11 @@ public class User
     {
         //Return the results
         return this.passwordManager.generateRandomPassword(length);
+    }
+
+    public String getUserEmail()
+    {
+        //return the users email
+        return this.email;
     }
 }

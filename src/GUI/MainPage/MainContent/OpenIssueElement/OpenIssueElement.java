@@ -29,14 +29,9 @@ public class OpenIssueElement
         this.issueDate.setText(this.issueElement.getOccurringDate());
 
         //setUp action Listeners for buttons
-        this.detailsButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                //run the function related to the button
-                detailsButtonClicked();
-            }
+        this.detailsButton.addActionListener(e -> {
+            //run the function related to the button
+            detailsButtonClicked();
         });
     }
 
@@ -50,6 +45,10 @@ public class OpenIssueElement
     {
         //push the selectedIssueElement
         this.event.setSelectedIssueElement(this.issueElement);
+
+        System.out.println(this.event.getTestEngine().findParentTestObjectFromIssue(this.issueElement.getIssueID()));
+        //push the parent test object to the event
+        this.event.setSelectedTestObject(this.event.getTestEngine().findParentTestObjectFromIssue(this.issueElement.getIssueID()));
 
         //Change code state
         this.event.setCodeState(5);

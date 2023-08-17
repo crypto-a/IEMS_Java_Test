@@ -3,6 +3,10 @@ package Email;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.swing.*;
+
+import TestEngine.TestObject.TestObject;
+import User.User;
 
 public class Email
 {
@@ -45,7 +49,7 @@ public class Email
 
             // Set the subject and content
             message.setSubject("Account Created");
-            message.setText("Hello " + firstName +", \nWelcome to the IEMS Solutions test Software. The following are your Username and password for your account: \n\nUsername: " + username + "\nPassword: " + password + "\n\nYou can change your password later after you login");
+            message.setText("Hello " + firstName +", \nWelcome to the IEMS Solutions test Software. The following are your Username and password for your account: \n\nUsername: " + username + "\nPassword: " + password + "\n");
 
             // Send the message
             Transport.send(message);
@@ -55,4 +59,41 @@ public class Email
             e.printStackTrace();
         }
     }
+
+    public void emailTestResults(User user, TestObject testObject)
+    {
+        try
+        {
+            // Create a MimeMessage
+            Message message = new MimeMessage(this.session);
+
+            // Set the sender and recipient addresses
+            message.setFrom(new InternetAddress(this.username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getUserEmail()));
+
+            System.out.println(user.getUserEmail());
+
+            // Set the subject and content
+            message.setSubject("Test: " + testObject.getTestID() + " Results");
+            message.setText(
+                            "Test ID: " + testObject.getTestID() +
+                            "\nTargeted Web App: " + testObject.getTargetedWebPage() +
+                            "\nURL: " + testObject.getWebPageURL() +
+                            "\nTest Date: " + testObject.getTestDate() +
+                            "\nTestTime: " + testObject.getTestStartTime() +
+                            "\nDuration: " + testObject.getDuration());
+
+            // Send the message
+            Transport.send(message);
+
+            //Notify User
+            JOptionPane.showMessageDialog(null, "The results of this test have been emailed to you", "Email Sent", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (MessagingException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
 }

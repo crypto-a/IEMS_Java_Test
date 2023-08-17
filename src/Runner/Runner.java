@@ -46,6 +46,9 @@ public class Runner
         //create the change stream
         this.database.startChangeStreamSync();
 
+        //Push the testEngine to the event
+        this.event.setTestEngine(this.testEngine);
+
         //Start the Code Process
         this.run();
     }
@@ -58,7 +61,7 @@ public class Runner
         //Load Data from the database
         this.loadData();
 
-        testEngine.createNewTestObject(user, "DERMS", "https://derms.iemssolution.com/", "This is a test test", new String[]{"alirahbar2005@gmail.com", "Spacex12345678900!"});
+        //testEngine.createNewTestObject(user, "DERMS", "https://derms.iemssolution.com/", "This is a test test", new String[]{"alirahbar2005@gmail.com", "Spacex12345678900!"});
         //Loop Forever
         while (this.isRunning)
         {

@@ -11,6 +11,7 @@ import User.User;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.openqa.selenium.WebDriver;
+import TestAutomations.Test.Test;
 
 import java.util.ArrayList;
 
@@ -128,33 +129,41 @@ public class TestEngine
         //Create the new Test Object
         this.runningTestObject = new TestObject(this.event, user.getUserID(), targetedWebPage, webPageURL, testDescription, webPageLoginInfo);
 
-
-        //Check to see witch test was requested
-        switch (this.runningTestObject.getTargetedWebPage())
+        //try to complete the test
+        try
         {
-            case "DLCDemo" ->
+            //Check to see witch test was requested
+            switch (this.runningTestObject.getTargetedWebPage())
             {
+                case "DLC Demo" ->
+                {
 
-                //Set Up the Thread
-                Thread thread = new Thread((Runnable) new DLCDemo(this, this.runningTestObject));//ToDo
+                    //Set Up the Thread
+                    Thread thread = new Thread((Runnable) new DLCDemo(this, this.runningTestObject, Test.Do_Regular_Testing));
 
 
-                //Start the thread
-                thread.start();
+                    //Start the thread
+                    thread.start();
+                }
+                case "DERMS" ->
+                {
+                    //Set Up the Thread
+                    Thread thread = new Thread((Runnable) new DERMS(this, this.runningTestObject, Test.Do_Regular_Testing));
+
+
+                    //Start the thread
+                    thread.start();
+
+
+                }
+                //ToDo
             }
-            case "DERMS" ->
-            {
-                //Set Up the Thread
-                Thread thread = new Thread((Runnable) new DERMS(this, this.runningTestObject));//ToDo
-
-
-                //Start the thread
-                thread.start();
-
-
-            }
-            //ToDo
         }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
 
         /* Java Engine Timeout */
         try
@@ -172,6 +181,8 @@ public class TestEngine
 
         this.testObjectArrayList.add(0, this.runningTestObject);
 
+        //add it to the search engine
+        this.searchEngine.index(this.runningTestObject.getAsDocument(), this.runningTestObject);
         //ToDo: Update the database
 
 
@@ -641,7 +652,7 @@ public class TestEngine
         }
     }
 
-    public void createNewTestElement(String testElementIdentification, String scenario, String[][] actualValue, String[][] expectedValue)
+    public void createNewTestElement(String testElementIdentification, int scenario, String[][] actualValue, String[][] expectedValue)
     {
         TestElement testElement = new TestElement(new ObjectId(), testElementIdentification, scenario, actualValue, expectedValue);
 
@@ -663,6 +674,24 @@ public class TestEngine
             this.event.requestPageRefresh();
         }
 
+    }
+
+    public TestObject findParentTestObjectFromIssue(String issueID)
+    {
+        for (TestObject testObject: this.testObjectArrayList)
+        {
+            for (Object id: testObject.getIssueElements())
+            {
+                System.out.println(issueID);
+                System.out.println(id.toString());
+                if (id.toString().equals(issueID))
+                {
+                    return testObject;
+                }
+            }
+        }
+
+        return null;
     }
 
 }

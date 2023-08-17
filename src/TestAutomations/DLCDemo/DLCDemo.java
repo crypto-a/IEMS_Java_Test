@@ -16,9 +16,6 @@ import java.util.Iterator;
 public class DLCDemo extends Test
 {
 
-    private TestObject testObject;
-    private TestEngine testEngine;
-
     private String[][] elements = new String[][]
             {
                     { "line-element", "line_data", "p_from_mw", "q_from_mvar", "p_to_mw", "q_to_mvar", "pl_mw", "ql_mvar", "i_from_ka", "i_to_ka", "vm_from_pu", "va_from_degree", "vm_to_pu", "va_to_degree", "loading_percent"},
@@ -28,19 +25,22 @@ public class DLCDemo extends Test
                     {"pv-element", "pv_data", "p_mw", "q_mvar"},
                     {"load-element", "load_data", "p_mw", "q_mvar"}
             };
-    public DLCDemo(TestEngine testEngine, TestObject testObject)
+    public DLCDemo(TestEngine testEngine, TestObject testObject, int useCase)
     {
         //create the driver
-        super();
+        super(testEngine, testObject, useCase);
 
-        //set up the property
-        this.testObject = testObject;
-        this.testEngine = testEngine;
+    }
+
+    public DLCDemo(TestObject testObject, int useCase, int stepRequested)
+    {
+        //create the driver
+        super(testObject, useCase, stepRequested);
 
     }
 
     @Override
-    public void run()
+    public void test()
     {
         //load the page
         this.loadPage(this.testObject.getWebPageURL());
@@ -94,7 +94,10 @@ public class DLCDemo extends Test
                         String mapData = this.requestDataFromJavaScriptConsole("return map.current.getSource('" + elementData[0] + "')._data.features;");
 
                         //Run a test
-                        this.testEngine.createNewTestElement(elementData[0], "ScnarioPage with panelCombination: " + Arrays.toString(currentState), this.normalizeScenarioMapData(mapData, elementData), this.normalizeScenarioJsonData(JsonData, elementData));
+                        if (!this.runTest(elementData[0], this.normalizeScenarioMapData(mapData, elementData), this.normalizeScenarioJsonData(JsonData, elementData)))
+                        {
+                            return;
+                        }
                     }
 
                 }
@@ -104,9 +107,6 @@ public class DLCDemo extends Test
         //Go to next page
         this.loadPage(this.testObject.getWebPageURL() + "/#/network");
 
-
-        this.terminateDriver();
-        this.testObject.postTestCalculations();
     }
 
 

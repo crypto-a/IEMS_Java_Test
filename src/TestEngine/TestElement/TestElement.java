@@ -14,7 +14,7 @@ public class TestElement
     public String[][] actualValues;
     private String[][] expectedValues;
     private String testElementIdentification;
-    private String scenario;
+    private int scenario;
     private String[][] testResults;
     private Boolean didPass;
     private String testLog;
@@ -31,7 +31,7 @@ public class TestElement
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public TestElement(Object testID, String testElementIdentification, String scenario, String[][] actualValue, String[][] expectedValue)
+    public TestElement(Object testID, String testElementIdentification, int scenario, String[][] actualValue, String[][] expectedValue)
     {
         //SetUp object Properties
         this.testID = testID;
@@ -72,7 +72,7 @@ public class TestElement
         this.testID = testElementDoc.get("_id");
         this.didPass = testElementDoc.getBoolean("didPass");
         this.testElementIdentification = testElementDoc.getString("testElementIdentification");
-        this.scenario = testElementDoc.getString("scenario");
+        this.scenario = testElementDoc.getInteger("scenario");
         this.actualValues = this.convertListListToStringArray((List<List<String>>) testElementDoc.get("actualValue"));
         this.expectedValues = this.convertListListToStringArray((List<List<String>>) testElementDoc.get("expectedValue"));
         this.testResults = this.convertListListToStringArray((List<List<String>>) testElementDoc.get("testResults"));
@@ -92,7 +92,7 @@ public class TestElement
         this.testID = newTestElementDoc.get("_id");
         this.didPass = newTestElementDoc.getBoolean("didPass");
         this.testElementIdentification = newTestElementDoc.getString("testElementIdentification");
-        this.scenario = newTestElementDoc.getString("scenario");
+        this.scenario = newTestElementDoc.getInteger("scenario");
         System.out.println(2);
         this.actualValues = this.convertListListToStringArray((List<List<String>>) newTestElementDoc.get("actualValue"));
         this.expectedValues = this.convertListListToStringArray((List<List<String>>) newTestElementDoc.get("expectedValue"));
@@ -154,7 +154,7 @@ public class TestElement
                                 //Construct a message
                                 String errormessage = this.testElementIdentification + " " + actualValue[0] + ": value Arrays are not equal";
 
-                                //Create an issue object
+                                //Create an issue object //ToDo
                                 this.createIssue(this.scenario, Arrays.toString(expectedValue), Arrays.toString(actualValue), errormessage);
                             }
                         }
@@ -190,7 +190,7 @@ public class TestElement
         }
     }
 
-    private void createIssue(String scenario, String expectedValue, String actualValue, String errorMessage)
+    private void createIssue(int scenario, String expectedValue, String actualValue, String errorMessage)
     {
         //ToDo
     }
@@ -213,7 +213,7 @@ public class TestElement
         return String.valueOf(this.numberOfErrors);
     }
 
-    public String getScenario()
+    public int getScenario()
     {
         System.out.println(this.scenario);
         //return scenario

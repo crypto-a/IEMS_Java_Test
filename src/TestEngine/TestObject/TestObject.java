@@ -89,6 +89,7 @@ public class TestObject
         this.testLogs = (ArrayList<String>) testObjectDoc.get("testLogs");
         this.numberOfTests = testObjectDoc.getInteger("numberOfTests");
         this.testDescription = testObjectDoc.getString("testDescription");
+        this.webPageLoginInfo = new String[]{testObjectDoc.getString("websiteUsername"), testObjectDoc.getString("websitePassword")};
 
         //Calculate Duration
         this.testDuration = Duration.between(this.testStartTime, this.testEndTime);
@@ -108,6 +109,7 @@ public class TestObject
         this.testLogs = (ArrayList<String>) newTestObjectDoc.get("testLogs");
         this.numberOfTests = newTestObjectDoc.getInteger("numberOfTests");
         this.testDescription = newTestObjectDoc.getString("testDescription");
+        this.webPageLoginInfo = new String[]{newTestObjectDoc.getString("websiteUsername"), newTestObjectDoc.getString("websitePassword")};
 
         //Calculate Duration
         this.testDuration = Duration.between(this.testStartTime, this.testEndTime);
@@ -135,7 +137,7 @@ public class TestObject
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public void testScenario(String testElementIdentification, String scenario, String[][] actualValue, String[][] expectedValue)
+    public void testScenario(String testElementIdentification, int scenario, String[][] actualValue, String[][] expectedValue)
     {
         //Create the new Test Element Object and Add it to the arrayList
         this.testElements.add(new TestElement(this, testElementIdentification, scenario, actualValue, expectedValue));
@@ -294,5 +296,47 @@ public class TestObject
     public void addNewTestElement(String testID)
     {
         this.testElements.add(new ObjectId(testID));
+    }
+
+    public Document getAsDocument()
+    {
+        Document testObjectDoc;
+
+        try
+        {
+            testObjectDoc = new Document().append("_id", this.testID)
+                    .append("startTestTime", this.testStartTime.toString())
+                    .append("endTestTime", this.testEndTime.toString())
+                    .append("testIssuer", this.issuer)
+                    .append("targetedWebPage", this.targetedWebPage)
+                    .append("webPageURL", this.webPageURL)
+                    .append("testElements", this.testElements)
+                    .append("issueElements", this.issueElements)
+                    .append("testLogs", this.testLogs)
+                    .append("numberOfTests", this.numberOfTests)
+                    .append("testDescription", this.testDescription)
+                    .append("websiteUsername", this.webPageLoginInfo[0])
+                    .append("websitePassword", this.webPageLoginInfo[1]);
+
+        }
+        catch (Exception e)
+        {
+            testObjectDoc = new Document().append("_id", this.testID)
+                    .append("startTestTime", this.testStartTime.toString())
+                    .append("endTestTime", null)
+                    .append("testIssuer", this.issuer)
+                    .append("targetedWebPage", this.targetedWebPage)
+                    .append("webPageURL", this.webPageURL)
+                    .append("testElements", this.testElements)
+                    .append("issueElements", this.issueElements)
+                    .append("testLogs", this.testLogs)
+                    .append("numberOfTests", this.numberOfTests)
+                    .append("testDescription", this.testDescription)
+                    .append("websiteUsername", this.webPageLoginInfo[0])
+                    .append("websitePassword", this.webPageLoginInfo[1]);
+        }
+
+
+        return testObjectDoc;
     }
 }

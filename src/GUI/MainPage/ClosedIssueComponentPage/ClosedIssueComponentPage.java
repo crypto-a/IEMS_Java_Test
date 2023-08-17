@@ -1,6 +1,9 @@
 package GUI.MainPage.ClosedIssueComponentPage;
 
 import GUI.Event.Event;
+import TestAutomations.DERMS.DERMS;
+import TestAutomations.DLCDemo.DLCDemo;
+import TestAutomations.Test.Test;
 import TestEngine.IssueElement.IssueElement;
 
 import javax.swing.*;
@@ -49,14 +52,8 @@ public class ClosedIssueComponentPage
         this.developerMessage.setText(this.issueElement.getDeveloperMessage());
 
         //Set AUp action Listener
-        this.returnButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                backButtonClicked();
-            }
-        });
+        this.returnButton.addActionListener(e -> backButtonClicked());
+        this.loadScenarioButton.addActionListener(e -> loadScenarioButtonClicked());
 
     }
 
@@ -70,5 +67,35 @@ public class ClosedIssueComponentPage
     {
         //Go back to the previous page
         this.event.getPreviousCodeState();
+    }
+
+    private void loadScenarioButtonClicked()
+    {
+        //Check to see witch test was requested
+        switch (this.issueElement.getTargetedWebPage())
+        {
+            case "DLC Demo" ->
+            {
+
+                //Set Up the Thread
+                Thread thread = new Thread((Runnable) new DLCDemo(this.event.getSelectedTestObject(), Test.Load_A_Scenario, this.issueElement.getScenario()));
+
+
+                //Start the thread
+                thread.start();
+            }
+            case "DERMS" ->
+            {
+                //Set Up the Thread
+                Thread thread = new Thread((Runnable) new DERMS(this.event.getSelectedTestObject(), Test.Load_A_Scenario, this.issueElement.getScenario()));
+
+
+                //Start the thread
+                thread.start();
+
+
+            }
+            //ToDo
+        }
     }
 }

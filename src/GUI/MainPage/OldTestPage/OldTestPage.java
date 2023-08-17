@@ -10,6 +10,7 @@ import TestEngine.TestObject.TestObject;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.net.URI;
 import java.util.ArrayList;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
@@ -30,7 +31,6 @@ public class OldTestPage
     private JPanel testComponentPanel;
     private JPanel issuesPanel;
     private JButton emailMeTheResultsButton;
-    private JButton exportPDFButton;
     private JTabbedPane tabbedPane1;
     private JComboBox comboBox1;
     private JPanel testComponentElementsPanel;
@@ -88,6 +88,8 @@ public class OldTestPage
         testLogsVerticalScrollBar.addAdjustmentListener(e -> this.event.setSavedVerticalPositionTestLogs(new int[]{testLogsVerticalScrollBar.getValue()}));
         testElementsVerticalScrollBar.addAdjustmentListener(e -> this.event.setSavedVerticalPositionTestElements(new int[]{testElementsVerticalScrollBar.getValue()}));
         issueElementsVerticalScrollBar.addAdjustmentListener(e -> this.event.setSavedVerticalPositionIssueElements(new int[]{issueElementsVerticalScrollBar.getValue()}));
+        emailMeTheResultsButton.addActionListener(e -> this.event.emailUserResults());
+        this.openWebsiteButton.addActionListener(e -> openWebsitePage());
 
     }
 
@@ -213,5 +215,32 @@ public class OldTestPage
         this.event.setOldTestPagePanelSelected(this.tabbedPane1.getSelectedIndex());
     }
 
+    private void openWebsitePage()
+    {
+        //Load page
+        try
+        {
+            // Check if Desktop is supported
+            if (Desktop.isDesktopSupported())
+            {
+                Desktop desktop = Desktop.getDesktop();
+                // Check if browsing is supported
+                if (desktop.isSupported(Desktop.Action.BROWSE))
+                {
+                    // Open the URL in the user's default web browser
+                    desktop.browse(new URI(this.testObject.getWebPageURL()));
+                } else
+                {
+                    JOptionPane.showMessageDialog(null, "This feature is not available of your computer.", "Feature Blocked", JOptionPane.ERROR_MESSAGE);
+                }
+            } else
+            {
+                JOptionPane.showMessageDialog(null, "This feature is not available of your computer.", "Feature Blocked", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 }

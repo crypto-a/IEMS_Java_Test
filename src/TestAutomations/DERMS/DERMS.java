@@ -18,17 +18,18 @@ import java.util.*;
 
 public class DERMS extends Test
 {
-    private TestObject testObject;
-    private TestEngine testEngine;
 
-    public DERMS(TestEngine testEngine, TestObject testObject)
+    public DERMS(TestEngine testEngine, TestObject testObject, int useCase)
     {
         //create the driver
-        super();
+        super(testEngine, testObject, useCase);
 
-        //set up the property
-        this.testObject = testObject;
-        this.testEngine = testEngine;
+    }
+
+    public DERMS(TestObject testObject, int useCase, int stepRequested)
+    {
+        //create the driver
+        super(testObject, useCase, stepRequested);
 
     }
 
@@ -68,7 +69,7 @@ public class DERMS extends Test
     private  HashMap<String, String[]> expectedData = new HashMap<>();
 
     @Override
-    public void run()
+    public void test()
     {
         //load the page
         this.loadPage(this.testObject.getWebPageURL());
@@ -205,15 +206,14 @@ public class DERMS extends Test
                     String[] actualData = this.actualData.get(id);
                     String[] expectedData = this.expectedData.get(id);
 
-                    this.testEngine.createNewTestElement(id, " scenario ran: " + i, new String[][] {actualData}, new String[][]{expectedData});
+                    if (!this.runTest(id, new String[][] {actualData}, new String[][]{expectedData}))
+                    {
+                        return;
+                    }
                 }
             }
 
         }
-
-
-        this.terminateDriver();
-        this.testObject.postTestCalculations();
     }
 
     private void normalizeWebsiteData(String data)

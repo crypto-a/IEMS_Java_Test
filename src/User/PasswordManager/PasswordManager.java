@@ -21,7 +21,7 @@ public class PasswordManager
     private File uuidFile;
 
     private String filePath = "src/User/PasswordManager/UUID.txt";
-    private final String secretKeyString = "hpM8/x<$i4}E`d)rc=Qu!)B7`:rrjO=djWW@wP*YY-Yi]rGeC@?Io;OP$/k+zv;";
+    private String secretKeyString = "770A8A65DA156D24EE2A093277530142";
     private static final String LOWERCASE_CHARS = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String DIGITS = "0123456789";
@@ -63,7 +63,7 @@ public class PasswordManager
         try
         {
             //read the string form the textFile
-            return new BufferedReader(new FileReader(this.filePath)).readLine();
+            return this.decrypt(new BufferedReader(new FileReader(this.filePath)).readLine());
 
         }
         catch (IOException e)
@@ -80,7 +80,7 @@ public class PasswordManager
         {
             BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true));
 
-            bw.write(userID.toString());
+            bw.write(this.encryptLine(userID.toString()));
 
             bw.close();
 
@@ -97,7 +97,6 @@ public class PasswordManager
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath)))
         {
             bw.write(""); // Write an empty string to clear the file
-
             bw.close();
 
         } catch (IOException e) {
@@ -105,50 +104,38 @@ public class PasswordManager
         }
     }
 
-    private String encryptLine(String line)
+    private String encryptLine(String input)
     {
         try
         {
-            byte[] salt = new byte[]{1, 2, 3, 4, 5, 6, 7, 8}; // Salt for encryption
-
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-            KeySpec spec = new PBEKeySpec(this.secretKeyString.toCharArray(), salt, 65536, 256);
-            SecretKey tmp = factory.generateSecret(spec);
-            SecretKey secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
-
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-
-            byte[] encryptedData = cipher.doFinal(line.getBytes("UTF-8"));
-            return Base64.getEncoder().encodeToString(encryptedData);
+            SecretKeySpec keySpec = new SecretKeySpec(this.secretKeyString.getBytes(), "AES");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+            byte[] encryptedBytes = cipher.doFinal(input.getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(encryptedBytes);
         } catch (Exception e)
         {
             e.printStackTrace();
+
+            return null;
         }
-        return null;
     }
 
-    private String decryptLine(String encryptedLine)
+    private String decrypt(String encryptedInput)
     {
-        try {
-            byte[] salt = new byte[]{1, 2, 3, 4, 5, 6, 7, 8}; // Salt for encryption (should be randomly generated for real use)
-
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-            KeySpec spec = new PBEKeySpec(this.secretKeyString.toCharArray(), salt, 65536, 256);
-            SecretKey tmp = factory.generateSecret(spec);
-            SecretKey secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
-
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding"); // Use the same padding as used during encryption
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
-
-            byte[] encryptedData = Base64.getDecoder().decode(encryptedLine);
-            byte[] decryptedData = cipher.doFinal(encryptedData);
-
-            return new String(decryptedData, StandardCharsets.UTF_8);
-        } catch (Exception e) {
+        try
+        {
+            SecretKeySpec keySpec = new SecretKeySpec(this.secretKeyString.getBytes(), "AES");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, keySpec);
+            byte[] encryptedBytes = Base64.getDecoder().decode(encryptedInput);
+            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+            return new String(decryptedBytes, StandardCharsets.UTF_8);
+        } catch (Exception e)
+        {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public String generateRandomPassword(int length)

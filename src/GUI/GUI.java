@@ -41,16 +41,20 @@ public class GUI extends JFrame
         // Makes the background of the frame grey
         this.frame.setLayout(new BorderLayout());
 
-        //set window listiner
+        //set window listner
         // Add a WindowAdapter with a lambda expression to the JFrame
-        this.frame.addWindowListener(new WindowAdapter()
-        {
-            @Override
-            public void windowClosing(WindowEvent e)
+        SwingUtilities.invokeLater(() -> {
+            frame.addWindowListener(new WindowAdapter()
             {
-                endCode();
+                @Override
+                public void windowClosing(WindowEvent e)
+                {
 
-            }
+                    endCode();
+                }
+            });
+
+            frame.setVisible(true);
         });
     }
 
@@ -97,16 +101,27 @@ public class GUI extends JFrame
 
     private void endCode()
     {
-        //disconnect the database
-        this.event.disconnectDatabase();
+        if(!this.event.getIsTestRunning())
+        {
+            //disconnect the database
+            this.event.disconnectDatabase();
 
-        //clear test engine data
-        this.testEngine.clearData();
+            //clear test engine data
+            this.testEngine.clearData();
 
-        //Close the JFrame
-        dispose();
+            //Close the JFrame
+            dispose();
 
-        //Exit code
-        System.exit(0);
+            //Exit code
+            System.exit(0);
+        }
+        else
+        {
+            //notify user
+            JOptionPane.showMessageDialog(null, "A test is currently running. please try again when test is complete!", "Closing Error", JOptionPane.ERROR_MESSAGE);
+
+            this.event.requestPageRefresh();
+        }
+
     }
 }

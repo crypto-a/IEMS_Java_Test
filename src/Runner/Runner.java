@@ -393,14 +393,12 @@ public class Runner
         {
 
 
-            //clear the test engine
-            this.testEngine.clearData();
 
             //Show test to user
             JOptionPane.showMessageDialog(null, "Please Wait. We are Loading your Data...", "Processing Request", JOptionPane.NO_OPTION);
 
             //load data again
-            this.database.loadTestHistoryArray();
+            this.loadData();
 
             JOptionPane.getRootFrame().dispose();
 

@@ -290,6 +290,9 @@ public class TestObject
 
         //update DB
         this.event.closeTestObject(this.getAsDocument(), this.getTestID());
+
+        //change is test running
+        this.event.setIsTestRunning(false);
     }
 
     public void addNewTestElement(String testID)

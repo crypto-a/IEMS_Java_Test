@@ -19,6 +19,7 @@ import org.bson.types.ObjectId;
 
 import javax.print.Doc;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Database
 {
@@ -267,7 +268,11 @@ public class Database
         //Connect to the collection
         MongoCollection<org.bson.Document> issueUnitsCollection = this.database.getCollection("issueUnits");
 
-        //ToDo
+        //Notify event that we are pushing something
+        this.event.setDidSelfPushChange(true);
+
+        //insert issue into DB
+        issueUnitsCollection.insertOne(issueElementDoc);
     }
 
     public void pushNewTestElement(Document testElementDoc)
@@ -275,7 +280,13 @@ public class Database
         //Connect to the collection
         MongoCollection<org.bson.Document> testUnitsCollection = this.database.getCollection("testUnits");
 
-        //ToDo
+        //Notify event that we are pushing something
+        this.event.setDidSelfPushChange(true);
+
+        //push to database
+        testUnitsCollection.insertOne((Document) testElementDoc);
+
+
     }
 
     public void pushNewTestObject(Document testObjectDoc)
@@ -283,22 +294,64 @@ public class Database
         //Connect to the collection
         MongoCollection<org.bson.Document> testsCollection = this.database.getCollection("tests");
 
-        //ToDo
+        //Notify event that we are pushing something
+        this.event.setDidSelfPushChange(true);
+
+        //push the testObject to the database
+        testsCollection.insertOne(testObjectDoc);
     }
 
-    public void addNewTestToTestObject(String testObjectID, String issueElementID)
+    public void addNewTestToTestObject(String testObjectID, String testElementID)
+    {
+        // Connect to the collection
+        MongoCollection<Document> testsCollection = this.database.getCollection("tests");
+
+        // Pull the testObject
+        Document testObject = testsCollection.find(eq("_id", new ObjectId(testObjectID))).first();
+
+        // Add the new element to the array
+        List<String> testsList = testObject.getList("testElements", String.class);
+        testsList.add(testElementID);
+        testObject.put("testElements", testsList);
+
+        //Notify event that we are pushing something
+        this.event.setDidSelfPushChange(true);
+
+        // Update the object in the db
+        testsCollection.updateOne(eq("_id", new ObjectId(testObjectID)), new Document("$set", testObject));
+
+    }
+
+    public void addNewIssueToTestObject(String issueObjectID, String issueElementID)
     {
         //Connect to the collection
         MongoCollection<org.bson.Document> testsCollection = this.database.getCollection("tests");
 
-        //ToDo
+        //pull the testObject
+        Document testObject = testsCollection.find(eq("_id", new ObjectId(issueObjectID))).first();
+
+        // Add the new element to the array
+        List<String> issuesList = testObject.getList("issueElements", String.class);
+        issuesList.add(issueElementID);
+        testObject.put("issueElements", issuesList);
+
+        //Notify event that we are pushing something
+        this.event.setDidSelfPushChange(true);
+
+        // Update the object in the db
+        testsCollection.updateOne(eq("_id", new ObjectId(issueObjectID)), new Document("$set", testObject));
+
     }
 
-    public void addNewIssueToTestObject(String testObjectID, String testElementID)
+    public void closeOpenTestObject(Document newTestObject, String testObjectID)
     {
-        //Connect to the collection
-        MongoCollection<org.bson.Document> testsCollection = this.database.getCollection("tests");
+        // Connect to the collection
+        MongoCollection<Document> testsCollection = this.database.getCollection("tests");
 
-        //ToDo
+        //Notify event that we are pushing something
+        this.event.setDidSelfPushChange(true);
+
+        // Update the object in the db
+        testsCollection.updateOne(eq("_id", new ObjectId(testObjectID)), new Document("$set", newTestObject));
     }
 }

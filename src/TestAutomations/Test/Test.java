@@ -34,25 +34,30 @@ public abstract class Test implements Runnable
 
     public Test(TestEngine testEngine, TestObject testObject, int useCaseCode)
     {
+
         this.testEngine = testEngine;
         this.testObject = testObject;
         this.useCaseCode = useCaseCode;
 
         this.currentTestStep = 0;
 
+
         // Configure ChromeDriver options
         ChromeOptions options = new ChromeOptions();
         //options.setCapability("goog:loggingPrefs", "{\"browser\": \"ALL\"}");
         //options.addArguments("--headless"); // Run Chrome in headless mode (optional)
 
+
         //Setup Selenium
         System.setProperty("webdriver.chrome.driver", this.chromeDriverUrl);
+
 
         //Create the ChromeDriver Object
         this.driver = new ChromeDriver();
 
+
         // Create a JavascriptExecutor instance
-         this.js = (JavascriptExecutor) this.driver;
+        this.js = (JavascriptExecutor) this.driver;
     }
 
     public Test(TestObject testObject, int useCaseCode, int stepRequested)
@@ -261,9 +266,12 @@ public abstract class Test implements Runnable
             catch(Exception e)
             {
                 System.out.println(e.getMessage());
+                System.out.println("-15");
 
                 //terminate driver
                 this.terminateDriver();
+
+                System.setProperty("webdriver.chrome.driver", this.chromeDriverUrl);
 
                 ChromeOptions options = new ChromeOptions();
 
@@ -275,15 +283,19 @@ public abstract class Test implements Runnable
 
     public Boolean runTest(String testElementIdentification, String[][] actualData, String[][] expectedData )
     {
+        System.out.println("testPhase");
         System.out.println(this.currentTestStep);
         if (this.useCaseCode == 0)
         {
+            System.out.println(this.currentTestStep);
             //Run a test
             this.testEngine.createNewTestElement(this.testObject, testElementIdentification, this.currentTestStep, actualData, expectedData);
 
+            System.out.println(this.currentTestStep);
             //Add one to the step
             this.currentTestStep++;
 
+            System.out.println(this.currentTestStep);
             return true;
 
         } else if (this.useCaseCode == 1)

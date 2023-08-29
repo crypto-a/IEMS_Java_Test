@@ -80,7 +80,6 @@ public class TestObject
         //SetUp Object properties
         this.testID = testObjectDoc.get("_id");
         this.testStartTime = LocalDateTime.parse(testObjectDoc.getString("startTestTime"));
-        this.testEndTime = LocalDateTime.parse(testObjectDoc.getString("endTestTime"));
         this.issuer = testObjectDoc.get("testIssuer");
         this.targetedWebPage = testObjectDoc.getString("targetedWebPage");
         this.webPageURL = testObjectDoc.getString("webPageURL");
@@ -91,8 +90,19 @@ public class TestObject
         this.testDescription = testObjectDoc.getString("testDescription");
         this.webPageLoginInfo = new String[]{testObjectDoc.getString("websiteUsername"), testObjectDoc.getString("websitePassword")};
 
-        //Calculate Duration
-        this.testDuration = Duration.between(this.testStartTime, this.testEndTime);
+        try
+        {
+            this.testEndTime = LocalDateTime.parse(testObjectDoc.getString("endTestTime"));
+
+            //Calculate Duration
+            this.testDuration = Duration.between(this.testStartTime, this.testEndTime);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+
     }
 
     public void updateObject(Document newTestObjectDoc)
@@ -277,6 +287,9 @@ public class TestObject
         //requestUpdate
         this.event.setIsTestRunning(false);
         this.event.requestPageRefresh();
+
+        //update DB
+        this.event.closeTestObject(this.getAsDocument(), this.getTestID());
     }
 
     public void addNewTestElement(String testID)

@@ -39,9 +39,11 @@ public class DLCDemo extends Test
     }
 
     @Override
-    public void test() {
+    public void test()
+    {
+        System.out.println(3);
         //load the page
-        this.loadPage(this.testObject.getWebPageURL());
+         this.loadPage(this.testObject.getWebPageURL());
 
         //Log in
         this.logIn(this.testObject.getWebPageLoginInfo()[0], this.testObject.getWebPageLoginInfo()[1]);
@@ -107,45 +109,42 @@ public class DLCDemo extends Test
             }
             break;
         }
-
-
-        /* Go to the next page */
-        this.loadPage(this.testObject.getWebPageURL() + "#/dashboard/network");
-
-        //Pull out the data for the webpage
-        List<WebElement> summaryTable = this.requestDataFromWebElement("td");
-
-
-        //Get the summary table form the json file
-        JSONObject jsonObject = new JSONObject(JsonData);
-
-        JSONObject summaryTableJson = jsonObject.getJSONObject("summary_table");
-
-        System.out.println(1);
-        //get the keys
-        String[] keys = summaryTableJson.keySet().toArray(new String[0]);
-
-        //Create the arrays
-        String [][] actualData = new String[keys.length][];
-        String [][] expectedData =  new String[keys.length][];
-
-        //loop through all the elements
-        for (int i = 0; i < keys.length; i++ )
-        {
-            //populate the actualData
-            actualData[i] = new String[]{String.valueOf(summaryTable.get(i).getText())};
-
-            //Populate the theoretical Data
-            expectedData[i] = new String[]{String.valueOf(summaryTableJson.get(keys[i]))};
-
-        }
-
-        System.out.println(Arrays.deepToString(actualData));
-        System.out.println(Arrays.deepToString(expectedData));
-
-
-
     }
+
+//        /* Go to the next page */
+//        this.loadPage(this.testObject.getWebPageURL() + "#/dashboard/network");
+//
+//        //Pull out the data for the webpage
+//        List<WebElement> summaryTable = this.requestDataFromWebElement("td");
+//
+//
+//        //Get the summary table form the json file
+//        JSONObject jsonObject = new JSONObject(JsonData);
+//
+//        JSONObject summaryTableJson = jsonObject.getJSONObject("summary_table");
+//
+//        System.out.println(1);
+//        //get the keys
+//        String[] keys = summaryTableJson.keySet().toArray(new String[0]);
+//
+//        //Create the arrays
+//        String [][] actualData = new String[keys.length][];
+//        String [][] expectedData =  new String[keys.length][];
+//
+//        //loop through all the elements
+//        for (int i = 0; i < keys.length; i++ )
+//        {
+//            //populate the actualData
+//            actualData[i] = new String[]{String.valueOf(summaryTable.get(i).getText())};
+//
+//            //Populate the theoretical Data
+//            expectedData[i] = new String[]{String.valueOf(summaryTableJson.get(keys[i]))};
+//
+//        }
+//
+//        System.out.println(Arrays.deepToString(actualData));
+//        System.out.println(Arrays.deepToString(expectedData));
+
 
 
 

@@ -5,6 +5,7 @@ import org.bson.Document;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -238,22 +239,33 @@ public class TestElement
 
     public Document getAsDocument()
     {
+        System.out.println("here");
         Document testDoc = new Document();
-        testDoc.put("_id", this.testID);
-        testDoc.put("didPass", this.didPass);
-        testDoc.put("testElementIdentification", this.testElementIdentification);
-        testDoc.put("scenario", this.scenario);
-        testDoc.put("actualValue", this.actualValues);
-        testDoc.put("expectedValue", this.expectedValues);
-        testDoc.put("testResults", this.testResults);
-        testDoc.put("testLog", this.testLog);
-        testDoc.put("startTime", this.testStartTime.toString());
-        testDoc.put("endTime", this.testEndTime.toString());
-        testDoc.put("numberOfErrors", this.numberOfErrors);
+        testDoc.append("_id", this.testID);
+        testDoc.append("didPass", this.didPass);
+        testDoc.append("testElementIdentification", this.testElementIdentification);
+        testDoc.append("scenario", this.scenario);
+        testDoc.append("actualValue", this.convetStringArrayTo2DList(this.actualValues));
+        testDoc.append("expectedValue", this.convetStringArrayTo2DList(this.expectedValues));
+        testDoc.append("testResults", this.convetStringArrayTo2DList(this.testResults));
+        testDoc.append("testLog", this.testLog);
+        testDoc.append("startTime", this.testStartTime.toString());
+        testDoc.append("endTime", this.testEndTime.toString());
+        testDoc.append("numberOfErrors", this.numberOfErrors);
 
         return testDoc;
     }
 
+    private List<List<String>> convetStringArrayTo2DList(String[][] twoDArray)
+    {
+        //Convert arrays to lists
+        List<List<String>> listOfLists = new ArrayList<>();
+        for (String[] row : twoDArray) {
+            listOfLists.add(Arrays.asList(row));
+        }
+
+        return listOfLists;
+    }
     private String[][] convertListListToStringArray(List<List<String>> listOfLists)
     {
         int rows = listOfLists.size();

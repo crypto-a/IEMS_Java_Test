@@ -345,7 +345,7 @@ public class Event
         String[] userInput = Arrays.copyOf(this.userInputs, this.userInputs.length);
 
         //Reset UseInputs
-        this.userInputs = new String[4];
+        this.userInputs = new String[5];
 
         //return user input
         return userInput;
@@ -802,5 +802,11 @@ public class Event
     public void setDidSelfPushChange(Boolean didSelfPushChange)
     {
         this.didSelfPushChange = didSelfPushChange;
+    }
+
+    public void closeTestObject(Document testObjectDoc, String testObjectID)
+    {
+        //call it form the database
+        this.database.closeOpenTestObject(testObjectDoc, testObjectID);
     }
 }

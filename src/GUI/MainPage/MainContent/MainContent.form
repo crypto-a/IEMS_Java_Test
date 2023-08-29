@@ -33,6 +33,7 @@
                 </constraints>
                 <properties>
                   <horizontalScrollBarPolicy value="31"/>
+                  <verticalScrollBarPolicy value="22"/>
                 </properties>
                 <border type="none"/>
                 <children>

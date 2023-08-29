@@ -57,6 +57,15 @@ public class ChangeStreamUpdater
 
     private void issueUnitUpdate(ChangeStreamDocument<Document> changeDocument)
     {
+        if(this.event.getDidSelfPushChange())
+        {
+            //Set it ot zero
+            this.event.setDidSelfPushChange(false);
+
+            //return
+            return;
+        }
+
         //Record the changed object ID
         this.ChangedObjectID = String.valueOf(changeDocument.getDocumentKey().get("_id").asObjectId().getValue());
 
@@ -84,6 +93,15 @@ public class ChangeStreamUpdater
 
     private void testUnitUpdate(ChangeStreamDocument<Document> changeDocument)
     {
+        if(this.event.getDidSelfPushChange())
+        {
+            //Set it ot zero
+            this.event.setDidSelfPushChange(false);
+
+            //return
+            return;
+        }
+
         //Record the changed object ID
         this.ChangedObjectID = String.valueOf(changeDocument.getDocumentKey().get("_id").asObjectId().getValue());
 
@@ -125,6 +143,15 @@ public class ChangeStreamUpdater
 
     private void testObjectUpdate(ChangeStreamDocument<Document> changeDocument)
     {
+        if(this.event.getDidSelfPushChange())
+        {
+            //Set it ot zero
+            this.event.setDidSelfPushChange(false);
+
+            //return
+            return;
+        }
+
         //Record the changed object ID
         this.ChangedObjectID = String.valueOf(changeDocument.getDocumentKey().get("_id").asObjectId().getValue());
 
@@ -172,46 +199,38 @@ public class ChangeStreamUpdater
     private void requestRefresh()
     {
 
-        if(this.event.getDidSelfPushChange())
+        if (this.event.getCodeState() == 1)
         {
-            //Set it ot zero
-            this.event.setDidSelfPushChange(false);
-        }
-        else
+            this.event.requestPageRefresh();
+        } else if (this.event.getCodeState() == 5 && this.event.getSelectedIssueElement().getIssueID().equals(this.ChangedObjectID))
         {
-            if (this.event.getCodeState() == 1)
-            {
-                this.event.requestPageRefresh();
-            } else if (this.event.getCodeState() == 5 && this.event.getSelectedIssueElement().getIssueID().equals(this.ChangedObjectID))
-            {
-                //Notify User
-                JOptionPane.showMessageDialog(null, "A New Version of this object is available! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
+            //Notify User
+            JOptionPane.showMessageDialog(null, "A New Version of this object is available! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
 
-                //Request to refresh page
-                this.event.requestPageRefresh();
-            } else if (this.event.getCodeState() == 3 && this.event.getSelectedTestObject().containsElement(this.ChangedObjectID))
-            {
-                //Notify User
-                JOptionPane.showMessageDialog(null, "A New Version of this object is available! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
+            //Request to refresh page
+            this.event.requestPageRefresh();
+        } else if (this.event.getCodeState() == 3 && this.event.getSelectedTestObject().containsElement(this.ChangedObjectID))
+        {
+            //Notify User
+            JOptionPane.showMessageDialog(null, "A New Version of this object is available! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
 
-                //Request to refresh page
-                this.event.requestPageRefresh();
-            } else if (this.event.getCodeState() == 4 && this.event.getSelectedTestElement().getTestID().equals(this.ChangedObjectID))
-            {
-                //Notify User
-                JOptionPane.showMessageDialog(null, "A New Version of this object is available! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
+            //Request to refresh page
+            this.event.requestPageRefresh();
+        } else if (this.event.getCodeState() == 4 && this.event.getSelectedTestElement().getTestID().equals(this.ChangedObjectID))
+        {
+            //Notify User
+            JOptionPane.showMessageDialog(null, "A New Version of this object is available! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
 
-                //Request to refresh page
-                this.event.requestPageRefresh();
-            }else if (this.event.getCodeState() == 7)
-            {
-                //Notify User
-                JOptionPane.showMessageDialog(null, "There has been a change in the users list! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
+            //Request to refresh page
+            this.event.requestPageRefresh();
+        }else if (this.event.getCodeState() == 7)
+        {
+            //Notify User
+            JOptionPane.showMessageDialog(null, "There has been a change in the users list! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
 
-                //Request to refresh page
-                this.event.requestPageRefresh();
+            //Request to refresh page
+            this.event.requestPageRefresh();
 
-            }
         }
     }
 }

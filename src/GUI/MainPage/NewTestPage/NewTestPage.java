@@ -26,6 +26,8 @@ public class NewTestPage
     {
         //SetUp object Properties
         this.event = event;
+
+        //reset user inputs
         //Set Up the action Listiners
         //form submit button
         this.startTestButton.addActionListener(e ->

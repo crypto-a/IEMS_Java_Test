@@ -61,7 +61,7 @@ public class TestEngine
         TestObject testObject =new TestObject(testObjectDoc);
 
         //add the testObjectODc to the testObjectArrayList
-        this.testObjectArrayList.add(testObject);
+        this.testObjectArrayList.add(0, testObject);
 
         //Index the object to the search engine
         this.searchEngine.index(testObjectDoc, testObject);
@@ -139,6 +139,7 @@ public class TestEngine
         //try to complete the test
         try
         {
+            System.out.println(1);
             //Check to see witch test was requested
             switch (this.runningTestObject.getTargetedWebPage())
             {
@@ -164,10 +165,12 @@ public class TestEngine
 
                 }
             }
+            System.out.println(1);
         }
         catch (Exception e)
         {
             System.out.println(e.getMessage());
+            System.out.println(2);
         }
 
 
@@ -190,6 +193,7 @@ public class TestEngine
         //add it to the search engine
         this.searchEngine.index(this.runningTestObject.getAsDocument(), this.runningTestObject);
 
+        //push object to database
         this.database.pushNewTestObject(this.runningTestObject.getAsDocument());
 
         //Reset the sort button
@@ -660,19 +664,44 @@ public class TestEngine
 
     public void createNewTestElement(TestObject testObject, String testElementIdentification, int scenario, String[][] actualValue, String[][] expectedValue)
     {
+        System.out.println(1);
         TestElement testElement = new TestElement(testObject, new ObjectId(), testElementIdentification, scenario, actualValue, expectedValue);
 
+        System.out.println(1);
         //Add the test element to the tests ArrayList
         this.testElementArrayList.add(testElement);
 
+        System.out.println(1);
         //push to the database
         this.database.pushNewTestElement(testElement.getAsDocument());
+
+        while (true)
+        {
+            /* Java Engine Timeout */
+            try
+            {
+                //Sleep
+                Thread.sleep(5);
+            }
+            catch (InterruptedException e)
+            {
+                //Print error
+                e.printStackTrace();
+            }
+
+            if(!this.event.getDidSelfPushChange())
+            {
+                break;
+            }
+        }
 
         //update the testObject in the database
         this.database.addNewTestToTestObject(this.runningTestObject.getTestID(), testElement.getTestID());
 
+
         //add it to the object
         this.runningTestObject.addNewTestElement(testElement.getTestID());
+
 
         //if we are in the test Display page refresh page
         if(this.event.getCodeState() == 3 && this.event.getSelectedTestObject() == this.runningTestObject)
@@ -715,6 +744,26 @@ public class TestEngine
         //push new issue to the database
         this.database.pushNewIssueElement(issueElement.getAsDocument());
 
+
+        while (true)
+        {
+            /* Java Engine Timeout */
+            try
+            {
+                //Sleep
+                Thread.sleep(5);
+            }
+            catch (InterruptedException e)
+            {
+                //Print error
+                e.printStackTrace();
+            }
+
+            if(!this.event.getDidSelfPushChange())
+            {
+                break;
+            }
+        }
         //add the issue id to the testObject
         this.database.addNewIssueToTestObject(this.runningTestObject.getTestID(), issueElement.getIssueID());
     }

@@ -193,19 +193,18 @@ public class IssueElement
     public Document getAsDocument()
     {
         //Create the issueDoc
-        Document issueDoc = new Document();
-        issueDoc.append("_id", this.issueID);
-        issueDoc.append("occurringTime", this.occurringTime.toString());
-        issueDoc.append("errorMessage", this.errorMessage);
-        issueDoc.append("scenario", this.scenario);
-        issueDoc.append("expectedValue", this.expectedValue);
-        issueDoc.append("actualValue", this.actualValue);
-        issueDoc.append("isIssueOpen", this.isIssueOpen);
-        issueDoc.append("targetedWebPage", this.targetedWebPage);
-        issueDoc.append("issueCloser", this.issueCloser);
-        issueDoc.append("developerMessage", this.developerMessage);
-        issueDoc.append("closedTime", this.closedTime.toString());
-        issueDoc.append("targetedWebElement", this.targetedWebElement);
+        Document issueDoc = new Document("_id", new ObjectId(this.issueID.toString()))
+                .append("occurringTime", this.occurringTime)
+                .append("errorMessage", this.errorMessage)
+                .append("scenario", this.scenario)
+                .append("expectedValue", this.expectedValue)
+                .append("actualValue", this.actualValue)
+                .append("isIssueOpen", this.isIssueOpen)
+                .append("targetedWebPage", this.targetedWebPage)
+                .append("issueCloser", this.issueCloser)
+                .append("developerMessage", this.developerMessage)
+                .append("closedTime", this.closedTime.toString())
+                .append("targetedWebElement", this.targetedWebElement);
 
         return issueDoc;
     }

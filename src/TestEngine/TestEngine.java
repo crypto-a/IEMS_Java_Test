@@ -12,6 +12,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.openqa.selenium.WebDriver;
 import TestAutomations.Test.Test;
+import Database.Database;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,7 @@ public class TestEngine
     ArrayList<IssueElement> issueElementArrayList = new ArrayList<>();
     private TestObject runningTestObject;
 
+    private Database database;
     public TestEngine(Event event)
     {
         //Set up object properties
@@ -34,6 +36,11 @@ public class TestEngine
 
         //Add the search engin to the event object
         this.event.setSearchEngine(this.searchEngine);
+    }
+
+    public void setDatabase(Database database)
+    {
+        this.database = database;
     }
 
     public void addIssueElement(Document issueDoc)
@@ -127,7 +134,7 @@ public class TestEngine
     public void createNewTestObject(User user, String targetedWebPage, String webPageURL,String testDescription, String[] webPageLoginInfo)
     {
         //Create the new Test Object
-        this.runningTestObject = new TestObject(this.event, user.getUserID(), targetedWebPage, webPageURL, testDescription, webPageLoginInfo);
+        this.runningTestObject = new TestObject(this, this.event, user.getUserID(), targetedWebPage, webPageURL, testDescription, webPageLoginInfo);
 
         //try to complete the test
         try
@@ -156,7 +163,6 @@ public class TestEngine
 
 
                 }
-                //ToDo
             }
         }
         catch (Exception e)
@@ -183,8 +189,8 @@ public class TestEngine
 
         //add it to the search engine
         this.searchEngine.index(this.runningTestObject.getAsDocument(), this.runningTestObject);
-        //ToDo: Update the database
 
+        this.database.pushNewTestObject(this.runningTestObject.getAsDocument());
 
         //Reset the sort button
         this.event.setMainPageTestObjectSortComboBoxSelect(0);
@@ -652,14 +658,18 @@ public class TestEngine
         }
     }
 
-    public void createNewTestElement(String testElementIdentification, int scenario, String[][] actualValue, String[][] expectedValue)
+    public void createNewTestElement(TestObject testObject, String testElementIdentification, int scenario, String[][] actualValue, String[][] expectedValue)
     {
-        TestElement testElement = new TestElement(new ObjectId(), testElementIdentification, scenario, actualValue, expectedValue);
+        TestElement testElement = new TestElement(testObject, new ObjectId(), testElementIdentification, scenario, actualValue, expectedValue);
 
         //Add the test element to the tests ArrayList
         this.testElementArrayList.add(testElement);
 
-        //ToDo: push to database
+        //push to the database
+        this.database.pushNewTestElement(testElement.getAsDocument());
+
+        //update the testObject in the database
+        this.database.addNewTestToTestObject(this.runningTestObject.getTestID(), testElement.getTestID());
 
         //add it to the object
         this.runningTestObject.addNewTestElement(testElement.getTestID());
@@ -692,6 +702,21 @@ public class TestEngine
         }
 
         return null;
+    }
+
+    public void createNewIssue(String targetedWebPage, String testElementIdentification, Object issueID, int scenario, String expectedValue, String actualValue, String errorMessage)
+    {
+        //create the issue object
+        IssueElement issueElement = new IssueElement(targetedWebPage, issueID, scenario, expectedValue, actualValue, errorMessage, testElementIdentification);
+
+        //add issue to arraylist
+        this.issueElementArrayList.add(issueElement);
+
+        //push new issue to the database
+        this.database.pushNewIssueElement(issueElement.getAsDocument());
+
+        //add the issue id to the testObject
+        this.database.addNewIssueToTestObject(this.runningTestObject.getTestID(), issueElement.getIssueID());
     }
 
 }

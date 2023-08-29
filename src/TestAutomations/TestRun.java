@@ -26,7 +26,7 @@ public class TestRun
         User user = new User(database, event);
 
         //runa test
-        testEngine.createNewTestObject(user, "DERMS", "https://derms.iemssolution.com/", "This is a test test", new String[]{"alirahbar2005@gmail.com", "Spacex12345678900!"});
+        testEngine.createNewTestObject(user, "DLC Demo", "http://ec2-54-210-75-155.compute-1.amazonaws.com:3452/", "This is a test test", new String[]{"javad.zare@iemssolution.com", "DLC_2023"});
         //Run the test
 
 

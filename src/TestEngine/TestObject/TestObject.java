@@ -5,6 +5,7 @@ import TestAutomations.DERMS.DERMS;
 import TestAutomations.DLCDemo.DLCDemo;
 import TestEngine.IssueElement.IssueElement;
 import TestEngine.TestElement.TestElement;
+import TestEngine.TestEngine;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -34,6 +35,7 @@ public class TestObject
     private String testDescription;
 
     private Event event;
+    private TestEngine testEngine;
 
 
 
@@ -45,9 +47,10 @@ public class TestObject
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public TestObject(Event event, Object issuer, String targetedWebPage, String webPageURL, String testDescription, String[] webPageLoginInfo )
+    public TestObject(TestEngine testEngine, Event event, Object issuer, String targetedWebPage, String webPageURL, String testDescription, String[] webPageLoginInfo )
     {
         //SetUp object Properties
+        this.testEngine = testEngine;
         this.issuer = issuer;
         this.targetedWebPage = targetedWebPage;
         this.webPageURL = webPageURL;
@@ -59,11 +62,8 @@ public class TestObject
         //Record the time of starting a test
         this.testStartTime = LocalDateTime.now();
 
-        //Set up objetc ID
+        //Set up object ID
         this.testID = new ObjectId();
-
-
-
 
     }
 
@@ -115,20 +115,6 @@ public class TestObject
         this.testDuration = Duration.between(this.testStartTime, this.testEndTime);
     }
 
-
-    /*****************************************
-     /*Method Name: runTestDLCDemo
-     /*Programmer Name: Ali Rahbar
-     /*Method Date: July 19, 2023
-     /*Method Description: This method is in charge of doing tests on the DLC demo page
-     /*Method Inputs: None
-     /*Method Outputs: None
-     ******************************************/
-    private synchronized void runTestDLCDemo()
-    {
-        //ToDo
-    }
-
     /*****************************************
      /*Method Name: testScenario
      /*Programmer Name: Ali Rahbar
@@ -140,7 +126,7 @@ public class TestObject
     public void testScenario(String testElementIdentification, int scenario, String[][] actualValue, String[][] expectedValue)
     {
         //Create the new Test Element Object and Add it to the arrayList
-        this.testElements.add(new TestElement(this, testElementIdentification, scenario, actualValue, expectedValue));
+        this.testElements.add(new TestElement(this, new ObjectId(), testElementIdentification, scenario, actualValue, expectedValue));
 
     }
 
@@ -338,5 +324,19 @@ public class TestObject
 
 
         return testObjectDoc;
+    }
+
+    public void createNewIssue(String testElementIdentification, int scenario, String expectedValue, String actualValue, String errorMessage)
+    {
+        //make a new issue id
+        Object issueID = new ObjectId();
+
+        //add it to the arrayList
+        this.issueElements.add(issueID);
+
+        //push the issue to the test engine
+        this.testEngine.createNewIssue(this.targetedWebPage, testElementIdentification, issueID, scenario, expectedValue, actualValue, errorMessage);
+
+
     }
 }

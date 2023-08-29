@@ -3,26 +3,76 @@ package Runner;
 import Database.Database;
 import GUI.Event.Event;
 import GUI.GUI;
+import TestEngine.TestEngine;
 import TestEngine.TestObject.TestObject;
 import User.User;
-import TestEngine.TestEngine;
+import org.bson.Document;
 import org.bson.types.ObjectId;
-import org.bson.types.ObjectId;
+import org.openqa.selenium.grid.Main;
 
 import javax.swing.*;
+import java.time.LocalDateTime;
 
 public class Runner
 {
-    private final TestEngine testEngine;
-    private final Database database;
-    private final Event event;
-    private final User user;
-    private final GUI gui;
+    private TestEngine testEngine;
+    private Database database;
+    private Event event;
+    private User user;
+    private GUI gui;
     private Boolean isRunning;
+    private String softwareVersion;
 
     private int fps = 60;
 
-    public Runner()
+    public Runner(Boolean debugMode, String softwareVersion)
+    {
+        this.softwareVersion = softwareVersion;
+
+
+        if (debugMode)
+        {
+            //set up software
+            this.setUp();
+
+            //Start the Code Process
+            this.run();
+        }
+        else
+        {
+            try
+            {
+                //set up software
+                this.setUp();
+
+                //Start the Code Process
+                this.run();
+            }
+            catch(Exception e)
+            {
+                //notify User
+                JOptionPane.showMessageDialog(null, "An unexpected issue happened with the code. \n Please wait while we try to fix the code. The error will also be reported to the developers team! \n Please run the software again! " + e.getMessage(), "System Error!", JOptionPane.ERROR);
+
+                //Make the error document
+                Document error = new Document()
+                        .append("_id", new ObjectId())
+                        .append("time", LocalDateTime.now())
+                        .append("errorMessage", e.getMessage())
+                        .append("errorCause", e.getCause())
+                        .append("errorStackTrace", e.getStackTrace());
+
+                //Push error to db
+                this.database.pushErrorLog(error);
+
+                //exit code
+                System.exit(0);
+
+            }
+        }
+
+    }
+
+    private void setUp()
     {
         //Create the Event Object
         this.event = new Event();
@@ -34,8 +84,10 @@ public class Runner
 
         this.database = new Database(this.testEngine, this.event);
 
-        //Push the database ot event as well
+        //Push the database ot event and testEngine as well
         this.event.setDatabase(this.database);
+        this.testEngine.setDatabase(this.database);
+
 
         //Create the User Object
         this.user = new User(database, event);
@@ -48,9 +100,6 @@ public class Runner
 
         //Push the testEngine to the event
         this.event.setTestEngine(this.testEngine);
-
-        //Start the Code Process
-        this.run();
     }
 
     private void run()
@@ -60,6 +109,9 @@ public class Runner
 
         //Load Data from the database
         this.loadData();
+
+        //Check for updates
+        this.checkForUpdates();
 
         //testEngine.createNewTestObject(user, "DERMS", "https://derms.iemssolution.com/", "This is a test test", new String[]{"alirahbar2005@gmail.com", "Spacex12345678900!"});
         //Loop Forever
@@ -362,6 +414,22 @@ public class Runner
         {
             //Update ui
             this.gui.updateMainPage();
+        }
+    }
+
+    private void checkForUpdates()
+    {
+        //get the current production version form database
+        String currentProductionVersion = this.database.getProductionVersion();
+
+        //Check it with the current software version
+        if (!(currentProductionVersion.equals(this.softwareVersion)))
+        {
+            //if they were not equal, notify user that a new version of the software is available and they need to update
+            JOptionPane.showMessageDialog(null, "A new Version of the software is available. \nPlease download it before using the software!. \n Your version : " + this.softwareVersion + "\n available version: " + currentProductionVersion, "Software Update Available", JOptionPane.INFORMATION_MESSAGE);
+
+            //Exit Software
+            System.exit(0);
         }
     }
 

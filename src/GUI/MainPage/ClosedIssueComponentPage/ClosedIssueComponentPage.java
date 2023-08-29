@@ -26,6 +26,7 @@ public class ClosedIssueComponentPage
     private JLabel errorMessage;
     private JLabel closedStatment;
     private JButton loadScenarioButton;
+    private JLabel targetedWebElement;
 
     private Event event;
     private IssueElement issueElement;
@@ -43,6 +44,7 @@ public class ClosedIssueComponentPage
         this.occuringDate.setText(this.issueElement.getOccurringDate());
         this.occuringTime.setText(this.issueElement.getOccurringTime());
         this.targetedWebPage.setText((this.issueElement.getTargetedWebPage()));
+        this.targetedWebElement.setText(this.issueElement.getTargetedWebElement());
 
         this.actualValue.setText(this.issueElement.getActualValue());
         this.expectedValue.setText(this.issueElement.getExpectedValue());
@@ -95,7 +97,6 @@ public class ClosedIssueComponentPage
 
 
             }
-            //ToDo
         }
     }
 }

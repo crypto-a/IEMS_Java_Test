@@ -6,12 +6,11 @@ import TestEngine.TestEngine;
 import TestEngine.TestObject.TestObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.json.Json;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.*;
 
 public class DLCDemo extends Test
 {
@@ -40,8 +39,7 @@ public class DLCDemo extends Test
     }
 
     @Override
-    public void test()
-    {
+    public void test() {
         //load the page
         this.loadPage(this.testObject.getWebPageURL());
 
@@ -56,7 +54,8 @@ public class DLCDemo extends Test
 
 
         //loop through all the scenario possibilities
-        for (int a = 0; scenarioPossibilities> a; a++)
+        String JsonData = null;
+        for (int a = 0; scenarioPossibilities > a; a++)
         {
             //select the first dropdown
             this.selectDropDown("div[aria-label=\"Select a Feeder\"]", a);
@@ -86,9 +85,9 @@ public class DLCDemo extends Test
                     this.waitUntilChange(45, ".p-button", "class", "p-button-success");
 
                     //extract the json data
-                    String JsonData = this.requestDataFromJavaScriptConsole("return sessionStorage.resultScenario;");
+                    JsonData = this.requestDataFromJavaScriptConsole("return sessionStorage.resultScenario;");
 
-                    for (String[] elementData: this.elements)
+                    for (String[] elementData : this.elements)
                     {
                         //extract the busData
                         String mapData = this.requestDataFromJavaScriptConsole("return map.current.getSource('" + elementData[0] + "')._data.features;");
@@ -98,14 +97,53 @@ public class DLCDemo extends Test
                         {
                             return;
                         }
+
+                        break;
                     }
 
+                    break;
                 }
+                break;
             }
+            break;
         }
 
-        //Go to next page
-        this.loadPage(this.testObject.getWebPageURL() + "/#/network");
+
+        /* Go to the next page */
+        this.loadPage(this.testObject.getWebPageURL() + "#/dashboard/network");
+
+        //Pull out the data for the webpage
+        List<WebElement> summaryTable = this.requestDataFromWebElement("td");
+
+
+        //Get the summary table form the json file
+        JSONObject jsonObject = new JSONObject(JsonData);
+
+        JSONObject summaryTableJson = jsonObject.getJSONObject("summary_table");
+
+        System.out.println(1);
+        //get the keys
+        String[] keys = summaryTableJson.keySet().toArray(new String[0]);
+
+        //Create the arrays
+        String [][] actualData = new String[keys.length][];
+        String [][] expectedData =  new String[keys.length][];
+
+        //loop through all the elements
+        for (int i = 0; i < keys.length; i++ )
+        {
+            //populate the actualData
+            actualData[i] = new String[]{String.valueOf(summaryTable.get(i).getText())};
+
+            //Populate the theoretical Data
+            expectedData[i] = new String[]{String.valueOf(summaryTableJson.get(keys[i]))};
+
+        }
+
+        System.out.println(Arrays.deepToString(actualData));
+        System.out.println(Arrays.deepToString(expectedData));
+
+
 
     }
 

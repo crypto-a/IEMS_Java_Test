@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import javax.swing.*;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public abstract class Test implements Runnable
@@ -208,9 +209,10 @@ public abstract class Test implements Runnable
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(elementWaitingForCssSelector)));
     }
 
-    public void requestDataFromWebElement()
+    public List<WebElement> requestDataFromWebElement(String cssSelector)
     {
-        //ToDo
+        //return the css selector
+        return driver.findElements(By.cssSelector(cssSelector));
     }
 
     public String requestDataFromJavaScriptConsole(String query)
@@ -277,7 +279,7 @@ public abstract class Test implements Runnable
         if (this.useCaseCode == 0)
         {
             //Run a test
-            this.testEngine.createNewTestElement(testElementIdentification, this.currentTestStep, actualData, expectedData);
+            this.testEngine.createNewTestElement(this.testObject, testElementIdentification, this.currentTestStep, actualData, expectedData);
 
             //Add one to the step
             this.currentTestStep++;

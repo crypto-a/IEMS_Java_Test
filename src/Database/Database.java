@@ -6,8 +6,10 @@ import GUI.Event.Event;
 import TestEngine.TestEngine;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Sorts;
+import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -155,6 +157,9 @@ public class Database
 
     public void updateIssueElement(Document issueElement)
     {
+        //Set event is self pushing to true
+        this.event.setDidSelfPushChange(true);
+
         //Connect to the collection
         MongoCollection<org.bson.Document> issueUnitsCollection = this.database.getCollection("issueUnits");
 
@@ -218,5 +223,82 @@ public class Database
     {
         //Close the connection
         this.mongoClient.close();
+    }
+
+    public void changeUserPassword(String userID, String salt, String passwordHash)
+    {
+        //Connect to the collection
+        MongoCollection<Document> accountsCollection = this.database.getCollection("accounts");
+
+        //update the database
+        accountsCollection.updateOne(
+                Filters.eq("_id", new ObjectId(userID)),
+                Updates.combine(
+                        Updates.set("salt", salt),
+                        Updates.set("passwordHash", passwordHash)
+                )
+        );
+
+    }
+
+    public String getProductionVersion()
+    {
+        // Connect to the softwareVersion collection
+        MongoCollection<org.bson.Document> softwareVersionCollection = this.database.getCollection("softwareVersion");
+
+        // collect the software version document
+        Document softwareVersion = softwareVersionCollection.find(eq("label", "currentProductionVersion")).first();
+
+        //return production version
+        return softwareVersion.getString("currentProductionVersion");
+    }
+
+    public void pushErrorLog(Document error)
+    {
+        //connect to the error collection
+        MongoCollection<org.bson.Document> softwareErrorLogsCollection = this.database.getCollection("softwareErrorLogs");
+
+        //push error to the database
+        softwareErrorLogsCollection.insertOne(error);
+    }
+
+    public void pushNewIssueElement(Document issueElementDoc)
+    {
+        //Connect to the collection
+        MongoCollection<org.bson.Document> issueUnitsCollection = this.database.getCollection("issueUnits");
+
+        //ToDo
+    }
+
+    public void pushNewTestElement(Document testElementDoc)
+    {
+        //Connect to the collection
+        MongoCollection<org.bson.Document> testUnitsCollection = this.database.getCollection("testUnits");
+
+        //ToDo
+    }
+
+    public void pushNewTestObject(Document testObjectDoc)
+    {
+        //Connect to the collection
+        MongoCollection<org.bson.Document> testsCollection = this.database.getCollection("tests");
+
+        //ToDo
+    }
+
+    public void addNewTestToTestObject(String testObjectID, String issueElementID)
+    {
+        //Connect to the collection
+        MongoCollection<org.bson.Document> testsCollection = this.database.getCollection("tests");
+
+        //ToDo
+    }
+
+    public void addNewIssueToTestObject(String testObjectID, String testElementID)
+    {
+        //Connect to the collection
+        MongoCollection<org.bson.Document> testsCollection = this.database.getCollection("tests");
+
+        //ToDo
     }
 }

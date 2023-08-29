@@ -14,6 +14,7 @@ import org.openqa.selenium.WebDriver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.bson.Document;
 
 public class Event
 {
@@ -58,6 +59,7 @@ public class Event
     private int[] savedVerticalPositionTestLogs = {0};
     private User user;
     private TestEngine testEngine;
+    private Boolean didSelfPushChange;
 
     public Event()
     {
@@ -90,6 +92,8 @@ public class Event
 
         //Run the email object
         this.email = new Email();
+
+        this.didSelfPushChange = false;
     }
 
     public TestObject getSelectedTestObject()
@@ -759,5 +763,44 @@ public class Event
 
     public void setTestEngine(TestEngine testEngine) {
         this.testEngine = testEngine;
+    }
+
+    public void changeUserPassowrd(String userIDString)
+    {
+        //Make a new password
+        String userPass = this.user.generateUniqueString(8);
+        String salt = this.user.generateUniqueString(128);
+
+        //Hash the password
+        String passwordHash = null;
+        try
+        {
+            passwordHash = this.user.getHash(userPass + salt, "SHA-256");
+        }
+        catch (Exception e)
+        {
+            System.out.println("error hashing the password");
+        }
+
+        //request Password change
+        this.database.changeUserPassword(userIDString, salt, passwordHash);
+
+        //Get the user info
+        Document userDoc = this.database.getUserInfo(userIDString);
+
+        //Email the update
+        this.email.emailPasswordChange(userDoc.getString("firstName"), userDoc.getString("email"), userDoc.getString("username"), userPass);
+
+    }
+
+
+    public Boolean getDidSelfPushChange()
+    {
+        return didSelfPushChange;
+    }
+
+    public void setDidSelfPushChange(Boolean didSelfPushChange)
+    {
+        this.didSelfPushChange = didSelfPushChange;
     }
 }

@@ -18,6 +18,8 @@ public class IssueElement
     private String developerMessage;
     private LocalDateTime closedTime;
 
+    private String targetedWebElement;
+
     /*****************************************
      /*Method Name: IssueElement
      /*Programmer Name: Ali Rahbar
@@ -26,7 +28,7 @@ public class IssueElement
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public IssueElement(String targetedWebPage, int scenario, String expectedValue, String actualValue, String errorMessage)
+    public IssueElement(String targetedWebPage, Object issueID, int scenario, String expectedValue, String actualValue, String errorMessage, String targetedWebElement)
     {
         //SetUp ObjectID
         this.targetedWebPage = targetedWebPage;
@@ -34,9 +36,10 @@ public class IssueElement
         this.expectedValue = expectedValue;
         this.actualValue = actualValue;
         this.errorMessage = errorMessage;
+        this.targetedWebElement = targetedWebElement;
 
         //Add issueID
-        this.issueID = new ObjectId();
+        this.issueID = issueID;
 
         //record the time it happens
         this.occurringTime = LocalDateTime.now();
@@ -66,6 +69,7 @@ public class IssueElement
         this.actualValue = issueElementDoc.getString("expectedValue");
         this.isIssueOpen = issueElementDoc.getBoolean("isIssueOpen");
         this.targetedWebPage = issueElementDoc.getString("targetedWebPage");
+        this.targetedWebElement = issueElementDoc.getString("targetedWebElement");
 
         if (!this.isIssueOpen)
         {
@@ -86,6 +90,7 @@ public class IssueElement
         this.actualValue = newIssueElementDoc.getString("expectedValue");
         this.isIssueOpen = newIssueElementDoc.getBoolean("isIssueOpen");
         this.targetedWebPage = newIssueElementDoc.getString("targetedWebPage");
+        this.targetedWebElement = newIssueElementDoc.getString("targetedWebElement");
 
         if (!this.isIssueOpen)
         {
@@ -200,6 +205,7 @@ public class IssueElement
         issueDoc.append("issueCloser", this.issueCloser);
         issueDoc.append("developerMessage", this.developerMessage);
         issueDoc.append("closedTime", this.closedTime.toString());
+        issueDoc.append("targetedWebElement", this.targetedWebElement);
 
         return issueDoc;
     }
@@ -207,5 +213,10 @@ public class IssueElement
     public LocalDateTime getDateTime()
     {
         return this.occurringTime;
+    }
+
+    public String getTargetedWebElement()
+    {
+        return targetedWebElement;
     }
 }

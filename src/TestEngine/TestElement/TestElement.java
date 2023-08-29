@@ -22,6 +22,7 @@ public class TestElement
     private LocalDateTime testEndTime;
     private Duration processDuration;
     private int numberOfErrors;
+    private TestObject testObject;
 
     /*****************************************
      /*Method Name: TestElement
@@ -31,9 +32,10 @@ public class TestElement
      /*Method Inputs: None
      /*Method Outputs: None
      ******************************************/
-    public TestElement(Object testID, String testElementIdentification, int scenario, String[][] actualValue, String[][] expectedValue)
+    public TestElement(TestObject testObject, Object testID, String testElementIdentification, int scenario, String[][] actualValue, String[][] expectedValue)
     {
         //SetUp object Properties
+        this.testObject = testObject;
         this.testID = testID;
         this.testElementIdentification = testElementIdentification;
         this.scenario = scenario;
@@ -154,7 +156,7 @@ public class TestElement
                                 //Construct a message
                                 String errormessage = this.testElementIdentification + " " + actualValue[0] + ": value Arrays are not equal";
 
-                                //Create an issue object //ToDo
+                                //Create an issue object
                                 this.createIssue(this.scenario, Arrays.toString(expectedValue), Arrays.toString(actualValue), errormessage);
                             }
                         }
@@ -192,12 +194,14 @@ public class TestElement
 
     private void createIssue(int scenario, String expectedValue, String actualValue, String errorMessage)
     {
-        //ToDo
+        //call the parent test-object to create the issue
+        this.testObject.createNewIssue(this.testElementIdentification, scenario, expectedValue, actualValue, errorMessage);
     }
 
     public String getTestID()
     {
-        //return test ID
+        //return test
+
         return this.testID.toString();
     }
 

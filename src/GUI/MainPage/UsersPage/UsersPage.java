@@ -17,6 +17,7 @@ public class UsersPage {
     private JButton removeUserButton;
     private JButton emailUserButton;
     private JList list1;
+    private JButton resetUserPasswordButton;
     private final User user;
     private final Event event;
     private ArrayList<String[]> userArrayList;
@@ -46,6 +47,7 @@ public class UsersPage {
         this.addUserButton.addActionListener(e -> addUserClick());
         this.removeUserButton.addActionListener(e -> removeUserCLick());
         this.emailUserButton.addActionListener(e -> emailUserClick());
+        this.resetUserPasswordButton.addActionListener(e -> changeUserPasswordClick());
 
     }
 
@@ -142,6 +144,27 @@ public class UsersPage {
 
         //Return true
         return true;
+    }
+
+    private void changeUserPasswordClick()
+    {
+        if (this.checkIfElementIsSelected())
+        {
+            //check if User is Admin
+            if (this.user.isAdmin())
+            {
+                //Change User Password
+                this.event.changeUserPassowrd(this.userArrayList.get(this.list1.getSelectedIndex())[1]);
+
+                //notify user
+                JOptionPane.showMessageDialog(null, "Users Password has been changed! They will be notified via Email!", "User Password changed", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else
+            {
+                //Show error
+                JOptionPane.showMessageDialog(null, "You need to be an Admin to Change Users Passwords. Please contact your admin to use this feature", "Access Denied", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
 }

@@ -171,39 +171,47 @@ public class ChangeStreamUpdater
 
     private void requestRefresh()
     {
-        if (this.event.getCodeState() == 1)
-        {
-            this.event.requestPageRefresh();
-        } else if (this.event.getCodeState() == 5 && this.event.getSelectedIssueElement().getIssueID().equals(this.ChangedObjectID))
-        {
-            //Notify User
-            JOptionPane.showMessageDialog(null, "A New Version of this object is available! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
 
-            //Request to refresh page
-            this.event.requestPageRefresh();
-        } else if (this.event.getCodeState() == 3 && this.event.getSelectedTestObject().containsElement(this.ChangedObjectID))
+        if(this.event.getDidSelfPushChange())
         {
-            //Notify User
-            JOptionPane.showMessageDialog(null, "A New Version of this object is available! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
-
-            //Request to refresh page
-            this.event.requestPageRefresh();
-        } else if (this.event.getCodeState() == 4 && this.event.getSelectedTestElement().getTestID().equals(this.ChangedObjectID))
-        {
-            //Notify User
-            JOptionPane.showMessageDialog(null, "A New Version of this object is available! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
-
-            //Request to refresh page
-            this.event.requestPageRefresh();
-        }else if (this.event.getCodeState() == 7)
-        {
-            //Notify User
-            JOptionPane.showMessageDialog(null, "There has been a change in the users list! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
-
-            //Request to refresh page
-            this.event.requestPageRefresh();
-
+            //Set it ot zero
+            this.event.setDidSelfPushChange(false);
         }
+        else
+        {
+            if (this.event.getCodeState() == 1)
+            {
+                this.event.requestPageRefresh();
+            } else if (this.event.getCodeState() == 5 && this.event.getSelectedIssueElement().getIssueID().equals(this.ChangedObjectID))
+            {
+                //Notify User
+                JOptionPane.showMessageDialog(null, "A New Version of this object is available! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
 
+                //Request to refresh page
+                this.event.requestPageRefresh();
+            } else if (this.event.getCodeState() == 3 && this.event.getSelectedTestObject().containsElement(this.ChangedObjectID))
+            {
+                //Notify User
+                JOptionPane.showMessageDialog(null, "A New Version of this object is available! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
+
+                //Request to refresh page
+                this.event.requestPageRefresh();
+            } else if (this.event.getCodeState() == 4 && this.event.getSelectedTestElement().getTestID().equals(this.ChangedObjectID))
+            {
+                //Notify User
+                JOptionPane.showMessageDialog(null, "A New Version of this object is available! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
+
+                //Request to refresh page
+                this.event.requestPageRefresh();
+            }else if (this.event.getCodeState() == 7)
+            {
+                //Notify User
+                JOptionPane.showMessageDialog(null, "There has been a change in the users list! We are updating your data!", "New Data Available", JOptionPane.INFORMATION_MESSAGE);
+
+                //Request to refresh page
+                this.event.requestPageRefresh();
+
+            }
+        }
     }
 }

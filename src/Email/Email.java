@@ -95,5 +95,29 @@ public class Email
         }
     }
 
+    public void emailPasswordChange(String firstName, String email, String username, String password)
+    {
+        try
+        {
+            // Create a MimeMessage
+            Message message = new MimeMessage(this.session);
+
+            // Set the sender and recipient addresses
+            message.setFrom(new InternetAddress(this.username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+
+            // Set the subject and content
+            message.setSubject("Password Changed");
+            message.setText("Hello " + firstName +", \nThe system admin has reset your password. The following are your Username and new password for your account: \n\nUsername: " + username + "\nPassword: " + password + "\n");
+
+            // Send the message
+            Transport.send(message);
+
+        } catch (MessagingException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
 }

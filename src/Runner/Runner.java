@@ -51,7 +51,7 @@ public class Runner
             catch(Exception e)
             {
                 //notify User
-                JOptionPane.showMessageDialog(null, "An unexpected issue happened with the code. \n Please wait while we try to fix the code. The error will also be reported to the developers team! \n Please run the software again! " + e.getMessage(), "System Error!", JOptionPane.ERROR);
+                JOptionPane.showMessageDialog(null, "An unexpected issue happened with the code. \n Please wait while we try to fix the code. The error will also be reported to the developers team! \n Please run the software again! " + e.getMessage(), "System Error!", JOptionPane.ERROR_MESSAGE);
 
                 //Make the error document
                 Document error = new Document()
@@ -230,6 +230,7 @@ public class Runner
             //loop through all the issue Elements
             for (Object issueElementID: testObject.getIssueElements())
             {
+                System.out.println(issueElementID);
                 //Request the full object from the database and add it to the related arrayList
                 this.testEngine.addIssueElement(this.database.getIssueElement(String.valueOf(issueElementID)));
             }

@@ -28,9 +28,13 @@ public class TestRun
         event.setDatabase(database);
         testEngine.setDatabase(database);
 
+        //testEngine.createNewIssue("DLC Demo", "bus-element", new ObjectId(), 5, "1.6", "1.8", "Wrong value");
+
         //runa test
         testEngine.createNewTestObject(user, "DLC Demo", "http://ec2-54-210-75-155.compute-1.amazonaws.com:3452/", "This is a test test", new String[]{"javad.zare@iemssolution.com", "DLC_2023"});
         //Run the test
+
+
 
 
     }

@@ -192,19 +192,24 @@ public class IssueElement
 
     public Document getAsDocument()
     {
-        //Create the issueDoc
         Document issueDoc = new Document("_id", new ObjectId(this.issueID.toString()))
-                .append("occurringTime", this.occurringTime)
+                .append("occurringTime", this.occurringTime.toString())
                 .append("errorMessage", this.errorMessage)
                 .append("scenario", this.scenario)
                 .append("expectedValue", this.expectedValue)
                 .append("actualValue", this.actualValue)
+
                 .append("isIssueOpen", this.isIssueOpen)
                 .append("targetedWebPage", this.targetedWebPage)
-                .append("issueCloser", this.issueCloser)
-                .append("developerMessage", this.developerMessage)
-                .append("closedTime", this.closedTime.toString())
                 .append("targetedWebElement", this.targetedWebElement);
+
+        if (!this.isIssueOpen)
+        {
+            issueDoc.append("issueCloser", this.issueCloser)
+                    .append("developerMessage", this.developerMessage)
+                    .append("closedTime", this.closedTime.toString());
+        }
+
 
         return issueDoc;
     }

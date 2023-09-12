@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Base64;
+import java.io.InputStream;
 
 public class PasswordManager
 {
@@ -20,7 +21,7 @@ public class PasswordManager
     private Boolean isUserIDSaved;
     private File uuidFile;
 
-    private String filePath = "src/User/PasswordManager/UUID.txt";
+    private String filePath = "UUID.txt";
     private String secretKeyString = "770A8A65DA156D24EE2A093277530142";
     private static final String LOWERCASE_CHARS = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

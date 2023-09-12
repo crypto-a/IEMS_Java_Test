@@ -268,6 +268,12 @@ public class TestElement
     }
     private String[][] convertListListToStringArray(List<List<String>> listOfLists)
     {
+
+        if (listOfLists.size() == 0)
+        {
+            return null;
+        }
+
         int rows = listOfLists.size();
         int cols = listOfLists.get(0).size();
 

@@ -21,7 +21,7 @@ public abstract class Test implements Runnable
     public static int Load_A_Scenario = 1;
 
 
-    private final String chromeDriverUrl = "src/TestAutomations/ChromeDriver/chromedriver.exe";
+    private final String chromeDriverUrl = "chromedriver.exe";
     public WebDriver driver;
     public final JavascriptExecutor js;
 

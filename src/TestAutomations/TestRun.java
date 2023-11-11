@@ -31,7 +31,7 @@ public class TestRun
         //testEngine.createNewIssue("DLC Demo", "bus-element", new ObjectId(), 5, "1.6", "1.8", "Wrong value");
 
         //runa test
-        testEngine.createNewTestObject(user, "DLC Demo", "http://ec2-54-210-75-155.compute-1.amazonaws.com:3452/", "This is a test test", new String[]{"javad.zare@iemssolution.com", "DLC_2023"});
+        testEngine.createNewTestObject(user, "DLC Demo", "http://ec2-54-210-75-155.compute-1.amazonaws.com:3452/", "This is a test test", new String[]{"alirahbar2005@gmail.com", "Ali1234"});
         //Run the test
 
 

@@ -112,8 +112,6 @@
                 <item value="- Select a Software -"/>
                 <item value="DLC Demo"/>
                 <item value="DERMS"/>
-                <item value="PA SaaS"/>
-                <item value="CALFUSE"/>
               </model>
             </properties>
           </component>

@@ -23,7 +23,7 @@ public abstract class Test implements Runnable
 
     private final String chromeDriverUrl = "chromedriver.exe";
     public WebDriver driver;
-    public final JavascriptExecutor js;
+    public JavascriptExecutor js;
 
     public TestObject testObject;
     public TestEngine testEngine;
@@ -277,6 +277,9 @@ public abstract class Test implements Runnable
 
                 //Create the ChromeDriver Object
                 this.driver = new ChromeDriver();
+
+                // Create a JavascriptExecutor instance
+                this.js = (JavascriptExecutor) this.driver;
             }
         }
     }
